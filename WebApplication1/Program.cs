@@ -1,7 +1,15 @@
+using Microsoft.AspNetCore.ResponseCompression;
+
+
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Logging.ClearProviders(); // Clears existing logging providers
+builder.Logging.AddConsole(); // Add Console logging
+builder.Logging.AddDebug(); // Add Debug logging
 
 var app = builder.Build();
 
@@ -14,6 +22,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+Console.WriteLine($"hello");  // Log the file path
 app.UseStaticFiles();
 
 app.UseRouting();
