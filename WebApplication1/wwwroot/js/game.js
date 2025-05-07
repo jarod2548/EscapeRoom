@@ -1,6 +1,7 @@
 ﻿// Function to start the game by showing the game screen and enabling movement
 
-let lives = 5;
+let lives = 3;
+const liveContainer = document.getElementById('liveContainer');
 
 let player =
 {
@@ -41,7 +42,7 @@ function CheckCollisision(obj1, obj2)
 }
 
 function Update()
-{
+{ 
     requestAnimationFrame(Update);
 }
 requestAnimationFrame(Update);
@@ -76,6 +77,8 @@ function movingObstacle()
         if (CheckCollisision(enemy, player)) {
             enemy.y = 0;
             enemy.x = Math.random() * 95;
+            let lastImage = liveContainer.lastElementChild;
+            lastImage.remove();
         }
 
         moveObstacle(); // Update the object's position on the screen

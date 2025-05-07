@@ -29,10 +29,13 @@
                 <div id="movableObject"></div>
                 <div id="moveableObstacle"></div>
             </div>
-            @for (int i = 0; i < Model.PlayerLives; i++)
-            {
-                <img src="~/images/heart.png" alt="Life" class="life" />
-            }
+            <div id ="liveContainer">
+                @for (int i = 0; i < Model.PlayerLives; i++)
+                {
+                    <img src="~/images/heart.png" alt="Life" class="life" />
+                }
+            </div>
+            
         </div>
 
         <!-- Instructions -->
