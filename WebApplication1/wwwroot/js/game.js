@@ -94,7 +94,7 @@ function enableMovement() {
 
     // Velocity (how fast the object moves per frame)
     let velocity = { x: 0, y: 0 };
-    const step = 2;  // Small step to increase frame rate responsiveness
+    const step = 0.001;  // Small step to increase frame rate responsiveness
 
     // Function to update the object's position
     function moveObject() {
