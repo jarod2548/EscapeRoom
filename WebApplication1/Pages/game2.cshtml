@@ -19,39 +19,37 @@
 
         <!-- Game Screen that will be shown/hidden -->
         <div id="gameScreen" style="display:none;">
-            <h2>The Game is On!</h2>
-            <p>Use the arrow keys to move the object!</p>
 
             <!-- Game Area -->
             <div id="gameArea">
-                <div id="light1" class="grid-item"></div>
+                <img src="~/images/lamp.png" id="light1" class="grid-item"></img>
                 <img src="~/images/cirkel.png" id="shape1" class="grid-item"></img>
 
-                <div id="light2" class="grid-item"></div>
+                <img src="~/images/lamp.png" id="light2" class="grid-item"></img>
                 <img src="~/images/driehoek.png" id="shape2" class="grid-item"></img>
 
-                <div id="light3" class="grid-item"></div>
+                <img src="~/images/lamp.png" id="light3" class="grid-item"></img>
                 <img src="~/images/vierkant.png" id="shape3" class="grid-item"></img>
 
-                <div id="light4" class="grid-item"></div>
+                <img src="~/images/lamp.png" id="light4" class="grid-item"></img>
                 <img src="~/images/cirkel.png" id="shape4" class="grid-item"></img>
 
-                <div id="light5" class="grid-item"></div>
+                <img src="~/images/lamp.png" id="light5" class="grid-item"></img>
                 <img src="~/images/Letter M.png" id="shape5" class="grid-item"></img>
 
-                <div id="light6" class="grid-item"></div>
+                <img src="~/images/lamp.png" id="light6" class="grid-item"></img>
                 <img src="~/images/vierkant.png" id="shape6" class="grid-item"></img>
 
-                <div id="light7" class="grid-item"></div>
+                <img src="~/images/lamp.png" id="light7" class="grid-item"></img>
                 <img src="~/images/Letter M.png" id="shape7" class="grid-item"></img>
 
-                <div id="light8" class="grid-item"></div>
+                <img src="~/images/lamp.png" id="light8" class="grid-item"></img>
                 <img src="~/images/driehoek.png" id="shape8" class="grid-item"></img>
 
-                <div id="light9" class="grid-item"></div>
+                <img src="~/images/lamp.png" id="light9" class="grid-item"></img>
                 <img src="~/images/Letter M.png" id="shape9" class="grid-item"></img>
 
-                <div id="light10" class="grid-item"></div>
+                <img src="~/images/lamp.png" id="light10" class="grid-item"></img>
                 <img src="~/images/vierkant.png" id="shape10" class="grid-item"></img>
 
             </div>
@@ -63,6 +61,16 @@
             </div>
 
         </div>
+
+        <div class="image-container">
+  <div class="quadrant top-left"></div>
+  <div class="quadrant top-right"></div>
+  <div class="quadrant bottom-left"></div>
+  <div class="quadrant bottom-right"></div>
+  <img src="~/images/lamp.png" alt="Image" class="image" />
+</div>
+
+<button onclick="randomizeColors()">Randomize Colors</button>
 
         <!-- Instructions -->
         <p>Click the "Start Game" button to reveal the game screen and start interacting.</p>

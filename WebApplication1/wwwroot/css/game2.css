@@ -66,26 +66,65 @@ button {
 }
 
 #shape1 { grid-area: 1/2;}
+#light1 {
+    grid-area:1/1;
+}
+
 #shape2 { grid-area: 2/2;}
+#light2 {
+    grid-area: 2/1;
+}
+
 #shape3 { grid-area: 3/2;}
+#light3 {
+    grid-area: 3/1;
+}
+
 #shape4 { grid-area: 4/2;}
+#light4 {
+    grid-area: 4/1;
+}
+
 #shape5 {
     grid-area: 5/2;
 }
+#light5 {
+    grid-area: 5/1;
+}
+
 #shape6 {
     grid-area: 1/3;
 }
+#light6 {
+    grid-area: 1/4;
+}
+
 #shape7 {
     grid-area: 2/3;
 }
+#light7 {
+    grid-area: 2/4;
+}
+
 #shape8 {
     grid-area: 3/3;
 }
+#light8 {
+    grid-area: 3/4;
+}
+
 #shape9 {
     grid-area: 4/3;
 }
+#light9 {
+    grid-area: 4/4;
+}
+
 #shape10 {
     grid-area: 5/3;
+}
+#light10 {
+    grid-area: 5/4;
 }
 
 
@@ -98,4 +137,53 @@ button {
 .life {
     width: 20px;
     height: 20px;
+}
+.image-container {
+    position: relative;
+    width: 200px; /* Size of the container */
+    height: 200px; /* Size of the container */
+    border-radius: 50%; /* Makes the container a circle */
+    overflow: hidden; /* Hides the inner parts of the container */
+    clip-path: circle(50% at 50% 50%); /* Creates a circle mask */
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire container */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.quadrant {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    background-color: transparent;
+    transition: background-color 0.5s ease; /* Smooth transition for color changes */
+}
+
+.top-left {
+    top: 0;
+    left: 0;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 0% 50%); /* Top-left quadrant mask */
+}
+
+.top-right {
+    top: 0;
+    right: 0;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 50%); /* Top-right quadrant mask */
+}
+
+.bottom-left {
+    bottom: 0;
+    left: 0;
+    clip-path: polygon(0% 0%, 100% 50%, 100% 100%, 0% 100%); /* Bottom-left quadrant mask */
+}
+
+.bottom-right {
+    bottom: 0;
+    right: 0;
+    clip-path: polygon(0% 50%, 100% 100%, 100% 0%, 0% 100%); /* Bottom-right quadrant mask */
 }
