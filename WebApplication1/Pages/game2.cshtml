@@ -1,0 +1,46 @@
+﻿@page
+@model WebApplication1.Pages.Index1Model
+@{
+    ViewData["Title"] = "Game 2";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/game2.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>Lampjes spel</h1>
+
+        <button id="player1Button" class="startButton" onclick="player1()">Start als speler 1</button>
+        <button id="player2Button" class="startButton" onclick="player2()">Start als speler 2</button>
+
+        <!-- Game Screen that will be shown/hidden -->
+        <div id="gameScreen" style="display:none;">
+            <h2>The Game is On!</h2>
+            <p>Use the arrow keys to move the object!</p>
+
+            <!-- Game Area -->
+            <div id="gameArea">
+                <!-- Movable Object -->
+                <div id="movableObject"></div>
+                <div id="moveableObstacle"></div>
+            </div>
+            <div id ="liveContainer">
+                @for (int i = 0; i < 3; i++)
+                {
+                        <img src="~/images/heart.png" alt="Life" class="life" />
+                }
+            </div>
+
+        </div>
+
+        <!-- Instructions -->
+        <p>Click the "Start Game" button to reveal the game screen and start interacting.</p>
+    </div>
+
+    <script src="~/js/game2.js"></script>
+</body>
+</html>
