@@ -8,23 +8,37 @@ const lights2 = document.querySelectorAll('.lightVersion2');
 const lights3 = document.querySelectorAll('.lightVersion3');
 const lights4 = document.querySelectorAll('.lightVersion4');
 
+let gameID = null;
+let playerID = null;
+
 const colors = ['#ff6347', '#4682b4', '#32cd32', '#ffb6c1', '#ff1493', '#8a2be2'];
 
 //.withURL(*our server domain*)
 const connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
 
 //functie gemaakt met AI
-function Connect(gameId)
+function Connect(playerNumber)
 {
     connection.start().then(() => {
-        connection.invoke("JoinGame", gameId);
+        connection.invoke("JoinGame", playerNumber);
     });   
 }
 connection.on("UpdateGame", (gameState) => {
 
 });
-connection.on("StartGame", function (list) {
-    console.log("Received gamedata : ", list)
+connection.on("StartGame", function (list, stateID, playerID, playerNumber) {
+    console.log("Received gamedata : ", list);
+    console.log("game ID :", stateID)
+    console.log("player ID: ", playerID)
+    gameScreen.style.display = 'block';
+    if (playerNumber === 1) {  
+        gameArea1.style.display = 'grid';
+    } else
+    {
+        gameArea2.style.display = 'grid';
+    }
+    
+    gameID = stateID; 
     drawLights(list);
 });
 function sendMove(move) {
@@ -37,24 +51,18 @@ function player1Start()
 {
     if (gameScreen.style.display === 'none')
     {
-        gameScreen.style.display = 'block';
-        gameArea1.style.display = 'grid';
-        console.log("working");
-        Connect("1");
+        Connect(1);
     }
 }
 function player2Start() {
     if (gameScreen.style.display === 'none') {
-        gameScreen.style.display = 'block';
-        gameArea2.style.display = 'grid';
-        console.log("working");
-        Connect("2");
+        Connect(2);
     }
 }
 
 function shapePressed(shapeNumber)
 {
-    connection.invoke("ShapePressed", shapeNumber);
+    connection.invoke("ShapePressed", shapeNumber, gameID);
 }
 function drawLights(colorInts)
 {
