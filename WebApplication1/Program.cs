@@ -13,6 +13,12 @@ builder.Logging.ClearProviders(); // Clears existing logging providers
 builder.Logging.AddConsole(); // Add Console logging
 builder.Logging.AddDebug(); // Add Debug logging
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    //options.ListenAnyIP(5000); // HTTP
+    options.ListenAnyIP(7000, listenOptions => listenOptions.UseHttps()); // Optional HTTPS
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowGameClients",
