@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.ResponseCompression;
+using WebApplication1.services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,10 +7,24 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSignalR();
 
 builder.Logging.ClearProviders(); // Clears existing logging providers
 builder.Logging.AddConsole(); // Add Console logging
 builder.Logging.AddDebug(); // Add Debug logging
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowGameClients",
+        policy =>
+        {
+            //Toevoegen van de website domain
+            policy.WithOrigins("https://localhost:7000", "https://localhost:7000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+        });
+});
 
 var app = builder.Build();
 
@@ -20,6 +35,9 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.MapHub<GameHub>("/gamehub");
+app.UseCors("AllowGameClients");
 
 app.UseHttpsRedirection();
 Console.WriteLine($"hello");  // Log the file path

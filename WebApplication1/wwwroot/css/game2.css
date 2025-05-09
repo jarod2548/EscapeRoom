@@ -45,7 +45,7 @@ button {
     display: none;
 }
 
-#gameArea {
+#gameArea1 {
     position: relative;
     width: 100%;
     height: 300px; /* Game area height */
@@ -138,52 +138,8 @@ button {
     width: 20px;
     height: 20px;
 }
-.image-container {
-    position: relative;
-    width: 200px; /* Size of the container */
-    height: 200px; /* Size of the container */
-    border-radius: 50%; /* Makes the container a circle */
-    overflow: hidden; /* Hides the inner parts of the container */
-    clip-path: circle(50% at 50% 50%); /* Creates a circle mask */
-}
-
-.image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures the image covers the entire container */
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.quadrant {
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    background-color: transparent;
-    transition: background-color 0.5s ease; /* Smooth transition for color changes */
-}
-
-.top-left {
-    top: 0;
-    left: 0;
-    clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 0% 50%); /* Top-left quadrant mask */
-}
-
-.top-right {
-    top: 0;
-    right: 0;
-    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 50%); /* Top-right quadrant mask */
-}
-
-.bottom-left {
-    bottom: 0;
-    left: 0;
-    clip-path: polygon(0% 0%, 100% 50%, 100% 100%, 0% 100%); /* Bottom-left quadrant mask */
-}
-
-.bottom-right {
-    bottom: 0;
-    right: 0;
-    clip-path: polygon(0% 50%, 100% 100%, 100% 0%, 0% 100%); /* Bottom-right quadrant mask */
+#donutCanvas {
+    display: block;
+    margin: 20px auto;
+    background-color: #f0f0f0;
 }

@@ -9,6 +9,9 @@
     <meta charset="utf-8" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/css/game2.css" />
+        
+
+
 </head>
 <body>
     <div class="container">
@@ -21,37 +24,42 @@
         <div id="gameScreen" style="display:none;">
 
             <!-- Game Area -->
-            <div id="gameArea">
-                <img src="~/images/lamp.png" id="light1" class="grid-item"></img>
-                <img src="~/images/cirkel.png" id="shape1" class="grid-item"></img>
+            <div id="gameArea1" style="display:none;">
+                <canvas id="light1" class="grid-item lightVersion1"></canvas>
+                <img src="~/images/cirkel.png" id="shape1" class="grid-item shapeVersion1"></img>
 
-                <img src="~/images/lamp.png" id="light2" class="grid-item"></img>
-                <img src="~/images/driehoek.png" id="shape2" class="grid-item"></img>
+                <canvas id="light2" class="grid-item lightVersion2"></canvas>
+                <img src="~/images/driehoek.png" id="shape2" class="grid-item shapeVersion2"></img>
 
-                <img src="~/images/lamp.png" id="light3" class="grid-item"></img>
-                <img src="~/images/vierkant.png" id="shape3" class="grid-item"></img>
+                <canvas id="light3" class="grid-item lightVersion3"></canvas>
+                <img src="~/images/vierkant.png" id="shape3" class="grid-item shapeVersion3"></img>
 
-                <img src="~/images/lamp.png" id="light4" class="grid-item"></img>
-                <img src="~/images/cirkel.png" id="shape4" class="grid-item"></img>
+                <canvas id="light4" class="grid-item lightVersion1"></canvas>
+                <img src="~/images/cirkel.png" id="shape4" class="grid-item shapeVersion1"></img>
 
-                <img src="~/images/lamp.png" id="light5" class="grid-item"></img>
-                <img src="~/images/Letter M.png" id="shape5" class="grid-item"></img>
+                <canvas id="light5" class="grid-item lightVersion4"></canvas>
+                <img src="~/images/Letter M.png" id="shape5" class="grid-item shapeVersion4"></img>
 
-                <img src="~/images/lamp.png" id="light6" class="grid-item"></img>
-                <img src="~/images/vierkant.png" id="shape6" class="grid-item"></img>
+                <canvas id="light6" class="grid-item lightVersion3"></canvas>
+                <img src="~/images/vierkant.png" id="shape6" class="grid-item shapeVersion3"></img>
 
-                <img src="~/images/lamp.png" id="light7" class="grid-item"></img>
-                <img src="~/images/Letter M.png" id="shape7" class="grid-item"></img>
+                <canvas id="light7" class="grid-item lightVersion4"></canvas>
+                <img src="~/images/Letter M.png" id="shape7" class="grid-item shapeVersion4"></img>
 
-                <img src="~/images/lamp.png" id="light8" class="grid-item"></img>
-                <img src="~/images/driehoek.png" id="shape8" class="grid-item"></img>
+                <canvas id="light8" class="grid-item lightVersion2"></canvas>
+                <img src="~/images/driehoek.png" id="shape8" class="grid-item shapeVersion2"></img>
 
-                <img src="~/images/lamp.png" id="light9" class="grid-item"></img>
-                <img src="~/images/Letter M.png" id="shape9" class="grid-item"></img>
+                <canvas id="light9" class="grid-item lightVersion4"></canvas>
+                <img src="~/images/Letter M.png" id="shape9" class="grid-item shapeVersion4"></img>
 
-                <img src="~/images/lamp.png" id="light10" class="grid-item"></img>
-                <img src="~/images/vierkant.png" id="shape10" class="grid-item"></img>
+                <canvas id="light10" class="grid-item lightVersion3"></canvas>
+                <img src="~/images/vierkant.png" id="shape10" class="grid-item shapeVersion3"></img>
 
+            </div>
+            <div id="gameArea2" style="display:none;">
+                <button type="button">
+                    <img src ="~/images/cirkel.png" />
+                </button>
             </div>
             <div id ="liveContainer">
                 @for (int i = 0; i < 3; i++)
@@ -62,20 +70,10 @@
 
         </div>
 
-        <div class="image-container">
-  <div class="quadrant top-left"></div>
-  <div class="quadrant top-right"></div>
-  <div class="quadrant bottom-left"></div>
-  <div class="quadrant bottom-right"></div>
-  <img src="~/images/lamp.png" alt="Image" class="image" />
-</div>
-
-<button onclick="randomizeColors()">Randomize Colors</button>
-
-        <!-- Instructions -->
+        <button onclick="Connect()">Verbind met server</button>
         <p>Click the "Start Game" button to reveal the game screen and start interacting.</p>
     </div>
-
+    <script src="@("https://cdn.jsdelivr.net/npm/@microsoft/signalr@8.0.7/dist/browser/signalr.min.js")"></script>
     <script src="~/js/game2.js"></script>
 </body>
 </html>
