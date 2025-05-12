@@ -31,7 +31,6 @@ connection.on("UpdateGame", (gameState) => {
 });
 connection.on("StartGame", function (list, buttons, stateID, playerID, playerNumber) {
     console.log("Received gamedata : ", list);
-    console.log("Raw StartGame args:", args);
     console.log("game ID :", stateID);
     console.log("player ID: ", playerID);
     buttonsToUse = buttons;
