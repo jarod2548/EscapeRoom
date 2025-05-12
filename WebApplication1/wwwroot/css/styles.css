@@ -28,8 +28,8 @@ body {
     position: absolute;
     width: 64px;
     height: 64px;
-    background-image: url('images/wave.png');
-    background-size: cover;
+    background-image: background-size: cover;
+    background-image: url('../images/wave.png');
     top: 0;
 }
 
