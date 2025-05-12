@@ -1,51 +1,28 @@
 ﻿@page
-@model IndexModel
+@model WebApplication1.Pages.Index1Model
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Game 1";
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/css/styles.css" />
+    <meta charset="UTF-8">
+    <title>Escape Room Demo</title>
+    <link rel="stylesheet" href="~/css/styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to the Game</h1>
-
-        <!-- Button to Start the Game -->
-        <button id="startButton" class="btn btn-primary" onclick="startGame()">Start Game</button>
-
-        <!-- Game Screen that will be shown/hidden -->
-        <div id="gameScreen" style="display:none;">
-            <h2>The Game is On!</h2>
-            <p>Use the arrow keys to move the object!</p>
-
-            <!-- Game Area -->
-            <div id="gameArea">
-                <div id="player"></div>
-                <div id="moveableObstacle"></div>
-            </div>
-
-
-            <div id="liveContainer">
-                @for (int i = 0; i < Model.PlayerLives; i++)
-                {
-                    <img src="~/images/heart.png" alt="Life" class="life" />
-                }
-            </div>
-
-        </div>
-
-        <!-- Instructions -->
-        <p>Click the "Start Game" button to reveal the game screen and start interacting.</p>
+    <h1>Escape Room - Game 1</h1>
+    <button onclick="startGame()">Start Game</button>
+    <div id="gameArea">
+        <div id="player"></div>
+        <div class="wave" id="wave1"></div>
+        <div class="wave" id="wave2"></div>
     </div>
-
-    <script src="/js/game.js"></script>
-
-
-
+    <div id="liveContainer">
+        <img src="images/heart.png" class="life">
+        <img src="images/heart.png" class="life">
+        <img src="images/heart.png" class="life">
+    </div>
+    <script src="game.js"></script>
 </body>
 </html>

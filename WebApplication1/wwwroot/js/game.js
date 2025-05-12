@@ -1,105 +1,67 @@
-﻿let lives = 3;
-const liveContainer = document.getElementById('liveContainer');
-
-let player = {
-    x: 284,
-    y: 360,
-    width: 32,
-    height: 32
-};
-
-let enemy = {
-    x: Math.floor(Math.random() * 568),
-    y: 0,
-    width: 32,
-    height: 32
-};
+﻿
+let lives = 3;
+let player = { x: 284, y: 360, width: 32, height: 32 };
+const playerElement = document.getElementById('player');
+const wave1 = document.getElementById('wave1');
+const wave2 = document.getElementById('wave2');
+const waves = [
+    { el: wave1, x: Math.random() * 568, y: 0 },
+    { el: wave2, x: Math.random() * 568, y: -200 }
+];
 
 function startGame() {
-    const gameScreen = document.getElementById('gameScreen');
-    const startButton = document.getElementById('startButton');
-
-    if (gameScreen.style.display === 'none') {
-        gameScreen.style.display = 'block';
-        startButton.textContent = 'Restart Game';
-
-        enableMovement();
-        movingObstacle();
-    } else {
-        gameScreen.style.display = 'none';
-        startButton.textContent = 'Start Game';
-    }
+    enableMovement();
+    animateWaves();
 }
 
 function enableMovement() {
-    const playerElement = document.getElementById('player');
-    const step = 10;
-
     document.addEventListener('keydown', function (event) {
-        switch (event.key) {
-            case "ArrowLeft":
-                player.x -= step;
-                break;
-            case "ArrowRight":
-                player.x += step;
-                break;
-            case "ArrowUp":
-                player.y -= step;
-                break;
-            case "ArrowDown":
-                player.y += step;
-                break;
+        const step = 10;
+        switch (event.key.toLowerCase()) {
+            case 'a': player.x -= step; break;
+            case 'd': player.x += step; break;
+            case 'w': player.y -= step; break;
+            case 's': player.y += step; break;
         }
-
-        if (player.x < 0) player.x = 0;
-        if (player.x > 568) player.x = 568;
-        if (player.y < 0) player.y = 0;
-        if (player.y > 368) player.y = 368;
-
+        player.x = Math.max(0, Math.min(player.x, 568));
+        player.y = Math.max(0, Math.min(player.y, 368));
         playerElement.style.left = player.x + "px";
         playerElement.style.top = player.y + "px";
     });
 }
 
-function movingObstacle() {
-    const movableObstacle = document.getElementById('moveableObstacle');
-    const step = 2;
-
-    function update1() {
-        enemy.y += step;
-
-        if (enemy.y > 400) {
-            enemy.y = 0;
-            enemy.x = Math.floor(Math.random() * 568);
-        }
-
-        if (CheckCollision(player, enemy)) {
-            enemy.y = 0;
-            enemy.x = Math.floor(Math.random() * 568);
-
-            const lastLife = liveContainer.lastElementChild;
-            if (lastLife) {
-                lastLife.remove();
-                lives--;
+function animateWaves() {
+    const speed = 2;
+    function update() {
+        waves.forEach(wave => {
+            wave.y += speed;
+            if (wave.y > 400) {
+                wave.y = 0;
+                wave.x = Math.random() * 568;
             }
-        }
+            wave.el.style.left = wave.x + "px";
+            wave.el.style.top = wave.y + "px";
 
-        movableObstacle.style.left = enemy.x + "px";
-        movableObstacle.style.top = enemy.y + "px";
-
-        requestAnimationFrame(update1);
+            if (checkCollision(player, wave)) {
+                wave.y = 0;
+                wave.x = Math.random() * 568;
+                const heart = document.querySelector('#liveContainer .life:last-child');
+                if (heart) heart.remove();
+            }
+        });
+        requestAnimationFrame(update);
     }
-
-    update1();
+    update();
 }
 
-function CheckCollision(a, b) {
+function checkCollision(a, b) {
     return !(
         a.x + a.width < b.x ||
-        a.x > b.x + b.width ||
+        a.x > b.x + 32 ||
         a.y + a.height < b.y ||
-        a.y > b.y + b.height
+        a.y > b.y + 32
     );
 }
 
 window.startGame = startGame;
+
