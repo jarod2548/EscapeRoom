@@ -18,7 +18,7 @@ body {
     position: absolute;
     width: 32px;
     height: 32px;
-    background-image: url('images/stickman-green.png');
+    background-image: url('../images/stickman-green.png');
     background-size: cover;
     top: 360px;
     left: 284px;
@@ -28,8 +28,8 @@ body {
     position: absolute;
     width: 64px;
     height: 64px;
-    background-image: background-size: cover;
     background-image: url('../images/wave.png');
+    background-size: cover;
     top: 0;
 }
 
