@@ -8,8 +8,8 @@ namespace WebApplication1.services
     public class GameHub : Hub
     {
         private static Dictionary<string, GameState> Games = new();
-        private static Dictionary<string, string> Players = new();
         private static Dictionary<string, string> Connections = new();
+        private static Dictionary<string, GameSession> Sessions = new();
 
         public override async Task OnConnectedAsync() 
         { 
@@ -19,7 +19,7 @@ namespace WebApplication1.services
             await base.OnConnectedAsync();
         }
 
-        public async Task CreateGame(string playerID, string player2ID) 
+        public async Task CreateGame(string playerID, string player2ID, string gameID) 
         {
             Random rnd = new Random();
             
@@ -35,11 +35,11 @@ namespace WebApplication1.services
                 }
                 list.Add(colorInts.ToList());
             }
-            GameState state = new GameState();
-            Games.Add(state.ID,state);
+            GameState state = new GameState(gameID);
+            Games.Add(state.ID, state);
 
-            await Clients.Client(Connections[playerID]).SendAsync("StartGame", list, state.ID, playerID, 1);
-            await Clients.Client(Connections[player2ID]).SendAsync("StartGame", list, state.ID, player2ID, 2);
+            await Clients.Client(Connections[playerID]).SendAsync("StartGame", list, state.buttonToUse, state.ID, playerID, 1);
+            await Clients.Client(Connections[player2ID]).SendAsync("StartGame", list, state.buttonToUse, state.ID, player2ID, 2);
         }
 
         public async Task JoinGame(int number)
@@ -50,28 +50,38 @@ namespace WebApplication1.services
 
             Connections.Add(player1ID, connectionID);
             string player2ID = null;
+            string gameID = null;
 
-            foreach( KeyValuePair<string,string> player in Players ) 
+            foreach (KeyValuePair<string, GameSession> Session in Sessions) 
             { 
-                if(player.Value == "waiting") 
+                if(Session.Value.playerID2 == "waiting") 
                 {
-                    player2ID = player.Key;
-                    Players[player.Key] = player1ID;
-                    Players[player.Value] = player2ID;
+                    gameID = Session.Key;
+                    player2ID = Session.Value.playerID1;
+                    Session.Value.playerID2 = player2ID;
+                    Sessions[gameID].playerID1 = player1ID;
+                    Sessions[gameID].playerID2 = player2ID;
                     break;
                 }
             }
 
             if(player2ID == null) 
             {
-                Players[player1ID] = "waiting";
+                gameID = Guid.NewGuid().ToString();
+                GameSession session = new GameSession 
+                { 
+                    playerID1 = player1ID,
+                    playerID2 = "waiting"
+                };
+                Sessions.Add(gameID, session);
+                Console.WriteLine(Sessions);
             }
             else 
             {
                 try
                 {
                     //await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
-                    await CreateGame(player1ID, player2ID);
+                    await CreateGame(player1ID, player2ID, gameID);
                 }
                 catch (Exception ex)
                 {
@@ -80,12 +90,19 @@ namespace WebApplication1.services
             }      
         }
 
-        public async Task ShapePressed(int shapePressed, string gameId) 
+        public async Task ShapePressed(int shapePressed, int gameOrder, string gameId) 
         {
             GameState currentState = Games[gameId];
-            await currentState.CheckLights(shapePressed);
+            await currentState.CheckLights(shapePressed, gameOrder);
         }
 
+        public async Task sendResponse(string gameID) 
+        {
+            string playerID1 = Sessions[gameID].playerID1;
+            string playerID2 = Sessions[gameID].playerID2;
+            await Clients.Client(Connections[playerID1]).SendAsync("Response");
+            await Clients.Client(Connections[playerID2]).SendAsync("Response");
+        }
         public async Task MakeMove(string gameId, int move) 
         { 
             var game = Games[gameId];

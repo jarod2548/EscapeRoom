@@ -10,6 +10,9 @@ const lights4 = document.querySelectorAll('.lightVersion4');
 
 let gameID = null;
 let playerID = null;
+let buttonsToUse;
+
+let gameOrder = 0;
 
 const colors = ['#ff6347', '#4682b4', '#32cd32', '#ffb6c1', '#ff1493', '#8a2be2'];
 
@@ -26,10 +29,15 @@ function Connect(playerNumber)
 connection.on("UpdateGame", (gameState) => {
 
 });
-connection.on("StartGame", function (list, stateID, playerID, playerNumber) {
+connection.on("StartGame", function (list, buttons, stateID, playerID, playerNumber) {
     console.log("Received gamedata : ", list);
-    console.log("game ID :", stateID)
-    console.log("player ID: ", playerID)
+    console.log("Raw StartGame args:", args);
+    console.log("game ID :", stateID);
+    console.log("player ID: ", playerID);
+    buttonsToUse = buttons;
+    console.log(buttonsToUse);
+    console.log(buttons);
+    console.log("wtf");
     gameScreen.style.display = 'block';
     if (playerNumber === 1) {  
         gameArea1.style.display = 'grid';
@@ -41,6 +49,12 @@ connection.on("StartGame", function (list, stateID, playerID, playerNumber) {
     gameID = stateID; 
     drawLights(list);
 });
+
+connection.on("Response")
+{
+
+};
+
 function sendMove(move) {
     connection.invoke("MakeMove", gameId, move);
 }
@@ -62,15 +76,10 @@ function player2Start() {
 
 function shapePressed(shapeNumber)
 {
-    connection.invoke("ShapePressed", shapeNumber, gameID);
+    connection.invoke("ShapePressed", shapeNumber, gameOrder, gameID);
 }
 function drawLights(colorInts)
 {
-    for (let i = 0; i < colorInts.length; i++)
-    {
-
-    }
-
     drawDonuts(lights1, colorInts[0]);
     drawDonuts(lights2, colorInts[1]);
     drawDonuts(lights3, colorInts[2]);
