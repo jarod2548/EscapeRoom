@@ -14,7 +14,7 @@
 <body>
     <div class="container">
         <h1>Welcome to the Game</h1>
-        
+
         <!-- Button to Start the Game -->
         <button id="startButton" class="btn btn-primary" onclick="startGame()">Start Game</button>
 
@@ -25,23 +25,27 @@
 
             <!-- Game Area -->
             <div id="gameArea">
-                <!-- Movable Object -->
-                <div id="movableObject"></div>
+                <div id="player"></div>
                 <div id="moveableObstacle"></div>
             </div>
-            <div id ="liveContainer">
+
+
+            <div id="liveContainer">
                 @for (int i = 0; i < Model.PlayerLives; i++)
                 {
                     <img src="~/images/heart.png" alt="Life" class="life" />
                 }
             </div>
-            
+
         </div>
 
         <!-- Instructions -->
         <p>Click the "Start Game" button to reveal the game screen and start interacting.</p>
     </div>
 
-    <script src="~/js/game.js"></script>
+    <script src="/js/game.js"></script>
+
+
+
 </body>
 </html>
