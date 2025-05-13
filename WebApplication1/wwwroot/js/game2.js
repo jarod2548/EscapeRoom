@@ -34,9 +34,6 @@ connection.on("StartGame", function (list, buttons, stateID, playerID, playerNum
     console.log("game ID :", stateID);
     console.log("player ID: ", playerID);
     buttonsToUse = buttons;
-    console.log(buttonsToUse);
-    console.log(buttons);
-    console.log("wtf");
     gameScreen.style.display = 'block';
     if (playerNumber === 1) {  
         gameArea1.style.display = 'grid';
@@ -49,10 +46,11 @@ connection.on("StartGame", function (list, buttons, stateID, playerID, playerNum
     drawLights(list);
 });
 
-connection.on("Response")
-{
+connection.on("Response", function (currentButton) {
+    console.log("currentButton :", currentButton);
+    gameOrder = currentButton;
+});
 
-};
 
 function sendMove(move) {
     connection.invoke("MakeMove", gameId, move);
