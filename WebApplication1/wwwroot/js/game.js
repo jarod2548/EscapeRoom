@@ -1,21 +1,41 @@
-﻿
-let lives = 3;
+﻿let lives = 3;
 let player = { x: 284, y: 360, width: 32, height: 32 };
 const playerElement = document.getElementById('player');
-const wave1 = document.getElementById('wave1');
-const wave2 = document.getElementById('wave2');
-const waves = [
-    { el: wave1, x: Math.random() * 568, y: 0 },
-    { el: wave2, x: Math.random() * 568, y: -200 }
-];
+const waveContainer = document.getElementById('gameArea');
+
+let waves = [];
+const waveCount = 5;
+
+function createWaves() {
+    waves.forEach(w => w.el.remove());
+    waves = [];
+
+    for (let i = 0; i < waveCount; i++) {
+        let wave = document.createElement('div');
+        wave.classList.add('wave');
+        wave.style.left = Math.random() * 568 + 'px';
+        wave.style.top = Math.random() * -200 + 'px';
+        waveContainer.appendChild(wave);
+        waves.push({
+            el: wave,
+            x: Math.random() * 568,
+            y: Math.random() * -200,
+            speed: Math.random() * 2 + 1
+        });
+    }
+}
 
 function startGame() {
+    document.getElementById('gameOverMessage').style.display = 'none';
+    document.getElementById('winMessage').style.display = 'none'; // Hide win message
+    document.getElementById('restartBtn').style.display = 'none';  // Hide restart button initially
     enableMovement();
+    createWaves();
     animateWaves();
 }
 
 function enableMovement() {
-    document.addEventListener('keydown', function (event) {
+    document.onkeydown = function (event) {
         const step = 10;
         switch (event.key.toLowerCase()) {
             case 'a': player.x -= step; break;
@@ -27,18 +47,20 @@ function enableMovement() {
         player.y = Math.max(0, Math.min(player.y, 368));
         playerElement.style.left = player.x + "px";
         playerElement.style.top = player.y + "px";
-    });
+    };
 }
 
 function animateWaves() {
-    const speed = 2;
     function update() {
+        let gameOver = false;
+
         waves.forEach(wave => {
-            wave.y += speed;
+            wave.y += wave.speed;
             if (wave.y > 400) {
                 wave.y = 0;
                 wave.x = Math.random() * 568;
             }
+
             wave.el.style.left = wave.x + "px";
             wave.el.style.top = wave.y + "px";
 
@@ -47,10 +69,29 @@ function animateWaves() {
                 wave.x = Math.random() * 568;
                 const heart = document.querySelector('#liveContainer .life:last-child');
                 if (heart) heart.remove();
+                lives--;
             }
         });
-        requestAnimationFrame(update);
+
+        if (lives <= 0) {
+            gameOver = true;
+        }
+
+        // Check for win condition (if the player reaches the top of the screen)
+        if (player.y <= 0) {
+            document.getElementById('winMessage').style.display = 'block'; // Show win message
+            document.getElementById('restartBtn').style.display = 'inline';  // Show restart button after winning
+            document.onkeydown = null; // Disable movement when player wins
+            return; // Stop the game
+        }
+
+        if (gameOver) {
+            gameOverLogic();
+        } else {
+            requestAnimationFrame(update);
+        }
     }
+
     update();
 }
 
@@ -63,5 +104,33 @@ function checkCollision(a, b) {
     );
 }
 
-window.startGame = startGame;
+function gameOverLogic() {
+    document.getElementById('gameOverMessage').style.display = 'block';
+    document.getElementById('restartBtn').style.display = 'inline';  // Show restart button
+    document.onkeydown = null;
+}
 
+function restartGame() {
+    lives = 3;
+    document.getElementById('liveContainer').innerHTML = `
+        <img src="images/heart.png" class="life">
+        <img src="images/heart.png" class="life">
+        <img src="images/heart.png" class="life">
+    `;
+
+    player.x = 284;
+    player.y = 360;
+    playerElement.style.left = player.x + "px";
+    playerElement.style.top = player.y + "px";
+
+    document.getElementById('gameOverMessage').style.display = 'none';
+    document.getElementById('winMessage').style.display = 'none'; // Hide win message
+    document.getElementById('restartBtn').style.display = 'none';  // Hide restart button
+
+    createWaves();
+    animateWaves();
+    enableMovement();
+}
+
+window.startGame = startGame;
+window.restartGame = restartGame;

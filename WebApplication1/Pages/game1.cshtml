@@ -23,6 +23,14 @@
         <img src="images/heart.png" class="life">
         <img src="images/heart.png" class="life">
     </div>
+    <div id="gameOverMessage" style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:48px; color:red; font-weight:bold; z-index:999;">
+        Game Over
+    </div>
+    <div id="winMessage" style="display: none;  position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:48px; color:green; font-weight:bold; z-index:999;">
+        
+        <h2> You Win!</h2>
+    </div>
+    <button id="restartBtn" onclick="restartGame()" style="display: none;">Restart</button>
     <script src="~/js/game.js"></script>
 </body>
 </html>
