@@ -1,0 +1,95 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #0d0d0d;
+    background-image: radial-gradient(circle at center, #1a1a1a, #000000 80%);
+    font-family: 'Press Start 2P', monospace;
+    color: #00ffcc;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+    /* CRT effect */
+    body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: repeating-linear-gradient( rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0.1) 1px, transparent 1px, transparent 2px );
+        z-index: 0;
+        pointer-events: none;
+        animation: flicker 1.5s infinite;
+        opacity: 0.2;
+    }
+
+@keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 0.2;
+    }
+
+    20%, 24%, 55% {
+        opacity: 0.3;
+    }
+}
+
+.pixel-wrapper {
+    z-index: 1;
+    text-align: center;
+    padding: 40px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 2px solid #00ffcc;
+    border-radius: 8px;
+    box-shadow: 0 0 20px #00ffcc55;
+    max-width: 600px;
+    width: 90%;
+}
+
+h1 {
+    font-size: 20px;
+    margin-bottom: 40px;
+    color: #00ffee;
+    text-shadow: 0 0 8px #00ffee;
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px #00ffee;
+    }
+
+    to {
+        text-shadow: 0 0 15px #00ffee, 0 0 30px #00ffee;
+    }
+}
+
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pixel-btn {
+    color: #00ffcc;
+    text-decoration: none;
+    border: 2px solid #00ffcc;
+    padding: 15px 25px;
+    display: inline-block;
+    font-size: 12px;
+    transition: 0.3s ease;
+    background-color: transparent;
+    border-radius: 5px;
+}
+
+    .pixel-btn:hover {
+        background-color: #00ffcc;
+        color: #000000;
+        box-shadow: 0 0 10px #00ffcc;
+    }
