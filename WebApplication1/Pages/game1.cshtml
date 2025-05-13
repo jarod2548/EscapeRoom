@@ -1,0 +1,28 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Escape Room Demo</title>
+    <link rel="stylesheet" href="~/css/styles.css">
+</head>
+<body>
+    <h1>Escape Room - Game 1</h1>
+    <button onclick="startGame()">Start Game</button>
+    <div id="gameArea">
+        <div id="player"></div>
+        <div class="wave" id="wave1"></div>
+        <div class="wave" id="wave2"></div>
+    </div>
+    <div id="liveContainer">
+        <img src="images/heart.png" class="life">
+        <img src="images/heart.png" class="life">
+        <img src="images/heart.png" class="life">
+    </div>
+    <script src="~/js/game.js"></script>
+</body>
+</html>

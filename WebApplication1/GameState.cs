@@ -1,11 +1,15 @@
-﻿using WebApplication1.services;
+﻿using Microsoft.AspNetCore.SignalR;
+using WebApplication1.services;
 
 namespace WebApplication1
 {
     public class GameState
     {
-        public GameState(string newID) 
+        private readonly IHubContext<GameHub> _hubContext;
+
+        public GameState(IHubContext<GameHub> hubContext ,string newID) 
         {
+            _hubContext = hubContext;
             ID = newID;
             CreateLightsGame();
         }
@@ -44,6 +48,8 @@ namespace WebApplication1
             if (buttonToUse[gameOrder] == BTNpressed) 
             { 
                 Console.WriteLine("Correct button");
+                
+                
             }
             else 
             {

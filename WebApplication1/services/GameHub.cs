@@ -7,6 +7,13 @@ namespace WebApplication1.services
 {
     public class GameHub : Hub
     {
+        private readonly GameManager _gameManager;
+
+        public GameHub(GameManager gameManager)
+        {
+            _gameManager = gameManager;
+        }
+
         private static Dictionary<string, GameState> Games = new();
         private static Dictionary<string, string> Connections = new();
         private static Dictionary<string, GameSession> Sessions = new();
@@ -35,7 +42,7 @@ namespace WebApplication1.services
                 }
                 list.Add(colorInts.ToList());
             }
-            GameState state = new GameState(gameID);
+            GameState state = _gameManager.CreateGame(gameID);
             Games.Add(state.ID, state);
 
             await Clients.Client(Connections[playerID]).SendAsync("StartGame", list, state.buttonToUse, state.ID, playerID, 1);
@@ -95,6 +102,7 @@ namespace WebApplication1.services
             GameState currentState = Games[gameId];
             await currentState.CheckLights(shapePressed, gameOrder);
         }
+
 
         public async Task sendResponse(string gameID) 
         {
