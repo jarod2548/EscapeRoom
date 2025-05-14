@@ -11,9 +11,9 @@ let gameID = null;
 let playerNumber = null;
 
 let waves = [];
-const waveCount = 1;
 const connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
-
+const waveelement1 = document.getElementById('wave1')
+const waveelement2 = document.getElementById('wave2')
 function Connect(playerNumber) {
     connection.start().then(() => {
         connection.invoke("JoinGame", playerNumber, 1);
@@ -37,9 +37,9 @@ connection.on("StartGame", function (gameId, gameNumber) {
     console.log("run game logic");
     gameID = gameId;
     document.getElementById('gameOverMessage').style.display = 'none';
-    winMessage.style.display = 'none'; // Hide win message
-    restartBTN.style.display = 'none';  // Hide restart button initially
-    createWaves();
+    winMessage.style.display = 'none'; 
+    restartBTN.style.display = 'none';  
+    
     animateWaves();
     
 });
@@ -57,45 +57,6 @@ connection.on("ResponseMovement", function (xPos, yPos) {
 function SendMovement(xPos, yPos) {
     connection.invoke("SendMovement", xPos, yPos, gameID);
 }
-
-function createWaves() {
-    waves.forEach(w => w.el.remove());
-    waves = [];
-
-    const containerWidth = waveContainer1.offsetWidth;
-    const gapWidth = 100; // breedte van het gat
-    const gapStart = Math.floor(Math.random() * (containerWidth - gapWidth));
-
-    for (let i = 0; i < waveCount; i++) {
-        let wave = document.createElement('div');
-        wave.classList.add('wave');
-
-        wave.style.left = '0px';
-        wave.style.top = Math.random() * -200 + 'px';
-        wave.style.width = containerWidth + 'px';
-
-        // 🎯 Dynamisch CSS maken voor het gat
-        wave.style.background = `linear-gradient(to right, 
-            #3498db 0px, 
-            #3498db ${gapStart}px, 
-            transparent ${gapStart}px, 
-            transparent ${gapStart + gapWidth}px, 
-            #3498db ${gapStart + gapWidth}px, 
-            #3498db 100%)`;
-
-        waveContainer1.appendChild(wave);
-
-        waves.push({
-            el: wave,
-            x: 0,
-            y: parseFloat(wave.style.top),
-            speed: Math.random() * 2 + 1
-        });
-    }
-}
-
-
-
 
 
 function startGame1() {
@@ -118,9 +79,8 @@ function startGame2() {
 }
 function startgame2() {
     document.getElementById('gameOverMessage').style.display = 'none';
-    winMessage.style.display = 'none'; // Hide win message
-    restartBTN.style.display = 'none';  // Hide restart button initially
-    createWaves();
+    winMessage.style.display = 'none'; 
+    restartBTN.style.display = 'none';  
     animateWaves();
     Connect(2);
 }
@@ -174,11 +134,10 @@ function animateWaves() {
 
         
         if (player.y <= 0) {
-            winMessage.style.display = 'block'; // Show win message
-            restartBTN.style.display = 'inline';  // Show restart button after winning
-            document.onkeydown = null; // Disable movement when player wins
-            return; // Stop the game
-        }
+            winMessage.style.display = 'block'; 
+            restartBTN.style.display = 'inline';  
+            document.onkeydown = null; 
+            return; 
 
         if (gameOver) {
             gameOverLogic();
@@ -223,7 +182,7 @@ function restartGame() {
     document.getElementById('winMessage').style.display = 'none'; 
     document.getElementById('restartBtn').style.display = 'none';  
 
-    createWaves();
+    
     animateWaves();
     enableMovement();
 }
