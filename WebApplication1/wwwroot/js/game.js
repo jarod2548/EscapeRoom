@@ -6,7 +6,7 @@ const winMessage = document.getElementById('winMessage');
 const restartBTN = document.getElementById('restartBtn');
 
 let waves = [];
-const waveCount = 5;
+const waveCount = 1;
 const connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
 
 function Connect(playerNumber) {
@@ -23,54 +23,66 @@ function createWaves() {
     waves.forEach(w => w.el.remove());
     waves = [];
 
+    const containerWidth = waveContainer1.offsetWidth;
+    const gapWidth = 100; // breedte van het gat
+    const gapStart = Math.floor(Math.random() * (containerWidth - gapWidth));
+
     for (let i = 0; i < waveCount; i++) {
         let wave = document.createElement('div');
         wave.classList.add('wave');
-        wave.style.left = Math.random() * 568 + 'px';
+
+        wave.style.left = '0px';
         wave.style.top = Math.random() * -200 + 'px';
+        wave.style.width = containerWidth + 'px';
+
+        // 🎯 Dynamisch CSS maken voor het gat
+        wave.style.background = `linear-gradient(to right, 
+            #3498db 0px, 
+            #3498db ${gapStart}px, 
+            transparent ${gapStart}px, 
+            transparent ${gapStart + gapWidth}px, 
+            #3498db ${gapStart + gapWidth}px, 
+            #3498db 100%)`;
+
         waveContainer1.appendChild(wave);
+
         waves.push({
             el: wave,
-            x: Math.random() * 568,
-            y: Math.random() * -200,
+            x: 0,
+            y: parseFloat(wave.style.top),
             speed: Math.random() * 2 + 1
         });
     }
 }
 
+
+
+
+
 function startGame1() {
-    document.getElementById('gameArea1').style.display = 'block';
-    document.getElementById('gameArea2').style.display = 'none';
-
     document.getElementById('gameOverMessage').style.display = 'none';
-    winMessage.style.display = 'none';
-    restartBTN.style.display = 'none';
-
+    winMessage.style.display = 'none'; // Hide win message
+    restartBTN.style.display = 'none';  // Hide restart button initially
     enableMovement();
     createWaves();
     animateWaves();
     Connect(1);
 }
-
-function startGame2() {
-    document.getElementById('gameArea1').style.display = 'none';
-    document.getElementById('gameArea2').style.display = 'block';
-
+function startgame2() {
     document.getElementById('gameOverMessage').style.display = 'none';
-    winMessage.style.display = 'none';
-    restartBTN.style.display = 'none';
-
+    winMessage.style.display = 'none'; // Hide win message
+    restartBTN.style.display = 'none';  // Hide restart button initially
+    createWaves();
+    animateWaves();
     Connect(2);
 }
-
 
 function enableMovement() {
     document.onkeydown = function (event) {
         const step = 10;
         switch (event.key.toLowerCase()) {
             case 'a': player.x -= step;
-                SendMovement(player.x, player.y);
-break;
+                SendMovement(player.x, player.y); break;
             case 'd': player.x += step;
                 SendMovement(player.x, player.y); break;
             case 'w': player.y -= step;
@@ -144,15 +156,6 @@ function gameOverLogic() {
     document.getElementById('restartBtn').style.display = 'inline';  
     document.onkeydown = null;
 }
-
-const playerClone = document.getElementById('playerClone');
-
-connection.on("ReceiveMovement", (x, y) => {
-    if (playerClone) {
-        playerClone.style.left = x + "px";
-        playerClone.style.top = y + "px";
-    }
-});
 
 function restartGame() {
     lives = 3;
