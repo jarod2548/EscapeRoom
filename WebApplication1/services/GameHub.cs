@@ -22,6 +22,13 @@ namespace WebApplication1.services
             await base.OnConnectedAsync();
         }
 
+        public Task PingServer()
+        {
+            // You can simply return a Task.CompletedTask to acknowledge the ping
+            Console.WriteLine("Ping received from client.");
+            return Task.CompletedTask;
+        }
+
         public async Task JoinGame(int number, int gameNumber)
         {
             await _gameManager.JoinGame(Context.ConnectionId, number, gameNumber);
@@ -30,7 +37,7 @@ namespace WebApplication1.services
         public async Task SendMovement(float xPos, float yPos, string gameId)
         {
             GameState currentState = _gameManager.Games[gameId];
-            await currentState.SendMovement();
+            await currentState.SendMovement(xPos, yPos);
         }
 
         public async Task ShapePressed(int shapePressed, int gameOrder, string gameId) 

@@ -1,9 +1,14 @@
 ﻿let lives = 3;
 let player = { x: 284, y: 360, width: 32, height: 32 };
 const playerElement = document.getElementById('player');
+const fakePlayer = document.getElementById('fakePlayer');
 const waveContainer1 = document.getElementById('gameArea1');
+const waveContainer2 = document.getElementById('gameArea2');
 const winMessage = document.getElementById('winMessage');
 const restartBTN = document.getElementById('restartBtn');
+
+let gameID = null;
+let playerNumber = null;
 
 let waves = [];
 const waveCount = 1;
@@ -15,8 +20,42 @@ function Connect(playerNumber) {
     });
 }
 
+
+connection.on("StartGame", function (gameId, gameNumber) {
+    console.log("playerNumber is:", playerNumber);
+    if (playerNumber === 1) {   
+        console.log("player1");
+        waveContainer1.style.display = 'block';
+        
+        enableMovement();
+    } else if (playerNumber === 2) {
+        console.log("player2");
+        waveContainer2.style.display = 'block';
+        fakePlayer.style.left = "284px";
+        fakePlayer.style.top = "360px";
+    }
+    console.log("run game logic");
+    gameID = gameId;
+    document.getElementById('gameOverMessage').style.display = 'none';
+    winMessage.style.display = 'none'; // Hide win message
+    restartBTN.style.display = 'none';  // Hide restart button initially
+    createWaves();
+    animateWaves();
+    
+});
+
+connection.on("ResponseMovement", function (xPos, yPos) {
+    if (playerNumber === 1) {
+
+    } else if (playerNumber === 2) {
+        fakePlayer.style.left = xPos + "px";
+        fakePlayer.style.top = yPos + "px";
+    }
+});
+
+
 function SendMovement(xPos, yPos) {
-    connection.invoke("SendMovement", xPos, yPos);
+    connection.invoke("SendMovement", xPos, yPos, gameID);
 }
 
 function createWaves() {
@@ -60,13 +99,22 @@ function createWaves() {
 
 
 function startGame1() {
-    document.getElementById('gameOverMessage').style.display = 'none';
-    winMessage.style.display = 'none'; // Hide win message
-    restartBTN.style.display = 'none';  // Hide restart button initially
-    enableMovement();
-    createWaves();
-    animateWaves();
-    Connect(1);
+    console.log("playerNumber is:", playerNumber);
+    if (playerNumber === null) {
+        
+        Connect(1);
+        playerNumber = 1;
+        console.log("playerNumber is:", playerNumber);
+    }    
+}
+function startGame2() {
+    console.log("playerNumber is:", playerNumber);
+    if (playerNumber === null) {
+        
+        Connect(2);
+        playerNumber = 2;
+        console.log("playerNumber is:", playerNumber);
+    }  
 }
 function startgame2() {
     document.getElementById('gameOverMessage').style.display = 'none';
