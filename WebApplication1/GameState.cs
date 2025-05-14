@@ -43,7 +43,7 @@ namespace WebApplication1
 
         public List<int> buttonToUse = new List<int>();
 
-        public List<HashSet<int>> colors = new List<HashSet<int>>();
+        public List<List<int>> colors = new List<List<int>>();
 
         Random rand = new Random();
 
@@ -73,10 +73,7 @@ namespace WebApplication1
                     int num = rand.Next(1, 5);
                     colorInts.Add(num);
                 }
-                if (!colors.Any(c => c.SetEquals(colorInts)))
-                {
-                    colors.Add(colorInts);
-                }
+
             }
         }
 
