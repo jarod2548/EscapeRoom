@@ -14,7 +14,7 @@ function Connect(playerNumber) {
 }
 
 function SendMovement() {
-
+    
 }
 
 function createWaves() {
@@ -125,6 +125,7 @@ function gameOverLogic() {
 function restartGame() {
     lives = 3;
     document.getElementById('liveContainer').innerHTML = `
+
         <img src="images/heart.png" class="life">
         <img src="images/heart.png" class="life">
         <img src="images/heart.png" class="life">
@@ -144,5 +145,5 @@ function restartGame() {
     enableMovement();
 }
 
-window.startGame = startGame;
-window.restartGame = restartGame;
+
+
