@@ -8,11 +8,11 @@ namespace WebApplication1
         private readonly IHubContext<GameHub> _hubContext;
         private readonly GameManager _gameManager;
 
-        public GameState(IHubContext<GameHub> hubContext, GameManager gameManager ,string newID, int gameNumber) 
+        public GameState(IHubContext<GameHub> hubContext, GameManager gameManager ,string gameID, int gameNumber) 
         {
             _hubContext = hubContext;
             _gameManager = gameManager;
-            ID = newID;
+            ID = gameID;
             if (gameNumber == 1)
             {
                 CreateWaveGame();
@@ -74,6 +74,11 @@ namespace WebApplication1
                 }
                 colors.Add(colorInts.ToList());
             }
+        }
+
+        public async Task SendMovement()
+        {
+
         }
         public async Task CheckLights(int BTNpressed, int gameOrder) 
         {

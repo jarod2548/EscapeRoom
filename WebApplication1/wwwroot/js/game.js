@@ -2,6 +2,8 @@
 let player = { x: 284, y: 360, width: 32, height: 32 };
 const playerElement = document.getElementById('player');
 const waveContainer1 = document.getElementById('gameArea1');
+const winMessage = document.getElementById('winMessage');
+const restartBTN = document.getElementById('restartBtn');
 
 let waves = [];
 const waveCount = 5;
@@ -13,8 +15,8 @@ function Connect(playerNumber) {
     });
 }
 
-function SendMovement() {
-
+function SendMovement(xPos, yPos) {
+    connection.invoke("SendMovement", xPos, yPos);
 }
 
 function createWaves() {
@@ -38,8 +40,8 @@ function createWaves() {
 
 function startGame1() {
     document.getElementById('gameOverMessage').style.display = 'none';
-    document.getElementById('winMessage').style.display = 'none'; // Hide win message
-    document.getElementById('restartBtn').style.display = 'none';  // Hide restart button initially
+    winMessage.style.display = 'none'; // Hide win message
+    restartBTN.style.display = 'none';  // Hide restart button initially
     enableMovement();
     createWaves();
     animateWaves();
@@ -50,10 +52,15 @@ function enableMovement() {
     document.onkeydown = function (event) {
         const step = 10;
         switch (event.key.toLowerCase()) {
-            case 'a': player.x -= step; break;
-            case 'd': player.x += step; break;
-            case 'w': player.y -= step; break;
-            case 's': player.y += step; break;
+            case 'a': player.x -= step;
+                SendMovement(player.x, player.y);
+                break;
+            case 'd': player.x += step;
+                SendMovement(player.x, player.y);                break;
+            case 'w': player.y -= step;
+                SendMovement(player.x, player.y); break;
+            case 's': player.y += step;
+                SendMovement(player.x, player.y); break;
         }
         player.x = Math.max(0, Math.min(player.x, 568));
         player.y = Math.max(0, Math.min(player.y, 368));
@@ -91,8 +98,8 @@ function animateWaves() {
 
         // Check for win condition (if the player reaches the top of the screen)
         if (player.y <= 0) {
-            document.getElementById('winMessage').style.display = 'block'; // Show win message
-            document.getElementById('restartBtn').style.display = 'inline';  // Show restart button after winning
+            winMessage.style.display = 'block'; // Show win message
+            restartBTN.style.display = 'inline';  // Show restart button after winning
             document.onkeydown = null; // Disable movement when player wins
             return; // Stop the game
         }

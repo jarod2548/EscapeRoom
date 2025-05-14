@@ -19,10 +19,10 @@ namespace WebApplication1.services
             _hubContext = hubContext;
         }
 
-        public async Task CreateGame(string player1ID, string player2ID,string newID, int gameNumber)
+        public async Task CreateGame(string player1ID, string player2ID,string gameID, int gameNumber)
         {
-            GameState newState = new GameState(_hubContext, this, newID, gameNumber);
-            Games.TryAdd(newID, newState);
+            GameState newState = new GameState(_hubContext, this, gameID, gameNumber);
+            Games.TryAdd(gameID, newState);
 
             if(gameNumber == 1)
             {
@@ -58,7 +58,7 @@ namespace WebApplication1.services
                 };
                 Sessions.TryAdd(gameID, session);
             }
-            else
+            else if (player2ID !=  null) 
             {
                 try
                 {
