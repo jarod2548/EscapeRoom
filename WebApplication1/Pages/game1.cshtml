@@ -15,15 +15,18 @@
     <button onclick="startGame1()">Start als speler 1</button>
     <button onclick="startGame2()">Start als speler 2</button>
     <div id="gameScreen">
-        <div id="gameArea1">
+        <!-- Alleen voor speler 1, actief spel -->
+        <div id="gameArea1" style="display: none;">
             <div id="player"></div>
-            <div class="wave" id="wave1"></div>
-            <div class="wave" id="wave2"></div>
         </div>
-        <div id ="gameArea2">
-            <div id="fakePlayer"></div>
+
+        <!-- Voor speler 2, alleen observatie -->
+        <div id="gameArea2" style="display: none;">
+            <div id="playerClone"></div> <!-- gesynchroniseerde speler -->
+            <!-- hier kun je ook waves laten zien -->
         </div>
-   </div>
+    </div>
+
     <div id="liveContainer">
             <img src="images/heart.png" class="life">
             <img src="images/heart.png" class="life">

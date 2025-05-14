@@ -39,14 +39,30 @@ function createWaves() {
 }
 
 function startGame1() {
+    document.getElementById('gameArea1').style.display = 'block';
+    document.getElementById('gameArea2').style.display = 'none';
+
     document.getElementById('gameOverMessage').style.display = 'none';
-    winMessage.style.display = 'none'; // Hide win message
-    restartBTN.style.display = 'none';  // Hide restart button initially
+    winMessage.style.display = 'none';
+    restartBTN.style.display = 'none';
+
     enableMovement();
     createWaves();
     animateWaves();
     Connect(1);
 }
+
+function startGame2() {
+    document.getElementById('gameArea1').style.display = 'none';
+    document.getElementById('gameArea2').style.display = 'block';
+
+    document.getElementById('gameOverMessage').style.display = 'none';
+    winMessage.style.display = 'none';
+    restartBTN.style.display = 'none';
+
+    Connect(2);
+}
+
 
 function enableMovement() {
     document.onkeydown = function (event) {
@@ -54,9 +70,9 @@ function enableMovement() {
         switch (event.key.toLowerCase()) {
             case 'a': player.x -= step;
                 SendMovement(player.x, player.y);
-                break;
+break;
             case 'd': player.x += step;
-                SendMovement(player.x, player.y);                break;
+                SendMovement(player.x, player.y); break;
             case 'w': player.y -= step;
                 SendMovement(player.x, player.y); break;
             case 's': player.y += step;
@@ -128,6 +144,15 @@ function gameOverLogic() {
     document.getElementById('restartBtn').style.display = 'inline';  
     document.onkeydown = null;
 }
+
+const playerClone = document.getElementById('playerClone');
+
+connection.on("ReceiveMovement", (x, y) => {
+    if (playerClone) {
+        playerClone.style.left = x + "px";
+        playerClone.style.top = y + "px";
+    }
+});
 
 function restartGame() {
     lives = 3;
