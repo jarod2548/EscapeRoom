@@ -5,7 +5,7 @@ const waveContainer = document.getElementById('gameArea');
 
 let waves = [];
 const waveCount = 5;
-
+const connection 
 function createWaves() {
     waves.forEach(w => w.el.remove());
     waves = [];
@@ -27,8 +27,8 @@ function createWaves() {
 
 function startGame() {
     document.getElementById('gameOverMessage').style.display = 'none';
-    document.getElementById('winMessage').style.display = 'none'; // Hide win message
-    document.getElementById('restartBtn').style.display = 'none';  // Hide restart button initially
+    document.getElementById('winMessage').style.display = 'none'; 
+    document.getElementById('restartBtn').style.display = 'none';  
     enableMovement();
     createWaves();
     animateWaves();
@@ -77,12 +77,12 @@ function animateWaves() {
             gameOver = true;
         }
 
-        // Check for win condition (if the player reaches the top of the screen)
+        
         if (player.y <= 0) {
-            document.getElementById('winMessage').style.display = 'block'; // Show win message
-            document.getElementById('restartBtn').style.display = 'inline';  // Show restart button after winning
-            document.onkeydown = null; // Disable movement when player wins
-            return; // Stop the game
+            document.getElementById('winMessage').style.display = 'block'; 
+            document.getElementById('restartBtn').style.display = 'inline';  
+            document.onkeydown = null; 
+            return; 
         }
 
         if (gameOver) {
@@ -106,7 +106,7 @@ function checkCollision(a, b) {
 
 function gameOverLogic() {
     document.getElementById('gameOverMessage').style.display = 'block';
-    document.getElementById('restartBtn').style.display = 'inline';  // Show restart button
+    document.getElementById('restartBtn').style.display = 'inline';  
     document.onkeydown = null;
 }
 
@@ -124,13 +124,12 @@ function restartGame() {
     playerElement.style.top = player.y + "px";
 
     document.getElementById('gameOverMessage').style.display = 'none';
-    document.getElementById('winMessage').style.display = 'none'; // Hide win message
-    document.getElementById('restartBtn').style.display = 'none';  // Hide restart button
+    document.getElementById('winMessage').style.display = 'none'; 
+    document.getElementById('restartBtn').style.display = 'none';  
 
     createWaves();
     animateWaves();
     enableMovement();
 }
 
-window.startGame = startGame;
-window.restartGame = restartGame;
+
