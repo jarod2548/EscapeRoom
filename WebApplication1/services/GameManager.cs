@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System.Collections.Concurrent;
+using System.Xml.XPath;
 
 namespace WebApplication1.services
 {
@@ -26,7 +27,7 @@ namespace WebApplication1.services
 
             if(gameNumber == 1)
             {
-
+                await _hubContext.Clients.Client(Connections[player1ID]).SendAsync("StartGame", gameID, gameNumber);
             }
             else
             {
@@ -79,6 +80,15 @@ namespace WebApplication1.services
             GameState currentState = Games[gameID];
             await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("Response", currentState.currentButton);
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("Response", currentState.currentButton);
+        }
+
+        public async Task SendResponseMovement(string gameID, float xPos, float yPos)
+        {
+            string playerID1 = Sessions[gameID].playerID1;
+            string playerID2 = Sessions[gameID].playerID2;
+            GameState currentState = Games[gameID];
+            await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("ResponseMovement", xPos, yPos);
+            await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("ResponseMovement", xPos, yPos);
         }
 
         public string CheckGameSessions(out string gameID, string player1ID, string player2ID)

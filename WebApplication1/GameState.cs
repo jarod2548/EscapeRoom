@@ -76,9 +76,9 @@ namespace WebApplication1
             }
         }
 
-        public async Task SendMovement()
+        public async Task SendMovement(float xPos, float yPos)
         {
-
+            await _gameManager.SendResponseMovement(ID,xPos, yPos);
         }
         public async Task CheckLights(int BTNpressed, int gameOrder) 
         {

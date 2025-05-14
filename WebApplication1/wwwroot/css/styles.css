@@ -23,6 +23,15 @@ body {
     top: 360px;
     left: 284px;
 }
+#fakePlayer {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background-image: url('../images/stickman-green.png');
+    background-size: cover;
+    top: 360px;
+    left: 284px;
+}
 
 .wave {
     position: absolute;

@@ -30,7 +30,7 @@ namespace WebApplication1.services
         public async Task SendMovement(float xPos, float yPos, string gameId)
         {
             GameState currentState = _gameManager.Games[gameId];
-            await currentState.SendMovement();
+            await currentState.SendMovement(xPos, yPos);
         }
 
         public async Task ShapePressed(int shapePressed, int gameOrder, string gameId) 

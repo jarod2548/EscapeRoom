@@ -15,12 +15,15 @@
     <button onclick="startGame1()">Start als speler 1</button>
     <button onclick="startGame2()">Start als speler 2</button>
     <div id="gameScreen">
-        <div id="gameArea1">
+        <div id="gameArea1" style="display:none;">
             <div id="player"></div>
             <div class="wave" id="wave1"></div>
             <div class="wave" id="wave2"></div>
+            <div id="fakeWave"></div>
         </div>
-        <div id ="gameArea2">
+        <div id ="gameArea2" style="display:none;">
+            <div class="wave" id="wave1"></div>
+            <div class="wave" id="wave2"></div>
             <div id="fakePlayer"></div>
         </div>
    </div>
