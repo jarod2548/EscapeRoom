@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System.Collections.Concurrent;
 
 namespace WebApplication1.services
 {
@@ -6,32 +7,42 @@ namespace WebApplication1.services
     {
         private readonly IHubContext<GameHub> _hubContext;
 
-        public Dictionary<string, GameState> Games = new();
-        public Dictionary<string, string> Connections = new();
-        public Dictionary<string, GameSession> Sessions = new();
+        public ConcurrentDictionary<string, GameState> Games = new();
+        public ConcurrentDictionary<string, string> Connections = new();
+        public ConcurrentDictionary<string, GameSession> Sessions = new();
+
+        private readonly object _connectionsLock = new object();
+        private readonly object _sessionsLock = new object();
 
         public GameManager(IHubContext<GameHub> hubContext)
         {
             _hubContext = hubContext;
         }
 
-        public async Task CreateGame(string player1ID, string player2ID,string newID)
+        public async Task CreateGame(string player1ID, string player2ID,string newID, int gameNumber)
         {
-            GameState newState = new GameState(_hubContext, this, newID);
-            Games.Add(newID, newState);
-            Console.WriteLine("error");
+            GameState newState = new GameState(_hubContext, this, newID, gameNumber);
+            Games.TryAdd(newID, newState);
 
-            await _hubContext.Clients.Client(Connections[player1ID]).SendAsync("StartGame", newState.colors, newState.buttonToUse, newState.ID, player1ID, 1);
-            await _hubContext.Clients.Client(Connections[player2ID]).SendAsync("StartGame", newState.colors, newState.buttonToUse, newState.ID, player2ID, 2);
+            if(gameNumber == 1)
+            {
+
+            }
+            else
+            {
+                await _hubContext.Clients.Client(Connections[player1ID]).SendAsync("StartGame", newState.colors, newState.buttonToUse, newState.ID, player1ID, 1);
+                await _hubContext.Clients.Client(Connections[player2ID]).SendAsync("StartGame", newState.colors, newState.buttonToUse, newState.ID, player2ID, 2);
+            }
+
+                
 
         }
 
-        public async Task JoinGame(string connectionID)
+        public async Task JoinGame(string connectionID, int playerNumber, int gameNumber)
         {
 
             string player1ID = Guid.NewGuid().ToString();
-
-            Connections.Add(player1ID, connectionID);
+            Connections.TryAdd(player1ID, connectionID);          
             string player2ID = null;
             string gameID = null;
 
@@ -45,15 +56,14 @@ namespace WebApplication1.services
                     playerID1 = player1ID,
                     playerID2 = "waiting"
                 };
-                Sessions.Add(gameID, session);
-                Console.WriteLine(Sessions);
+                Sessions.TryAdd(gameID, session);
             }
             else
             {
                 try
                 {
-                    //await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
-                    await CreateGame(player1ID, player2ID, gameID);
+                    await CreateGame(player1ID, player2ID, gameID, gameNumber);
+                        
                 }
                 catch (Exception ex)
                 {
@@ -91,9 +101,11 @@ namespace WebApplication1.services
 
         public List<string> GetPlayerIDS(string gameID) 
         {
-            List<string > ids = new List<string>();
-            ids.Add(Sessions[gameID].playerID1);
-            ids.Add(Sessions[gameID].playerID2);
+            List<string> ids = new List<string>
+            {
+                Sessions[gameID].playerID1,
+                Sessions[gameID].playerID2
+            };
             return ids;
         }
     }

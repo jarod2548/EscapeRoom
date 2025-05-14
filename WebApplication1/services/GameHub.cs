@@ -22,9 +22,14 @@ namespace WebApplication1.services
             await base.OnConnectedAsync();
         }
 
-        public async Task JoinGame(int number)
+        public async Task JoinGame(int number, int gameNumber)
         {
-            await _gameManager.JoinGame(Context.ConnectionId);
+            await _gameManager.JoinGame(Context.ConnectionId, number, gameNumber);
+        }
+
+        public async Task Movement()
+        {
+
         }
 
         public async Task ShapePressed(int shapePressed, int gameOrder, string gameId) 

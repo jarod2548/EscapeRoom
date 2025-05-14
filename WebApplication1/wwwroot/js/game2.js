@@ -23,7 +23,7 @@ const connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build(
 function Connect(playerNumber)
 {
     connection.start().then(() => {
-        connection.invoke("JoinGame", playerNumber);
+        connection.invoke("JoinGame", playerNumber, 2);
     });   
 }
 connection.on("UpdateGame", (gameState) => {
@@ -112,8 +112,8 @@ function drawDonuts(canvasElements, colorInts) {
         ctx.clearRect(0, 0, canvasElements[i].width, canvasElements[i].height);
 
         for (let i = 0; i < 4; i++) {
-            const startAngle = (i * Math.PI) / 2;
-            const endAngle = ((i + 1) * Math.PI) / 2;
+            const startAngle = ((i * Math.PI) / 2) + (Math.PI / 4);
+            const endAngle = (((i + 1) * Math.PI) / 2) + (Math.PI / 4);
 
 
             ctx.beginPath();
