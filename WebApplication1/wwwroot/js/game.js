@@ -1,10 +1,21 @@
 ﻿let lives = 3;
 let player = { x: 284, y: 360, width: 32, height: 32 };
 const playerElement = document.getElementById('player');
-const waveContainer = document.getElementById('gameArea');
+const waveContainer1 = document.getElementById('gameArea1');
 
 let waves = [];
 const waveCount = 5;
+const connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
+
+function Connect(playerNumber) {
+    connection.start().then(() => {
+        connection.invoke("JoinGame", playerNumber, 1);
+    });
+}
+
+function SendMovement() {
+
+}
 
 function createWaves() {
     waves.forEach(w => w.el.remove());
@@ -15,7 +26,7 @@ function createWaves() {
         wave.classList.add('wave');
         wave.style.left = Math.random() * 568 + 'px';
         wave.style.top = Math.random() * -200 + 'px';
-        waveContainer.appendChild(wave);
+        waveContainer1.appendChild(wave);
         waves.push({
             el: wave,
             x: Math.random() * 568,
@@ -25,13 +36,14 @@ function createWaves() {
     }
 }
 
-function startGame() {
+function startGame1() {
     document.getElementById('gameOverMessage').style.display = 'none';
     document.getElementById('winMessage').style.display = 'none'; // Hide win message
     document.getElementById('restartBtn').style.display = 'none';  // Hide restart button initially
     enableMovement();
     createWaves();
     animateWaves();
+    Connect(1);
 }
 
 function enableMovement() {
@@ -131,6 +143,3 @@ function restartGame() {
     animateWaves();
     enableMovement();
 }
-
-window.startGame = startGame;
-window.restartGame = restartGame;

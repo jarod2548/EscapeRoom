@@ -8,12 +8,20 @@ namespace WebApplication1
         private readonly IHubContext<GameHub> _hubContext;
         private readonly GameManager _gameManager;
 
-        public GameState(IHubContext<GameHub> hubContext, GameManager gameManager ,string newID) 
+        public GameState(IHubContext<GameHub> hubContext, GameManager gameManager ,string newID, int gameNumber) 
         {
             _hubContext = hubContext;
             _gameManager = gameManager;
             ID = newID;
-            CreateLightsGame();
+            if (gameNumber == 1)
+            {
+                CreateWaveGame();
+            }
+            else
+            {
+                CreateLightsGame();
+            }
+                
         }
 
         public string ID {  get; set; }
@@ -39,6 +47,10 @@ namespace WebApplication1
 
         Random rand = new Random();
 
+        public void CreateWaveGame()
+        {
+
+        }
         public void CreateLightsGame() 
         {                     
             randomInt = rand.Next(buttons.Count);
