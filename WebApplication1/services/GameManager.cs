@@ -28,6 +28,7 @@ namespace WebApplication1.services
             if(gameNumber == 1)
             {
                 await _hubContext.Clients.Client(Connections[player1ID]).SendAsync("StartGame", gameID, gameNumber);
+                await _hubContext.Clients.Client(Connections[player2ID]).SendAsync("StartGame", gameID, gameNumber);
             }
             else
             {

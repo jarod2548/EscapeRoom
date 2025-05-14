@@ -43,7 +43,7 @@ namespace WebApplication1
 
         public List<int> buttonToUse = new List<int>();
 
-        public List<List<int>> colors = new List<List<int>>();
+        public List<HashSet<int>> colors = new List<HashSet<int>>();
 
         Random rand = new Random();
 
@@ -64,7 +64,8 @@ namespace WebApplication1
 
         public void CreateColors()
         {     
-            for (int i = 0; i < 4; i++)
+
+            while(colors.Count < 4)
             {
                 HashSet<int> colorInts = new HashSet<int>();
                 while (colorInts.Count < 4)
@@ -72,7 +73,10 @@ namespace WebApplication1
                     int num = rand.Next(1, 5);
                     colorInts.Add(num);
                 }
-                colors.Add(colorInts.ToList());
+                if (!colors.Any(c => c.SetEquals(colorInts)))
+                {
+                    colors.Add(colorInts);
+                }
             }
         }
 

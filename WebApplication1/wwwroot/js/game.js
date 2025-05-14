@@ -20,13 +20,21 @@ function Connect(playerNumber) {
     });
 }
 
+
 connection.on("StartGame", function (gameId, gameNumber) {
-    if (gameNumber === 1) {   
+    console.log("playerNumber is:", playerNumber);
+    if (playerNumber === 1) {   
+        console.log("player1");
         waveContainer1.style.display = 'block';
+        
         enableMovement();
-    } else if (gameNumber === 2) {
+    } else if (playerNumber === 2) {
+        console.log("player2");
         waveContainer2.style.display = 'block';
+        fakePlayer.style.left = "284px";
+        fakePlayer.style.top = "360px";
     }
+    console.log("run game logic");
     gameID = gameId;
     document.getElementById('gameOverMessage').style.display = 'none';
     winMessage.style.display = 'none'; // Hide win message
@@ -41,7 +49,7 @@ connection.on("ResponseMovement", function (xPos, yPos) {
 
     } else if (playerNumber === 2) {
         fakePlayer.style.left = xPos + "px";
-        playerElement.style.top = yPos + "px";
+        fakePlayer.style.top = yPos + "px";
     }
 });
 
@@ -70,17 +78,21 @@ function createWaves() {
 }
 
 function startGame1() {
-
+    console.log("playerNumber is:", playerNumber);
     if (playerNumber === null) {
+        
         Connect(1);
         playerNumber = 1;
+        console.log("playerNumber is:", playerNumber);
     }    
 }
 function startGame2() {
-
+    console.log("playerNumber is:", playerNumber);
     if (playerNumber === null) {
+        
         Connect(2);
         playerNumber = 2;
+        console.log("playerNumber is:", playerNumber);
     }  
 }
 
