@@ -27,9 +27,10 @@ namespace WebApplication1.services
             await _gameManager.JoinGame(Context.ConnectionId, number, gameNumber);
         }
 
-        public async Task Movement()
+        public async Task SendMovement(float xPos, float yPos, string gameId)
         {
-
+            GameState currentState = _gameManager.Games[gameId];
+            await currentState.SendMovement();
         }
 
         public async Task ShapePressed(int shapePressed, int gameOrder, string gameId) 
