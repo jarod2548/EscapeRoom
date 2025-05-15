@@ -1,9 +1,25 @@
 ﻿let lives = 3;
-let player = { x: 284, y: 360, width: 32, height: 32 };
+const player = {
+    x: 284,
+    y: 360,
+    width: 32,
+    height: 32
+};
+
+const wave1data = {
+    height: 64,
+    width: 520,
+    x: 0,
+    y: 0
+}
+const wave2data = {
+    height: 64,
+    width: 520,
+    x: 0,
+    y: 0
+}
 const playerElement = document.getElementById('player');
-const fakePlayer = document.getElementById('fakePlayer');
 const waveContainer1 = document.getElementById('gameArea1');
-const waveContainer2 = document.getElementById('gameArea2');
 const winMessage = document.getElementById('winMessage');
 const restartBTN = document.getElementById('restartBtn');
 
@@ -32,13 +48,12 @@ connection.on("StartGame", function (gameId, gameNumber) {
     if (playerNumber === 1) {   
         console.log("player1");
         waveContainer1.style.display = 'block';
+        fakeWave.style.display = 'block';
         
         enableMovement();
     } else if (playerNumber === 2) {
         console.log("player2");
-        waveContainer2.style.display = 'block';
-        fakePlayer.style.left = "284px";
-        fakePlayer.style.top = "360px";
+        waveContainer1.style.display = 'block';
     }
     console.log("run game logic");
     gameID = gameId;
@@ -54,8 +69,8 @@ connection.on("ResponseMovement", function (xPos, yPos) {
     if (playerNumber === 1) {
 
     } else if (playerNumber === 2) {
-        fakePlayer.style.left = xPos + "px";
-        fakePlayer.style.top = yPos + "px";
+        player.y = yPos;
+        player.x = xPos;
     }
 });
 
@@ -97,64 +112,68 @@ function enableMovement() {
         const step = 10;
         switch (event.key.toLowerCase()) {
             case 'a': player.x -= step;
-                SendMovement(player.x, player.y); break;
-            case 'd': player.x += step;
-                SendMovement(player.x, player.y); break;
-            case 'w': player.y -= step;
-                SendMovement(player.x, player.y); break;
-            case 's': player.y += step;
-                SendMovement(player.x, player.y); break;
+                 break;
+            case 'd': player.x += step; break;
+            case 'w': player.y -= step; break;
+            case 's': player.y += step; break;
         }
         player.x = Math.max(0, Math.min(player.x, 568));
         player.y = Math.max(0, Math.min(player.y, 368));
-        playerElement.style.left = player.x + "px";
-        playerElement.style.top = player.y + "px";
+        
     };
 }
 
 function spawnWaves() {
-    let xSpawn = Math.floor(Math.random() * 501) - 500;
-    wave1.style.left = xSpawn + "px";
-    wave2.style.left = (xSpawn + 580) + "px";
-    wave3.style.left = xSpawn + "px";
-    wave4.style.left = (xSpawn + 580) + "px";
+    wave1data.x = Math.floor(Math.random() * 501) - 500;
+    wave2data.x = wave1data.x + 580
+    wave1.style.left = wave1data.x + "px";
+    wave2.style.left = wave2data.x + "px";
     fakeWave.style.left = "0px";
 }
 
 function animateWaves() {
     function update() {
-        let waveY = parseFloat(compute.top);
-        console.log(waveY);
-        waveY += 2;
-        wave2.style.top = waveY + "px";
-        wave1.style.top = waveY + "px";
-        fakeWave.style.top = waveY + "px";
-        wave4.style.top = waveY + "px";
-        wave3.style.top = waveY + "px";
+        wave1data.y += 2;
+        wave2data.y += 2;
+        wave2.style.top = wave2data.y + "px";
+        wave1.style.top = wave1data.y + "px";
+        fakeWave.style.top = wave1data.y + "px";
 
-        if (waveY >= 400) {
-            spawnWaves();
-            wave2.style.top = "0px";
-            wave1.style.top = "0px";
-            wave4.style.top = "0px";
-            wave3.style.top = "0px";
-            fakeWave.style.top = "0px";
+        if (wave1data.y >= 400) {
+            resetWave();
         }
         
+        collision(player, wave1data);
+        collision(player, wave2data);
+        playerElement.style.left = player.x + "px";
+        playerElement.style.top = player.y + "px";
+        SendMovement(player.x, player.y);
        requestAnimationFrame(update);
     }
 
     requestAnimationFrame(update);
 }
 
-function checkCollision(a, b) {
-    return !(
-        a.x + a.width < b.x ||
-        a.x > b.x + 32 ||
-        a.y + a.height < b.y ||
-        a.y > b.y + 32
-    );
+function resetWave() {
+    spawnWaves();
+    wave1data.y = 0;
+    wave2data.y = 0;
+    wave2.style.top = "0px";
+    wave1.style.top = "0px";
+    fakeWave.style.top = "0px";
 }
+function collision(a, b) {
+    if (a.x + (a.width / 2) > b.x &&
+        a.x  < b.x + b.width )
+    {   
+        if (a.y - a.height < b.y + (b.height / 2) &&
+        a.y + a.height > b.y - (b.height / 2)) {
+            player.y = 360;
+            resetWave();
+        }      
+    }
+}
+
 
 function gameOverLogic() {
     document.getElementById('gameOverMessage').style.display = 'block';

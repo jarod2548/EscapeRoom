@@ -32,8 +32,8 @@ namespace WebApplication1.services
             }
             else
             {
-                await _hubContext.Clients.Client(Connections[player1ID]).SendAsync("StartGame", newState.colors, newState.buttonToUse, newState.ID, player1ID, 1);
-                await _hubContext.Clients.Client(Connections[player2ID]).SendAsync("StartGame", newState.colors, newState.buttonToUse, newState.ID, player2ID, 2);
+                await _hubContext.Clients.Client(Connections[player1ID]).SendAsync("StartGame", newState.LGD, newState.ID, player1ID, 1);
+                await _hubContext.Clients.Client(Connections[player2ID]).SendAsync("StartGame", newState.LGD, newState.ID, player2ID, 2);
             }
 
                 
@@ -79,8 +79,8 @@ namespace WebApplication1.services
             string playerID1 = Sessions[gameID].playerID1;
             string playerID2 = Sessions[gameID].playerID2;
             GameState currentState = Games[gameID];
-            await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("Response", currentState.currentButton);
-            await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("Response", currentState.currentButton);
+            await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("Response", currentState.LGD.currentButton);
+            await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("Response", currentState.LGD.currentButton);
         }
 
         public async Task SendResponseMovement(string gameID, float xPos, float yPos)

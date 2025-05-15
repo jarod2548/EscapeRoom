@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System.Threading.Tasks;
 using WebApplication1.services;
 
 namespace WebApplication1
@@ -15,28 +16,32 @@ namespace WebApplication1
             ID = gameID;
             if (gameNumber == 1)
             {
+                WGD = new();
                 CreateWaveGame();
             }
             else
             {
+                LGD = new();
                 CreateLightsGame();
             }
                 
         }
+        public class WaveGameData()
+        {
+            public float xPosWave1 { get; set; }
+            public float xPosWave2 { get; set; }
+            public float yPosWave { get; set; }
+        }
 
-        public string ID {  get; set; }
+        public class LightsGameData()
+        {
+            public int currentButton { get; set; }
+            public int button1 { get; set; }
+            public int button2 { get; set; }
 
-        public float xPosWave1 {  get; set; }
-        public float xPosWave2 { get; set; }
-        public float yPosWave { get; set; }
+            public int randomInt { get; set; }
 
-        public int currentButton { get; set; }
-        public int button1 { get; set; }
-        public int button2 { get; set; }
-
-        public int randomInt { get; set; }
-
-        public List<int[]> buttons = new List<int[]>
+            public List<int[]> buttons { get; set; } = new List<int[]>
         {
             new int[]{0,1},
             new int[]{2,3},
@@ -45,32 +50,42 @@ namespace WebApplication1
             new int[]{3,1},
         };
 
-        public List<int> buttonToUse = new List<int>();
+            public List<int> buttonToUse { get; set; } = new List<int>();
 
-        public List<List<int>> colors = new List<List<int>>();
+            public List<List<int>> colors { get; set; } = new List<List<int>>();
+        }
+
+        public string ID {  get; set; }
+
+        public WaveGameData WGD { get; set; }
+
+        public LightsGameData LGD { get; set; }
+
+        
 
         Random rand = new Random();
 
-        public void CreateWaveGame()
+        public async Task CreateWaveGame()
         {
-            xPosWave1 = rand.Next(-500, 501);
-            xPosWave2 = xPosWave1 + 580;
+            WGD.xPosWave1 = rand.Next(-500, 501);
+            WGD.xPosWave2 = WGD.xPosWave1 + 580;
+            WGD.yPosWave = 0;
         }
         public void CreateLightsGame() 
         {                     
-            randomInt = rand.Next(buttons.Count);
-            button1 = buttons[randomInt][0];
-            button2 = buttons[randomInt][1];
-            currentButton = 0;
-            buttonToUse.Add(button1);
-            buttonToUse.Add(button2);
+            LGD.randomInt = rand.Next(LGD.buttons.Count);
+            LGD.button1 = LGD.buttons[LGD.randomInt][0];
+            LGD.button2 = LGD.buttons[LGD.randomInt][1];
+            LGD.currentButton = 0;
+            LGD.buttonToUse.Add(LGD.button1);
+            LGD.buttonToUse.Add(LGD.button2);
             CreateColors();
         }
 
         public void CreateColors()
         {     
 
-            while(colors.Count < 4)
+            while(LGD.colors.Count < 4)
             {
                 HashSet<int> colorInts = new HashSet<int>();
                 while (colorInts.Count < 4)
@@ -78,7 +93,10 @@ namespace WebApplication1
                     int num = rand.Next(1, 5);
                     colorInts.Add(num);
                 }
-
+                if(!LGD.colors.Any(exist => exist.SequenceEqual(colorInts)))
+                {
+                    LGD.colors.Add(colorInts.ToList());
+                }
             }
         }
 
@@ -89,10 +107,10 @@ namespace WebApplication1
         public async Task CheckLights(int BTNpressed, int gameOrder) 
         {
             Console.WriteLine("Button pressed on site");
-            if (buttonToUse[gameOrder] == BTNpressed) 
+            if (LGD.buttonToUse[gameOrder] == BTNpressed) 
             { 
                 Console.WriteLine("Correct button");
-                currentButton++;
+                LGD.currentButton++;
                 await _gameManager.SendResponse(this.ID);
                 
             }
