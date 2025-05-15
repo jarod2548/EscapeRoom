@@ -11,6 +11,7 @@ const wave1 = document.getElementById('wave1')
 const compute = window.getComputedStyle(wave1);
 const wave2 = document.getElementById('wave2')
 const compute2 = window.getComputedStyle(wave2);
+const fakeWave = document.getElementById('fakeWave');
 
 let gameID = null;
 let playerNumber = null;
@@ -112,11 +113,12 @@ function enableMovement() {
 }
 
 function spawnWaves() {
-    let xSpawn = Math.floor(Math.random() * 501) - 250;
+    let xSpawn = Math.floor(Math.random() * 501) - 500;
     wave1.style.left = xSpawn + "px";
     wave2.style.left = (xSpawn + 580) + "px";
     wave3.style.left = xSpawn + "px";
     wave4.style.left = (xSpawn + 580) + "px";
+    fakeWave.style.left = "0px";
 }
 
 function animateWaves() {
@@ -126,6 +128,7 @@ function animateWaves() {
         waveY += 2;
         wave2.style.top = waveY + "px";
         wave1.style.top = waveY + "px";
+        fakeWave.style.top = waveY + "px";
         wave4.style.top = waveY + "px";
         wave3.style.top = waveY + "px";
 
@@ -135,6 +138,7 @@ function animateWaves() {
             wave1.style.top = "0px";
             wave4.style.top = "0px";
             wave3.style.top = "0px";
+            fakeWave.style.top = "0px";
         }
         
        requestAnimationFrame(update);

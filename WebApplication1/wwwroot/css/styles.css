@@ -35,10 +35,19 @@ body {
 
 .wave {
     position: absolute;
-    width: 500px;
+    width: 520px;
     height: 64px;
     background-image: url('../images/wave.png');
     background-size: cover;
+    top: 0;
+}
+#fakeWave {
+    position: absolute;
+    width: 10000px;
+    height: 64px;
+    background-image: url('../images/wave.png');
+    background-size: cover;
+    background-color:blue;
     top: 0;
 }
 

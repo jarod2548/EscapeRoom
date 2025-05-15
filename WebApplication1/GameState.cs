@@ -26,6 +26,10 @@ namespace WebApplication1
 
         public string ID {  get; set; }
 
+        public float xPosWave1 {  get; set; }
+        public float xPosWave2 { get; set; }
+        public float yPosWave { get; set; }
+
         public int currentButton { get; set; }
         public int button1 { get; set; }
         public int button2 { get; set; }
@@ -49,7 +53,8 @@ namespace WebApplication1
 
         public void CreateWaveGame()
         {
-
+            xPosWave1 = rand.Next(-500, 501);
+            xPosWave2 = xPosWave1 + 580;
         }
         public void CreateLightsGame() 
         {                     
