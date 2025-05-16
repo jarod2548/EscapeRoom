@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.ResponseCompression;
+using WebApplication1;
 using WebApplication1.services;
 
 
@@ -7,11 +8,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton<GameManager>();
 builder.Services.AddSignalR();
 
 builder.Logging.ClearProviders(); // Clears existing logging providers
 builder.Logging.AddConsole(); // Add Console logging
 builder.Logging.AddDebug(); // Add Debug logging
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    //options.ListenAnyIP(5000); // HTTP
+    options.ListenAnyIP(7000, listenOptions => listenOptions.UseHttps()); // Optional HTTPS
+});
 
 builder.Services.AddCors(options =>
 {

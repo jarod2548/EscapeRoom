@@ -1,161 +1,220 @@
-﻿// Function to start the game by showing the game screen and enabling movement
-
-let lives = 3;
-const liveContainer = document.getElementById('liveContainer');
-
-let player =
-{
-    x: 50,
-    y:50,
-    width: 12,
-    height: 12,
+﻿let lives = 3;
+const player = {
+    x: 284,
+    y: 360,
+    width: 32,
+    height: 32
 };
 let enemy =
 {
     x: 50,
     y: 50,
     width: 12,
-    height: 12,
+        height: 12,
 };
 function startGame() {
     const gameScreen = document.getElementById('gameScreen');
     const startButton = document.getElementById('startButton');
 
-    // Show the game screen and start the game
-    if (gameScreen.style.display === 'none') {
-        gameScreen.style.display = 'block';
-        startButton.textContent = 'Restart Game';
-
-        enableMovement();
-        movingObstacle();// Enable movement when game starts
-    } else {
-        gameScreen.style.display = 'none';
-        startButton.textContent = 'Start Game';
-    }
+const wave1data = {
+    height: 64,
+    width: 520,
+    x: 0,
+    y: 0
 }
-function CheckCollisision(obj1, obj2)
-{
-    return !(obj1.x + obj1.width < obj2.x ||
-        obj1.x > obj2.x + obj2.width ||
-        obj1.y + obj1.height < obj2.y ||
-        obj1.y > obj2.y + obj2.height);
+const wave2data = {
+    height: 64,
+    width: 520,
+    x: 0,
+    y: 0
 }
+const playerElement = document.getElementById('player');
+const waveContainer1 = document.getElementById('gameArea1');
+const winMessage = document.getElementById('winMessage');
+const restartBTN = document.getElementById('restartBtn');
 
-function Update()
-{ 
-    requestAnimationFrame(Update);
-}
-requestAnimationFrame(Update);
+const wave1 = document.getElementById('wave1')
+const compute = window.getComputedStyle(wave1);
+const wave2 = document.getElementById('wave2')
+const compute2 = window.getComputedStyle(wave2);
+const fakeWave = document.getElementById('fakeWave');
 
-function movingObstacle()
-{
-    const movableObstacle = document.getElementById('moveableObstacle');
+let gameID = null;
+let playerNumber = null;
 
-    let velocity = { x: 0, y: 0 };
-    const step = 2;
-    function moveObstacle() {
-        movableObstacle.style.left = enemy.x + '%';
-        movableObstacle.style.top = enemy.y + '%';
-    }
+let waves = [];
+const waveCount = 1;
+const connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
 
-    function update1() {
-        // Update position based on velocity
-       enemy.x += velocity.x;
-        enemy.y += step;
-
-        // Prevent object from going outside the boundaries
-        if (enemy.x < 0) enemy.x = 0;
-        if (enemy.x > 95)
-            enemy.x = 95;
-        if (enemy.y < 0) enemy.y = 0;
-        if (enemy.y > 95)
-        {
-            enemy.y = 0;
-            enemy.x = Math.random() * 95;
-        } 
-
-        if (CheckCollisision(enemy, player)) {
-            enemy.y = 0;
-            enemy.x = Math.random() * 95;
-            let lastImage = liveContainer.lastElementChild;
-            lastImage.remove();
-        }
-
-        moveObstacle(); // Update the object's position on the screen
-
-        requestAnimationFrame(update1); // Call update again for the next frame
-    }
-    requestAnimationFrame(update1);
-}
-
-// Function to enable movement of the object
-function enableMovement() {
-    const movableObject = document.getElementById('movableObject');
-
-    // Velocity (how fast the object moves per frame)
-    let velocity = { x: 0, y: 0 };
-    const step = 2;  // Small step to increase frame rate responsiveness
-
-    // Function to update the object's position
-    function moveObject() {
-        movableObject.style.left = player.x + '%';
-        movableObject.style.top = player.y + '%';
-
-    }
-
-    
-
-    // Function to update game logic (key detection and movement)
-    function update() {
-        // Update position based on velocity
-        player.x += velocity.x;
-        player.y += velocity.y;
-
-        // Prevent object from going outside the boundaries
-        if (player.x < 0) player.x = 0;
-        if (player.x > 95) player.x = 95;
-        if (player.y < 0) player.y = 0;
-        if (player.y > 95) player.y = 95;
-
-        if (CheckCollisision(player, enemy)) {
-            lives -= 1;
-        }
-
-        moveObject(); // Update the object's position on the screen
-
-        requestAnimationFrame(update); // Call update again for the next frame
-    }
-
-    // Start the update loop using requestAnimationFrame
-    requestAnimationFrame(update);
-
-    // Listen for keydown events
-    document.addEventListener('keydown', function (event) {
-        // Prevent default browser behavior (e.g., scrolling) for arrow keys
-        if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
-            event.preventDefault();  // Prevent page scrolling and other browser default actions
-        }
-
-        // Adjust velocity based on the key pressed
-        switch (event.key) {
-            case 'ArrowLeft':
-                velocity.x = -step; // Move left
-                zetLichtAanOfUit("on");
-                break;
-            case 'ArrowRight':
-                velocity.x = step; // Move right
-                zetLichtAanOfUit("off");
-                break;
-            case 'ArrowUp':
-                velocity.y = -step; // Move up
-                break;
-            case 'ArrowDown':
-                velocity.y = step; // Move down
-                break;
-            default:
-                return; // Ignore other keys
-        }
+function Connect(playerNumber) {
+    connection.start().then(() => {
+        connection.invoke("JoinGame", playerNumber, 1);
     });
+}
+
+
+connection.on("StartGame", function (gameId, gameNumber) {
+    console.log("playerNumber is:", playerNumber);
+    if (playerNumber === 1) {   
+        console.log("player1");
+        waveContainer1.style.display = 'block';
+        fakeWave.style.display = 'block';
+        
+        enableMovement();
+    } else if (playerNumber === 2) {
+        console.log("player2");
+        waveContainer1.style.display = 'block';
+    }
+    console.log("run game logic");
+    gameID = gameId;
+    document.getElementById('gameOverMessage').style.display = 'none';
+    winMessage.style.display = 'none'; // Hide win message
+    restartBTN.style.display = 'none';  // Hide restart button initially
+    spawnWaves();
+    animateWaves();
+    
+});
+
+connection.on("ResponseMovement", function (xPos, yPos) {
+    if (playerNumber === 1) {
+
+    } else if (playerNumber === 2) {
+        player.y = yPos;
+        player.x = xPos;
+    }
+});
+
+
+function SendMovement(xPos, yPos) {
+    connection.invoke("SendMovement", xPos, yPos, gameID);
+}
+
+
+function startGame1() {
+    console.log("playerNumber is:", playerNumber);
+    if (playerNumber === null) {
+        
+        Connect(1);
+        playerNumber = 1;
+        console.log("playerNumber is:", playerNumber);
+    }    
+}
+function startGame2() {
+    console.log("playerNumber is:", playerNumber);
+    if (playerNumber === null) {
+
+        Connect(2);
+        playerNumber = 2;
+        console.log("playerNumber is:", playerNumber);
+    }
+}
+function startgame2() {
+    document.getElementById('gameOverMessage').style.display = 'none';
+    winMessage.style.display = 'none'; // Hide win message
+    restartBTN.style.display = 'none';  // Hide restart button initially
+    spawnWaves();
+    animateWaves();
+    Connect(2);
+}
+
+function enableMovement() {
+    document.onkeydown = function (event) {
+        const step = 10;
+        switch (event.key.toLowerCase()) {
+            case 'a': player.x -= step;
+                 break;
+            case 'd': player.x += step; break;
+            case 'w': player.y -= step; break;
+            case 's': player.y += step; break;
+        }
+        player.x = Math.max(0, Math.min(player.x, 568));
+        player.y = Math.max(0, Math.min(player.y, 368));
+        
+    };
+}
+
+function spawnWaves() {
+    wave1data.x = Math.floor(Math.random() * 501) - 500;
+    wave2data.x = wave1data.x + 580
+    wave1.style.left = wave1data.x + "px";
+    wave2.style.left = wave2data.x + "px";
+    fakeWave.style.left = "0px";
+}
+
+function animateWaves() {
+    function update() {
+        wave1data.y += 2;
+        wave2data.y += 2;
+        wave2.style.top = wave2data.y + "px";
+        wave1.style.top = wave1data.y + "px";
+        fakeWave.style.top = wave1data.y + "px";
+
+        if (wave1data.y >= 400) {
+            resetWave();
+        }
+        
+        collision(player, wave1data);
+        collision(player, wave2data);
+        playerElement.style.left = player.x + "px";
+        playerElement.style.top = player.y + "px";
+        SendMovement(player.x, player.y);
+       requestAnimationFrame(update);
+    }
+
+    requestAnimationFrame(update);
+}
+
+function resetWave() {
+    spawnWaves();
+    wave1data.y = 0;
+    wave2data.y = 0;
+    wave2.style.top = "0px";
+    wave1.style.top = "0px";
+    fakeWave.style.top = "0px";
+}
+function collision(a, b) {
+    if (a.x + (a.width / 2) > b.x &&
+        a.x  < b.x + b.width )
+    {   
+        if (a.y - a.height < b.y + (b.height / 2) &&
+        a.y + a.height > b.y - (b.height / 2)) {
+            player.y = 360;
+            resetWave();
+        }      
+    }
+}
+
+
+function gameOverLogic() {
+    document.getElementById('gameOverMessage').style.display = 'block';
+    document.getElementById('restartBtn').style.display = 'inline';  
+    document.onkeydown = null;
+}
+
+function restartGame() {
+    lives = 3;
+    document.getElementById('liveContainer').innerHTML = `
+
+        <img src="images/heart.png" class="life">
+        <img src="images/heart.png" class="life">
+        <img src="images/heart.png" class="life">
+    `;
+
+    player.x = 284;
+    player.y = 360;
+    playerElement.style.left = player.x + "px";
+    playerElement.style.top = player.y + "px";
+
+    document.getElementById('gameOverMessage').style.display = 'none';
+    document.getElementById('winMessage').style.display = 'none'; 
+    document.getElementById('restartBtn').style.display = 'none';  
+
+    spawnWaves();
+    animateWaves();
+    enableMovement();
+}
+
+
 
 
     // Listen for keyup events to stop movement

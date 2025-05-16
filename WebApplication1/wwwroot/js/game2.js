@@ -10,6 +10,9 @@ const lights4 = document.querySelectorAll('.lightVersion4');
 
 let gameID = null;
 let playerID = null;
+let buttonsToUse;
+
+let gameOrder = 0;
 
 const colors = ['#ff6347', '#4682b4', '#32cd32', '#ffb6c1', '#ff1493', '#8a2be2'];
 
@@ -20,16 +23,17 @@ const connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build(
 function Connect(playerNumber)
 {
     connection.start().then(() => {
-        connection.invoke("JoinGame", playerNumber);
+        connection.invoke("JoinGame", playerNumber, 2);
     });   
 }
 connection.on("UpdateGame", (gameState) => {
 
 });
-connection.on("StartGame", function (list, stateID, playerID, playerNumber) {
-    console.log("Received gamedata : ", list);
-    console.log("game ID :", stateID)
-    console.log("player ID: ", playerID)
+connection.on("StartGame", function (LGD, stateID, playerID, playerNumber) {
+    console.log("Received gamedata : ", LGD.colors);
+    console.log("game ID :", stateID);
+    console.log("player ID: ", playerID);
+    buttonsToUse = LGD.buttonToUse;
     gameScreen.style.display = 'block';
     if (playerNumber === 1) {  
         gameArea1.style.display = 'grid';
@@ -39,8 +43,15 @@ connection.on("StartGame", function (list, stateID, playerID, playerNumber) {
     }
     
     gameID = stateID; 
-    drawLights(list);
+    drawLights(LGD.colors);
 });
+
+connection.on("Response", function (currentButton) {
+    console.log("currentButton :", currentButton);
+    gameOrder = currentButton;
+});
+
+
 function sendMove(move) {
     connection.invoke("MakeMove", gameId, move);
 }
@@ -51,26 +62,25 @@ function player1Start()
 {
     if (gameScreen.style.display === 'none')
     {
+        player1BTN.style.display = 'none';
+        player2BTN.style.display = 'none';
         Connect(1);
     }
 }
 function player2Start() {
     if (gameScreen.style.display === 'none') {
+        player1BTN.style.display = 'none';
+        player2BTN.style.display = 'none';
         Connect(2);
     }
 }
 
 function shapePressed(shapeNumber)
 {
-    connection.invoke("ShapePressed", shapeNumber, gameID);
+    connection.invoke("ShapePressed", shapeNumber, gameOrder, gameID);
 }
 function drawLights(colorInts)
 {
-    for (let i = 0; i < colorInts.length; i++)
-    {
-
-    }
-
     drawDonuts(lights1, colorInts[0]);
     drawDonuts(lights2, colorInts[1]);
     drawDonuts(lights3, colorInts[2]);
@@ -106,8 +116,8 @@ function drawDonuts(canvasElements, colorInts) {
         ctx.clearRect(0, 0, canvasElements[i].width, canvasElements[i].height);
 
         for (let i = 0; i < 4; i++) {
-            const startAngle = (i * Math.PI) / 2;
-            const endAngle = ((i + 1) * Math.PI) / 2;
+            const startAngle = ((i * Math.PI) / 2) + (Math.PI / 4);
+            const endAngle = (((i + 1) * Math.PI) / 2) + (Math.PI / 4);
 
 
             ctx.beginPath();
