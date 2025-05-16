@@ -6,18 +6,17 @@ namespace WebApplication1
 {
     public class GameState
     {
-        private readonly IHubContext<GameHub> _hubContext;
+
         private readonly GameManager _gameManager;
 
-        public GameState(IHubContext<GameHub> hubContext, GameManager gameManager ,string gameID, int gameNumber) 
+        public GameState(GameManager gameManager ,string gameID, int gameNumber) 
         {
-            _hubContext = hubContext;
             _gameManager = gameManager;
             ID = gameID;
             if (gameNumber == 1)
             {
                 WGD = new();
-                CreateWaveGame();
+                SpawnWaves();
             }
             else
             {
@@ -60,16 +59,23 @@ namespace WebApplication1
         public WaveGameData WGD { get; set; }
 
         public LightsGameData LGD { get; set; }
+        public required string playerID1 { get; set; }
+        public required string playerID2 { get; set; }
 
-        
+
+
+
+
 
         Random rand = new Random();
 
-        public async Task CreateWaveGame()
+        public async Task SpawnWaves()
         {
-            WGD.xPosWave1 = rand.Next(-500, 501);
+            WGD.xPosWave1 = rand.Next(-500, 0);
             WGD.xPosWave2 = WGD.xPosWave1 + 580;
             WGD.yPosWave = 0;
+
+            await _gameManager.SpawnWaves(this.ID);
         }
         public void CreateLightsGame() 
         {                     
