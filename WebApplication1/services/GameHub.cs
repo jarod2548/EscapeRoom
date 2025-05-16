@@ -29,15 +29,21 @@ namespace WebApplication1.services
             return Task.CompletedTask;
         }
 
-        public async Task JoinGame(int number, int gameNumber)
+        public async Task JoinGame(int playerNumber, int gameNumber)
         {
-            await _gameManager.JoinGame(Context.ConnectionId, number, gameNumber);
+            Console.WriteLine("start");
+            await _gameManager.JoinGame(Context.ConnectionId, playerNumber, gameNumber);
         }
 
         public async Task SendMovement(float xPos, float yPos, string gameId)
         {
             GameState currentState = _gameManager.Games[gameId];
             await currentState.SendMovement(xPos, yPos);
+        }
+        public async Task RespawnWave(string gameId)
+        {
+            GameState currentState = _gameManager.Games[gameId];
+            await currentState.SpawnWaves();
         }
 
         public async Task ShapePressed(int shapePressed, int gameOrder, string gameId) 

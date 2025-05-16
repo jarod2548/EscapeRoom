@@ -12,8 +12,8 @@
 </head>
 <body>
     <h1>Escape Room - Game 1</h1>
-    <button onclick="startGame1()">Start als speler 1</button>
-    <button onclick="startGame2()">Start als speler 2</button>
+    <button id="start1BTN" onclick="startGame1()">Start als speler 1</button>
+    <button id="start2BTN" onclick="startGame2()">Start als speler 2</button>
     <div id="gameScreen">
         <div id="gameArea1" style="display:none;">
             <div id="player"></div>
@@ -34,7 +34,6 @@
 
             <h2> You Win!</h2>
         </div>
-    <button id="restartBtn" onclick="restartGame()" style="display: none;">Restart</button>
     <script src="@("https://cdn.jsdelivr.net/npm/@microsoft/signalr@8.0.7/dist/browser/signalr.min.js")"></script>
     <script src="~/js/game.js"></script>
 </body>

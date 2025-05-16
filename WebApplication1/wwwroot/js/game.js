@@ -31,7 +31,9 @@ const wave2data = {
 const playerElement = document.getElementById('player');
 const waveContainer1 = document.getElementById('gameArea1');
 const winMessage = document.getElementById('winMessage');
-const restartBTN = document.getElementById('restartBtn');
+
+const start1BTN = document.getElementById('start1BTN');
+const start2BTN = document.getElementById('start2BTN');
 
 const wave1 = document.getElementById('wave1')
 const compute = window.getComputedStyle(wave1);
@@ -42,8 +44,6 @@ const fakeWave = document.getElementById('fakeWave');
 let gameID = null;
 let playerNumber = null;
 
-let waves = [];
-const waveCount = 1;
 const connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
 
 function Connect(playerNumber) {
@@ -51,6 +51,10 @@ function Connect(playerNumber) {
         connection.invoke("JoinGame", playerNumber, 1);
     });
 }
+connection.onclose(error => {
+    console.error('WebSocket closed:', error);
+    // Attempt reconnection or show error to user
+});
 
 
 connection.on("StartGame", function (gameId, gameNumber) {
@@ -65,14 +69,15 @@ connection.on("StartGame", function (gameId, gameNumber) {
         console.log("player2");
         waveContainer1.style.display = 'block';
     }
-    console.log("run game logic");
     gameID = gameId;
     document.getElementById('gameOverMessage').style.display = 'none';
     winMessage.style.display = 'none'; // Hide win message
-    restartBTN.style.display = 'none';  // Hide restart button initially
-    spawnWaves();
     animateWaves();
     
+});
+
+connection.on('SpawnWaves', function (WGD) {
+    spawnWaves(WGD.xPosWave1, WGD.xPosWave2, WGD.yPosWave);
 });
 
 connection.on("ResponseMovement", function (xPos, yPos) {
@@ -86,35 +91,39 @@ connection.on("ResponseMovement", function (xPos, yPos) {
 
 
 function SendMovement(xPos, yPos) {
-    connection.invoke("SendMovement", xPos, yPos, gameID);
+    if (connection.state === signalR.HubConnectionState.Connected) {
+        connection.invoke("SendMovement", xPos, yPos, gameID);
+    } else {
+        console.log("No connection");
+    }
+    
 }
+function respawnWave() {
+    if (connection.state === signalR.HubConnectionState.Connected) {
+        connection.invoke('RespawnWave', gameID).catch();
+    } else {
+        console.log("No connection");
+    }
 
+}
 
 function startGame1() {
     console.log("playerNumber is:", playerNumber);
     if (playerNumber === null) {
-        
+        start1BTN.style.display = 'none';
+        start2BTN.style.display = 'none';
         Connect(1);
         playerNumber = 1;
-        console.log("playerNumber is:", playerNumber);
     }    
 }
 function startGame2() {
     console.log("playerNumber is:", playerNumber);
     if (playerNumber === null) {
-
+        start1BTN.style.display = 'none';
+        start2BTN.style.display = 'none';
         Connect(2);
         playerNumber = 2;
-        console.log("playerNumber is:", playerNumber);
     }
-}
-function startgame2() {
-    document.getElementById('gameOverMessage').style.display = 'none';
-    winMessage.style.display = 'none'; // Hide win message
-    restartBTN.style.display = 'none';  // Hide restart button initially
-    spawnWaves();
-    animateWaves();
-    Connect(2);
 }
 
 function enableMovement() {
@@ -133,13 +142,19 @@ function enableMovement() {
     };
 }
 
-function spawnWaves() {
-    wave1data.x = Math.floor(Math.random() * 501) - 500;
-    wave2data.x = wave1data.x + 580
+function spawnWaves(xPos1, xPos2, yPos) {
+    wave1data.x = xPos1;
+    wave2data.x = xPos2;
     wave1.style.left = wave1data.x + "px";
     wave2.style.left = wave2data.x + "px";
     fakeWave.style.left = "0px";
+    wave1data.y = yPos;
+    wave2data.y = yPos;
+    wave2.style.top = wave1data.y + "px";
+    wave1.style.top = wave1data.y + "px";
+    fakeWave.style.top = wave1data.y + "px";
 }
+
 
 function animateWaves() {
     function update() {
@@ -150,7 +165,7 @@ function animateWaves() {
         fakeWave.style.top = wave1data.y + "px";
 
         if (wave1data.y >= 400) {
-            resetWave();
+            respawnWave();
         }
         
         collision(player, wave1data);
@@ -163,15 +178,6 @@ function animateWaves() {
 
     requestAnimationFrame(update);
 }
-
-function resetWave() {
-    spawnWaves();
-    wave1data.y = 0;
-    wave2data.y = 0;
-    wave2.style.top = "0px";
-    wave1.style.top = "0px";
-    fakeWave.style.top = "0px";
-}
 function collision(a, b) {
     if (a.x + (a.width / 2) > b.x &&
         a.x  < b.x + b.width )
@@ -179,40 +185,13 @@ function collision(a, b) {
         if (a.y - a.height < b.y + (b.height / 2) &&
         a.y + a.height > b.y - (b.height / 2)) {
             player.y = 360;
-            resetWave();
+            respawnWave();
         }      
     }
 }
 
 
-function gameOverLogic() {
-    document.getElementById('gameOverMessage').style.display = 'block';
-    document.getElementById('restartBtn').style.display = 'inline';  
-    document.onkeydown = null;
-}
 
-function restartGame() {
-    lives = 3;
-    document.getElementById('liveContainer').innerHTML = `
-
-        <img src="images/heart.png" class="life">
-        <img src="images/heart.png" class="life">
-        <img src="images/heart.png" class="life">
-    `;
-
-    player.x = 284;
-    player.y = 360;
-    playerElement.style.left = player.x + "px";
-    playerElement.style.top = player.y + "px";
-
-    document.getElementById('gameOverMessage').style.display = 'none';
-    document.getElementById('winMessage').style.display = 'none'; 
-    document.getElementById('restartBtn').style.display = 'none';  
-
-    spawnWaves();
-    animateWaves();
-    enableMovement();
-}
 
 
 
