@@ -15,7 +15,7 @@ let enemy =
     x: 50,
     y: 50,
     width: 12,
-        height: 12,
+    height: 12,
 };
 function startGame() {
     const gameScreen = document.getElementById('gameScreen');
@@ -140,9 +140,11 @@ function enableMovement() {
         switch (event.key) {
             case 'ArrowLeft':
                 velocity.x = -step; // Move left
+                zetLichtAanOfUit("on");
                 break;
             case 'ArrowRight':
                 velocity.x = step; // Move right
+                zetLichtAanOfUit("off");
                 break;
             case 'ArrowUp':
                 velocity.y = -step; // Move up
@@ -155,6 +157,7 @@ function enableMovement() {
         }
     });
 
+
     // Listen for keyup events to stop movement
     document.addEventListener('keyup', function (event) {
         // Stop movement when the key is released
@@ -166,3 +169,62 @@ function enableMovement() {
         }
     });
 }
+
+async function zetLichtAanOfUit(state) {
+    try {
+        console.log(`Probeer licht ${state} te zetten`); // Debug log
+        const response = await fetch('http://169.254.193.164:5000/light', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ state: state })
+        });
+
+        console.log('Response status:', response.status); // Debug log
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Fout bij Raspberry Pi:", errorText);
+        } else {
+            const result = await response.json();
+            console.log("Success:", result.status);
+        }
+    } catch (error) {
+        console.error("Kan geen verbinding maken met Raspberry Pi:", error);
+    }
+}
+
+// WebSocket verbinding maken met de Raspberry Pi
+const ws = new WebSocket("ws://169.254.193.164:6789");
+
+ws.onopen = () => {
+    console.log("WebSocket verbonden met Raspberry Pi.");
+    // Test het licht wanneer de verbinding tot stand komt
+    zetLichtAanOfUit("on"); // Test of het licht aangaat
+};
+
+ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    console.log("GPIO-knoppenstatus ontvangen:", data);
+
+    if (data.button2) {
+        console.log("Knop 1 is ingedrukt");
+        player.x -= 1;
+        zetLichtAanOfUit("on"); // Zet licht aan bij knop 1
+    }
+    if (data.button1) {
+        console.log("Knop 2 is ingedrukt");
+        player.x += 1;
+        zetLichtAanOfUit("off"); // Zet licht uit bij knop 2
+    }
+};
+
+ws.onerror = (error) => {
+    console.error("WebSocket-fout:", error);
+};
+
+ws.onclose = () => {
+    console.warn("WebSocket is gesloten");
+};
