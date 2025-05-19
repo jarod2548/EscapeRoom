@@ -63,8 +63,9 @@ namespace WebApplication1.services
         public async Task CreateGame(string player1ID, string player2ID,int gameNumber, GameState newState)
         {
             Games.TryAdd(newState.ID, newState);
+            newState.StartTimer();
 
-            if(gameNumber == 1)
+            if (gameNumber == 1)
             {
                 await _hubContext.Clients.Client(Connections[player1ID]).SendAsync("StartGame", newState.ID, gameNumber);
                 await _hubContext.Clients.Client(Connections[player2ID]).SendAsync("StartGame", newState.ID, gameNumber);
@@ -171,6 +172,17 @@ namespace WebApplication1.services
                 Games[gameID].playerID2
             };
             return ids;
+        }
+
+        public async Task SendTime(string gameID)
+        {
+            string playerID1 = Games[gameID].playerID1;
+            string playerID2 = Games[gameID].playerID2;
+
+            GameState currentState = Games[gameID];
+
+            await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("Timer", currentState.timeSinceStart);
+            await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("Timer", currentState.timeSinceStart);
         }
     }
 }

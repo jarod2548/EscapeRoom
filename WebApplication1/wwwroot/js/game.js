@@ -25,6 +25,7 @@ const waveContainer1 = document.getElementById('gameArea1');
 
 const start1BTN = document.getElementById('start1BTN');
 const start2BTN = document.getElementById('start2BTN');
+const timerBox = document.getElementById('timerBox');
 
 const wave1 = document.getElementById('wave1')
 const compute = window.getComputedStyle(wave1);
@@ -83,6 +84,14 @@ connection.on("ResponseMovement", function (xPos, yPos) {
         player.y = yPos;
         player.x = xPos;
     }
+});
+
+connection.on('Timer', function (time) {
+    let hours = Math.floor(time / 3600);
+    let minutes = Math.floor((time % 3600) / 60);
+    let seconds = time % 60;
+
+    timerBox.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
 });
 
 

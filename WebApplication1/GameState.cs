@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Timers;
 using WebApplication1.services;
 
 namespace WebApplication1
@@ -13,17 +14,33 @@ namespace WebApplication1
         {
             _gameManager = gameManager;
             ID = gameID;
+            timer = new System.Timers.Timer(1000);
+            timer.Elapsed += UpdateTimer;
+            
             if (gameNumber == 1)
             {
                 WGD = new();
+                
                 SpawnWaves();
             }
             else
             {
                 LGD = new();
+                
                 CreateLightsGame();
             }
                 
+        }
+        public void StartTimer()
+        {
+            timer.Start();
+        }
+        private void UpdateTimer(object sender, ElapsedEventArgs e)
+        {
+            timeSinceStart++;
+            _gameManager.SendTime(ID);
+            Console.WriteLine(timeSinceStart.ToString());
+            Debug.WriteLine(timeSinceStart.ToString());
         }
         public class WaveGameData()
         {
@@ -55,6 +72,9 @@ namespace WebApplication1
         }
 
         public string ID {  get; set; }
+
+        public int timeSinceStart { get; set; }
+        private System.Timers.Timer timer {  get; set; }
 
         public WaveGameData WGD { get; set; }
 
