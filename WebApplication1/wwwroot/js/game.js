@@ -22,7 +22,6 @@ const wave2data = {
 }
 const playerElement = document.getElementById('player');
 const waveContainer1 = document.getElementById('gameArea1');
-const winMessage = document.getElementById('winMessage');
 
 const start1BTN = document.getElementById('start1BTN');
 const start2BTN = document.getElementById('start2BTN');
@@ -71,8 +70,6 @@ connection.on("StartGame", function (gameId, gameNumber) {
         waveContainer1.style.display = 'block';
     }
     gameID = gameId;
-    document.getElementById('gameOverMessage').style.display = 'none';
-    winMessage.style.display = 'none'; // Hide win message
     animateWaves();
     
 });
