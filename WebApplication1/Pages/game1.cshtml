@@ -1,45 +1,26 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Escape Room Demo</title>
     <link rel="stylesheet" href="~/css/styles.css">
 </head>
 <body>
     <h1>Escape Room - Game 1</h1>
-    <button onclick="startGame1()">Start als speler 1</button>
-    <button onclick="startGame2()">Start als speler 2</button>
+    <button id="start1BTN" onclick="startGame1()">Start als speler 1</button>
+    <button id="start2BTN" onclick="startGame2()">Start als speler 2</button>
     <div id="gameScreen">
         <div id="gameArea1" style="display:none;">
             <div id="player"></div>
             <div class="wave" id="wave1"></div>
             <div class="wave" id="wave2"></div>
-            <div id="fakeWave"></div>
-        </div>
-        <div id ="gameArea2" style="display:none;">
-            <div class="wave" id="wave3"></div>
-            <div class="wave" id="wave4"></div>
-            <div id="fakePlayer"></div>
+            <div id="fakeWave" style="display:none;"></div>
         </div>
    </div>
-    <div id="liveContainer">
-            <img src="images/heart.png" class="life">
-            <img src="images/heart.png" class="life">
-            <img src="images/heart.png" class="life">
-        </div>
-        <div id="gameOverMessage" style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:48px; color:red; font-weight:bold; z-index:999;">
-            Game Over
-        </div>
-        <div id="winMessage" style="display: none;  position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:48px; color:green; font-weight:bold; z-index:999;">
 
-            <h2> You Win!</h2>
-        </div>
-    <button id="restartBtn" onclick="restartGame()" style="display: none;">Restart</button>
     <script src="@("https://cdn.jsdelivr.net/npm/@microsoft/signalr@8.0.7/dist/browser/signalr.min.js")"></script>
     <script src="~/js/game.js"></script>
 </body>

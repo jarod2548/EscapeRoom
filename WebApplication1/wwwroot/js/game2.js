@@ -26,14 +26,19 @@ function Connect(playerNumber)
         connection.invoke("JoinGame", playerNumber, 2);
     });   
 }
-connection.on("UpdateGame", (gameState) => {
-
+connection.onclose(error => {
+    player1BTN.style.display = 'inline-block';
+    player2BTN.style.display = 'inline-block';
+    gameArea1.style.display = 'none';
+    gameArea2.style.display = 'none';
+    gameScreen.style.display = 'none'
 });
-connection.on("StartGame", function (list, buttons, stateID, playerID, playerNumber) {
-    console.log("Received gamedata : ", list);
+
+connection.on("StartGame", function (LGD, stateID, playerID, playerNumber) {
+    console.log("Received gamedata : ", LGD.colors);
     console.log("game ID :", stateID);
     console.log("player ID: ", playerID);
-    buttonsToUse = buttons;
+    buttonsToUse = LGD.buttonToUse;
     gameScreen.style.display = 'block';
     if (playerNumber === 1) {  
         gameArea1.style.display = 'grid';
@@ -43,7 +48,7 @@ connection.on("StartGame", function (list, buttons, stateID, playerID, playerNum
     }
     
     gameID = stateID; 
-    drawLights(list);
+    drawLights(LGD.colors);
 });
 
 connection.on("Response", function (currentButton) {
@@ -62,11 +67,15 @@ function player1Start()
 {
     if (gameScreen.style.display === 'none')
     {
+        player1BTN.style.display = 'none';
+        player2BTN.style.display = 'none';
         Connect(1);
     }
 }
 function player2Start() {
     if (gameScreen.style.display === 'none') {
+        player1BTN.style.display = 'none';
+        player2BTN.style.display = 'none';
         Connect(2);
     }
 }
