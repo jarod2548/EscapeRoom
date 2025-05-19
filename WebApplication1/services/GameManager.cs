@@ -19,7 +19,47 @@ namespace WebApplication1.services
         {
             _hubContext = hubContext;
         }
+        public async Task OnDisconnected(string connectionID)
+        {
+            foreach(KeyValuePair<string,string> connection in Connections)
+            {
+                if (connection.Value.Equals(connectionID))
+                {
+                    string playerID = connection.Key;
+                    await GetGameToRemove(playerID);
+                    await RemoveConnection(playerID);
+                    return;
+                }
+            }
+        }
+        public async Task GetGameToRemove(string playerID)
+        {
+            string gameID = null;
+            foreach(KeyValuePair<string,GameState> game in Games)
+            {     
+                if (game.Value.playerID1 == playerID || game.Value.playerID2 == playerID)
+                {
+                    gameID = game.Key;
+                    string otherPlayerID = (game.Value.playerID1 == playerID)
+                        ? game.Value.playerID2
+                        : game.Value.playerID1;
 
+                    await RemoveGame(gameID);
+                    await RemoveConnection(otherPlayerID);
+                    return;
+                }
+            }
+        }
+        public Task RemoveGame(string gameID)
+        {
+            Games.TryRemove(gameID, out _);
+            return Task.CompletedTask;
+        }
+        public Task RemoveConnection(string playerID)
+        {
+            Connections.TryRemove(playerID, out _);
+            return Task.CompletedTask;
+        }
         public async Task CreateGame(string player1ID, string player2ID,int gameNumber, GameState newState)
         {
             Games.TryAdd(newState.ID, newState);
@@ -47,19 +87,16 @@ namespace WebApplication1.services
 
         public async Task JoinGame(string connectionID, int playerNumber, int gameNumber)
         {
-            string player1ID = null;
-            string player2ID = null;
-            string gameID = null;
             if (playerNumber == 1)
             {
-                player1ID = Guid.NewGuid().ToString();
+                string player1ID = Guid.NewGuid().ToString();
                 Connections.TryAdd(player1ID, connectionID);
                 await CheckGameStates1(player1ID, gameNumber);
             }
             
             else if(playerNumber == 2)
             {
-                player2ID = Guid.NewGuid().ToString();
+                string player2ID = Guid.NewGuid().ToString();
                 Connections.TryAdd(player2ID, connectionID);
                 await CheckGameStates2(player2ID, gameNumber);
             }

@@ -1,13 +1,11 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Escape Room Demo</title>
     <link rel="stylesheet" href="~/css/styles.css">
 </head>
 <body>
@@ -22,18 +20,7 @@
             <div id="fakeWave" style="display:none;"></div>
         </div>
    </div>
-    <div id="liveContainer">
-            <img src="images/heart.png" class="life">
-            <img src="images/heart.png" class="life">
-            <img src="images/heart.png" class="life">
-        </div>
-        <div id="gameOverMessage" style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:48px; color:red; font-weight:bold; z-index:999;">
-            Game Over
-        </div>
-        <div id="winMessage" style="display: none;  position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:48px; color:green; font-weight:bold; z-index:999;">
 
-            <h2> You Win!</h2>
-        </div>
     <script src="@("https://cdn.jsdelivr.net/npm/@microsoft/signalr@8.0.7/dist/browser/signalr.min.js")"></script>
     <script src="~/js/game.js"></script>
 </body>

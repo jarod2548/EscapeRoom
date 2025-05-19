@@ -1,4 +1,6 @@
-﻿let lives = 3;
+﻿
+
+let lives = 3;
 const player = {
     x: 284,
     y: 360,
@@ -32,7 +34,8 @@ const compute2 = window.getComputedStyle(wave2);
 const fakeWave = document.getElementById('fakeWave');
 
 let gameID = null;
-let playerNumber = null;
+let waveAnimationID = null;
+let playerNumber = 0;
 
 const connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
 
@@ -42,7 +45,13 @@ function Connect(playerNumber) {
     });
 }
 connection.onclose(error => {
-    console.error('WebSocket closed:', error);
+    connection.stop();
+    cancelAnimationFrame(waveAnimationID);
+    waveContainer1.style.display = 'none';
+    fakeWave.style.display = 'none';
+    start1BTN.style.setProperty('display', 'inline-block', 'important');
+    start2BTN.style.setProperty('display', 'inline-block', 'important');
+    playerNumber = 0;
     // Attempt reconnection or show error to user
 });
 
@@ -99,7 +108,7 @@ function respawnWave() {
 
 function startGame1() {
     console.log("playerNumber is:", playerNumber);
-    if (playerNumber === null) {
+    if (playerNumber === 0) {
         start1BTN.style.display = 'none';
         start2BTN.style.display = 'none';
         Connect(1);
@@ -108,7 +117,7 @@ function startGame1() {
 }
 function startGame2() {
     console.log("playerNumber is:", playerNumber);
-    if (playerNumber === null) {
+    if (playerNumber === 0) {
         start1BTN.style.display = 'none';
         start2BTN.style.display = 'none';
         Connect(2);
@@ -163,10 +172,10 @@ function animateWaves() {
         playerElement.style.left = player.x + "px";
         playerElement.style.top = player.y + "px";
         SendMovement(player.x, player.y);
-       requestAnimationFrame(update);
+       waveAnimationID = requestAnimationFrame(update);
     }
 
-    requestAnimationFrame(update);
+    waveAnimationID = requestAnimationFrame(update);
 }
 function collision(a, b) {
     if (a.x + (a.width / 2) > b.x &&

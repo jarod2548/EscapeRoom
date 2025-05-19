@@ -26,9 +26,14 @@ function Connect(playerNumber)
         connection.invoke("JoinGame", playerNumber, 2);
     });   
 }
-connection.on("UpdateGame", (gameState) => {
-
+connection.onclose(error => {
+    player1BTN.style.display = 'inline-block';
+    player2BTN.style.display = 'inline-block';
+    gameArea1.style.display = 'none';
+    gameArea2.style.display = 'none';
+    gameScreen.style.display = 'none'
 });
+
 connection.on("StartGame", function (LGD, stateID, playerID, playerNumber) {
     console.log("Received gamedata : ", LGD.colors);
     console.log("game ID :", stateID);

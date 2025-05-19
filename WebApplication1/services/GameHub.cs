@@ -21,6 +21,13 @@ namespace WebApplication1.services
 
             await base.OnConnectedAsync();
         }
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            string connectionID = Context.ConnectionId;
+            
+
+            await base.OnDisconnectedAsync(exception);
+        }
 
         public Task PingServer()
         {
