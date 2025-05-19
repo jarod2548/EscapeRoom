@@ -14,6 +14,10 @@ namespace WebApplication1.services
             _gameManager = gameManager;
         }
 
+        public async Task SendWaveSpawn(int xSpawn, string gameId)
+        {
+            await Clients.Group(gameId).SendAsync("ReceiveWaveSpawn", xSpawn);
+        }
         public override async Task OnConnectedAsync() 
         { 
             string connectionID = Context.ConnectionId;

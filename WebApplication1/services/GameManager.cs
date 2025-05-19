@@ -82,6 +82,19 @@ namespace WebApplication1.services
             await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("Response", currentState.currentButton);
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("Response", currentState.currentButton);
         }
+        public async Task SendWaveUpdate(string gameID)
+        {
+            if (!Games.ContainsKey(gameID)) return;
+
+            var gameState = Games[gameID];
+            var waves = gameState.Waves;
+
+            string playerID1 = Sessions[gameID].playerID1;
+            string playerID2 = Sessions[gameID].playerID2;
+
+            await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("UpdateWaves", waves);
+            await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("UpdateWaves", waves);
+        }
 
         public async Task SendResponseMovement(string gameID, float xPos, float yPos)
         {
