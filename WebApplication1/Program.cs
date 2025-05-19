@@ -17,7 +17,7 @@ builder.Logging.AddDebug(); // Add Debug logging
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    //options.ListenAnyIP(5000); // HTTP
+    options.ListenAnyIP(5000); // HTTP
     options.ListenAnyIP(7000, listenOptions => listenOptions.UseHttps()); // Optional HTTPS
 });
 
@@ -47,7 +47,7 @@ if (!app.Environment.IsDevelopment())
 app.MapHub<GameHub>("/gamehub");
 app.UseCors("AllowGameClients");
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 Console.WriteLine($"hello");  // Log the file path
 app.UseStaticFiles();
 
