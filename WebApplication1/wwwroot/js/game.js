@@ -7,6 +7,11 @@ const waveContainer2 = document.getElementById('gameArea2');
 const winMessage = document.getElementById('winMessage');
 const restartBTN = document.getElementById('restartBtn');
 
+const wave1 = document.getElementById('wave1')
+const compute = window.getComputedStyle(wave1);
+const wave2 = document.getElementById('wave2')
+const compute2 = window.getComputedStyle(wave2);
+
 let gameID = null;
 let playerNumber = null;
 
@@ -37,9 +42,9 @@ connection.on("StartGame", function (gameId, gameNumber) {
     console.log("run game logic");
     gameID = gameId;
     document.getElementById('gameOverMessage').style.display = 'none';
-    winMessage.style.display = 'none'; 
-    restartBTN.style.display = 'none';  
-    
+    winMessage.style.display = 'none'; // Hide win message
+    restartBTN.style.display = 'none';  // Hide restart button initially
+    spawnWaves();
     animateWaves();
     
 });
@@ -71,16 +76,17 @@ function startGame1() {
 function startGame2() {
     console.log("playerNumber is:", playerNumber);
     if (playerNumber === null) {
-        
+
         Connect(2);
         playerNumber = 2;
         console.log("playerNumber is:", playerNumber);
-    }  
+    }
 }
 function startgame2() {
     document.getElementById('gameOverMessage').style.display = 'none';
-    winMessage.style.display = 'none'; 
-    restartBTN.style.display = 'none';  
+    winMessage.style.display = 'none'; // Hide win message
+    restartBTN.style.display = 'none';  // Hide restart button initially
+    spawnWaves();
     animateWaves();
     Connect(2);
 }
@@ -105,48 +111,36 @@ function enableMovement() {
     };
 }
 
+function spawnWaves() {
+    let xSpawn = Math.floor(Math.random() * 501) - 250;
+    wave1.style.left = xSpawn + "px";
+    wave2.style.left = (xSpawn + 580) + "px";
+    wave3.style.left = xSpawn + "px";
+    wave4.style.left = (xSpawn + 580) + "px";
+}
+
 function animateWaves() {
     function update() {
-        let gameOver = false;
+        let waveY = parseFloat(compute.top);
+        console.log(waveY);
+        waveY += 2;
+        wave2.style.top = waveY + "px";
+        wave1.style.top = waveY + "px";
+        wave4.style.top = waveY + "px";
+        wave3.style.top = waveY + "px";
 
-        waves.forEach(wave => {
-            wave.y += wave.speed;
-            if (wave.y > 400) {
-                wave.y = 0;
-                wave.x = Math.random() * 568;
-            }
-
-            wave.el.style.left = wave.x + "px";
-            wave.el.style.top = wave.y + "px";
-
-            if (checkCollision(player, wave)) {
-                wave.y = 0;
-                wave.x = Math.random() * 568;
-                const heart = document.querySelector('#liveContainer .life:last-child');
-                if (heart) heart.remove();
-                lives--;
-            }
-        });
-
-        if (lives <= 0) {
-            gameOver = true;
+        if (waveY >= 400) {
+            spawnWaves();
+            wave2.style.top = "0px";
+            wave1.style.top = "0px";
+            wave4.style.top = "0px";
+            wave3.style.top = "0px";
         }
-
         
-        if (player.y <= 0) {
-            winMessage.style.display = 'block'; 
-            restartBTN.style.display = 'inline';  
-            document.onkeydown = null; 
-            return; 
-
-        if (gameOver) {
-            gameOverLogic();
-        } else {
-            requestAnimationFrame(update);
-        }
+       requestAnimationFrame(update);
     }
 
-    update();
+    requestAnimationFrame(update);
 }
 
 function checkCollision(a, b) {
@@ -182,7 +176,7 @@ function restartGame() {
     document.getElementById('winMessage').style.display = 'none'; 
     document.getElementById('restartBtn').style.display = 'none';  
 
-    
+    spawnWaves();
     animateWaves();
     enableMovement();
 }

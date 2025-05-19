@@ -35,7 +35,7 @@ body {
 
 .wave {
     position: absolute;
-    width: 64px;
+    width: 500px;
     height: 64px;
     background-image: url('../images/wave.png');
     background-size: cover;
