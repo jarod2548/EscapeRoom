@@ -6,10 +6,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="~/css/styles.css">
+    <link rel="stylesheet" href="~/css/styles.css?v=1">
 </head>
 <body>
-    <h1>Escape Room - Game 1</h1>
+    <div id="timerBox">
+        00:00:00
+    </div>
+    <div id="timePenalty" style="visibility:hidden;">
+        +10 seconden
+    </div>
+
+    <h1>Game 1</h1>
     <button id="start1BTN" onclick="startGame1()">Start als speler 1</button>
     <button id="start2BTN" onclick="startGame2()">Start als speler 2</button>
     <div id="gameScreen">
@@ -18,60 +25,56 @@
             <div class="wave" id="wave1"></div>
             <div class="wave" id="wave2"></div>
             <div id="fakeWave" style="display:none;"></div>
-
         </div>
-        <div id="gameArea2" style="display:none;">
-            <canvas id="light1" class="grid-item lightVersion1"></canvas>
-            <img src="~/images/cirkel.png" id="shape1" class="grid-item shapeVersion1"></img>
 
-            <canvas id="light2" class="grid-item lightVersion2"></canvas>
-            <img src="~/images/driehoek.png" id="shape2" class="grid-item shapeVersion2"></img>
+         <div id="gameArea2" style="display:none;">
+                <canvas id="light1" class="grid-item lightVersion1"></canvas>
+                <img src="~/images/cirkel.png" id="shape1" class="grid-item shapeVersion1"></img>
 
-            <canvas id="light3" class="grid-item lightVersion3"></canvas>
-            <img src="~/images/vierkant.png" id="shape3" class="grid-item shapeVersion3"></img>
+                <canvas id="light2" class="grid-item lightVersion2"></canvas>
+                <img src="~/images/driehoek.png" id="shape2" class="grid-item shapeVersion2"></img>
 
-            <canvas id="light4" class="grid-item lightVersion1"></canvas>
-            <img src="~/images/cirkel.png" id="shape4" class="grid-item shapeVersion1"></img>
+                <canvas id="light3" class="grid-item lightVersion3"></canvas>
+                <img src="~/images/vierkant.png" id="shape3" class="grid-item shapeVersion3"></img>
 
-            <canvas id="light5" class="grid-item lightVersion4"></canvas>
-            <img src="~/images/Letter M.png" id="shape5" class="grid-item shapeVersion4"></img>
+                <canvas id="light4" class="grid-item lightVersion1"></canvas>
+                <img src="~/images/cirkel.png" id="shape4" class="grid-item shapeVersion1"></img>
 
-            <canvas id="light6" class="grid-item lightVersion3"></canvas>
-            <img src="~/images/vierkant.png" id="shape6" class="grid-item shapeVersion3"></img>
+                <canvas id="light5" class="grid-item lightVersion4"></canvas>
+                <img src="~/images/Letter M.png" id="shape5" class="grid-item shapeVersion4"></img>
 
-            <canvas id="light7" class="grid-item lightVersion4"></canvas>
-            <img src="~/images/Letter M.png" id="shape7" class="grid-item shapeVersion4"></img>
+                <canvas id="light6" class="grid-item lightVersion3"></canvas>
+                <img src="~/images/vierkant.png" id="shape6" class="grid-item shapeVersion3"></img>
 
-            <canvas id="light8" class="grid-item lightVersion2"></canvas>
-            <img src="~/images/driehoek.png" id="shape8" class="grid-item shapeVersion2"></img>
+                <canvas id="light7" class="grid-item lightVersion4"></canvas>
+                <img src="~/images/Letter M.png" id="shape7" class="grid-item shapeVersion4"></img>
 
-            <canvas id="light9" class="grid-item lightVersion4"></canvas>
-            <img src="~/images/Letter M.png" id="shape9" class="grid-item shapeVersion4"></img>
+                <canvas id="light8" class="grid-item lightVersion2"></canvas>
+                <img src="~/images/driehoek.png" id="shape8" class="grid-item shapeVersion2"></img>
 
-            <canvas id="light10" class="grid-item lightVersion3"></canvas>
-            <img src="~/images/vierkant.png" id="shape10" class="grid-item shapeVersion3"></img>
+                <canvas id="light9" class="grid-item lightVersion4"></canvas>
+                <img src="~/images/Letter M.png" id="shape9" class="grid-item shapeVersion4"></img>
 
-        </div>
-        <div id="gameArea3" style="display:none;">
-            <button type="button" onclick="shapePressed(0)">
-                <img src="~/images/cirkel.png" />
-            </button>
-            <button type="button" onclick="shapePressed(1)">
-                <img src="~/images/vierkant.png" />
-            </button>
-            <button type="button" onclick="shapePressed(2)">
-                <img src="~/images/driehoek.png" />
-            </button>
-            <button type="button" onclick="shapePressed(3)">
-                <img src="~/images/Letter M.png" />
-            </button>
-        </div>
+                <canvas id="light10" class="grid-item lightVersion3"></canvas>
+                <img src="~/images/vierkant.png" id="shape10" class="grid-item shapeVersion3"></img>
+
+            </div>
+            <div id="gameArea3" style="display:none;">
+                <button type="button"  onclick="shapePressed(0)">
+                    <img src ="~/images/cirkel.png" />
+                </button>
+                <button type="button" onclick="shapePressed(1)">
+                    <img src ="~/images/vierkant.png" />
+                </button>
+                <button type="button" onclick="shapePressed(2)">
+                    <img src ="~/images/driehoek.png" />
+                </button>
+                <button type="button" onclick="shapePressed(3)">
+                    <img src ="~/images/Letter M.png" />
+                </button>
+            </div>
    </div>
 
-    <div id="victoryMessage" style="display: none; position: absolute; top: 100px; left: 50%; transform: translateX(-50%); text-align: center; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px gray;">
-        <h2>🎉 Level 1 Completed!</h2>
-        <button id="nextGameBTN">Next Game</button>
-    </div>
 
     <script src="@("https://cdn.jsdelivr.net/npm/@microsoft/signalr@8.0.7/dist/browser/signalr.min.js")"></script>
    

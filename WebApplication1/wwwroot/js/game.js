@@ -23,11 +23,18 @@ const wave2data = {
     x: 0,
     y: 0
 }
+
+let lastTime = 0;
+const fps = 60;  
+const interval = 1000 / fps;
+
 const playerElement = document.getElementById('player');
 const waveContainer1 = document.getElementById('gameArea1');
 
 const start1BTN = document.getElementById('start1BTN');
 const start2BTN = document.getElementById('start2BTN');
+const timerBox = document.getElementById('timerBox');
+const timePenalty = document.getElementById('timePenalty');
 
 const wave1 = document.getElementById('wave1')
 const compute = window.getComputedStyle(wave1);
@@ -35,9 +42,11 @@ const wave2 = document.getElementById('wave2')
 const compute2 = window.getComputedStyle(wave2);
 const fakeWave = document.getElementById('fakeWave');
 
-let gameID = null;
-let waveAnimationID = null;
 let playerNumber = 0;
+let gameID = null;
+
+let waveAnimationID = null;
+let timerID = null;
 
 window.connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
 
@@ -68,7 +77,6 @@ window.connection.on("StartGame", function (gameId, gameNumber) {
         fakeWave.style.display = 'block';
         enableMovement();
     } else if (playerNumber === 2) {
-        console.log("player2");
         waveContainer1.style.display = 'block';
         fakeplayer.style.left = "284px";
         fakeplayer.style.top = "360";
@@ -97,6 +105,19 @@ window.connection.on("ResponseMovement", function (xPos, yPos) {
     }
 });
 
+connection.on('Timer', function (time) {
+    Timer(time);
+});
+
+connection.on('TimerError', function (time) {
+    Timer(time);
+    ShowTimePenalty();
+});
+
+function Timer(time) {
+    let hours = Math.floor(time / 3600);
+    let minutes = Math.floor((time % 3600) / 60);
+    let seconds = time % 60;
 function startGame2() {
     console.log("playerNumber is:", playerNumber);
     if (playerNumber === 0) {
@@ -124,6 +145,19 @@ window.connection.on("StartNextLevel", function (gameId, playerNumber
         console.error("Kon game2 niet starten: startfunctie niet gevonden.");
     }
 });
+
+    timerBox.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+}
+
+function ShowTimePenalty() {
+    if (timerID) {
+        clearTimeout(timerID);
+    }
+    timePenalty.style.visibility = "visible";
+    timerID = setTimeout(function () {
+        timePenalty.style.visibility = "hidden";
+    }, 1000);
+}
 
 function SendMovement(xPos, yPos) {
     if (window.connection.state === signalR.HubConnectionState.Connected) {
@@ -183,6 +217,13 @@ function spawnWaves(xPos1, xPos2, yPos) {
 
 
 function animateWaves() {
+    function update(timestamp) {
+        if (timestamp - lastTime >= interval) {
+            wave1data.y += 2;
+            wave2data.y += 2;
+            wave2.style.top = wave2data.y + "px";
+            wave1.style.top = wave1data.y + "px";
+            fakeWave.style.top = wave1data.y + "px";
     function update() {
         if (gameOver) return;
         wave1data.y += 0.5;
@@ -191,6 +232,19 @@ function animateWaves() {
         wave1.style.top = wave1data.y + "px";
         fakeWave.style.top = wave1data.y + "px";
 
+            if (wave1data.y >= 400) {
+                respawnWave();
+            }
+
+            collision(player, wave1data);
+            collision(player, wave2data);
+            playerElement.style.left = player.x + "px";
+            playerElement.style.top = player.y + "px";
+            SendMovement(player.x, player.y);
+            
+            lastTime = timestamp;
+        } 
+       waveAnimationID = requestAnimationFrame(update);
         if (wave1data.y >= 400) {
             respawnWave();
         }
@@ -220,6 +274,8 @@ function animateWaves() {
 }
 function collision(a, b) {
     if (a.x + (a.width / 2) > b.x &&
+        a.x  < b.x + b.width && playerNumber === 1)
+    {   
         a.x < b.x + b.width) {
         if (a.y - a.height < b.y + (b.height / 2) &&
             a.y + a.height > b.y - (b.height / 2)) {

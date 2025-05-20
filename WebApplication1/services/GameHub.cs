@@ -46,7 +46,7 @@ namespace WebApplication1.services
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             string connectionID = Context.ConnectionId;
-            
+            await _gameManager.OnDisconnected(connectionID);
 
             await base.OnDisconnectedAsync(exception);
         }
@@ -62,6 +62,10 @@ namespace WebApplication1.services
         {
             Console.WriteLine("start");
             await _gameManager.JoinGame(Context.ConnectionId, playerNumber, gameNumber);
+        }
+        public async Task IncreaseTimer(string gameID)
+        {
+            await _gameManager.IncreaseTimer(gameID);
         }
 
         public async Task SendMovement(float xPos, float yPos, string gameId)

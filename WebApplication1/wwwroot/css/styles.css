@@ -11,7 +11,7 @@ body {
     width: 600px;
     height: 400px;
     margin: 20px auto;
-    background-color: #e8d47e;
+    background-color: #fa82e4;
     border: 2px solid #333;
     overflow: hidden;
 }
@@ -51,17 +51,16 @@ body {
     position: absolute;
     width: 520px;
     height: 64px;
-    background-image: url('../images/wave.png');
-    background-size: cover;
+    background-image: url('../images/newwave.png');
+    background-size: contain;
     top: 0;
 }
 #fakeWave {
     position: absolute;
     width: 10000px;
     height: 64px;
-    background-image: url('../images/wave.png');
-    background-size: cover;
-    background-color:blue;
+    background-image: url('../images/newwave.png');
+    background-size:contain;
     top: 0;
 }
 
@@ -69,4 +68,7 @@ body {
 .life {
     width: 20px;
     height: 20px;
+}
+#timePenalty{
+    background-color:red;
 }
