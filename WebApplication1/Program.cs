@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.ResponseCompression;
 using WebApplication1;
 using WebApplication1.services;
-
+using System.Data.SQLite; //deze wordt niet gebuikt, maar is later nodig voor de Database
 
 var builder = WebApplication.CreateBuilder(args);
 
