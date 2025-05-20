@@ -111,7 +111,7 @@ window.connection.on("StartNextLevel", function (gameId, playerNumber
     console.log("StartNextLevel ontvangen");
     gameOver = true;
     cancelAnimationFrame(waveAnimationID);
-
+    nextGameBTN.style.display = 'none';
     waveContainer1.style.display = 'none';
     fakeWave.style.display = 'none';
     victoryMessage.style.display = 'none';
@@ -122,6 +122,12 @@ window.connection.on("StartNextLevel", function (gameId, playerNumber
     } else if (playerNumber === 2) {
         window.player2Start();
     }
+});
+
+window.connection.on("SendLevel1Complete", function () {
+    gameOver = true;
+    cancelAnimationFrame(waveAnimationID);
+    nextGameBTN.style.display = 'block';
 });
 
 function Timer(time) {
@@ -228,10 +234,11 @@ function animateWaves() {
             SendMovement(player.x, player.y);
 
             if (player.y <= 10) {
-                gameOver = true;
-                cancelAnimationFrame(waveAnimationID);
-
-                victoryMessage.style.display = 'block';
+                
+                if (playerNumber === 1) {
+                    console.log("sending message");
+                    window.connection.invoke('Level1Complete', gameID);
+                }
 
                 return;
             }
@@ -241,10 +248,8 @@ function animateWaves() {
         if (!gameOver) {
             waveAnimationID = requestAnimationFrame(update);
             console.log(gameOver);
-        }
-        
+        }    
     }
-
     waveAnimationID = requestAnimationFrame(update);
 }
 function collision(a, b) {

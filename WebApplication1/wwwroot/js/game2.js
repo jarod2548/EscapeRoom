@@ -31,9 +31,6 @@ window.connection.onclose(error => {
 
 
 window.connection.on("StartGame2", function (LGD) {
-    //console.log("Received gamedata : ", LGD.colors);
-    //console.log("game ID :", stateID);
-    //console.log("player ID: ", playerID);
     buttonsToUse = LGD.buttonToUse;
     gameScreen.style.display = 'block';
     if (window.playerNumber === 1) {  

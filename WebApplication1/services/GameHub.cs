@@ -81,5 +81,10 @@ namespace WebApplication1.services
             GameState currentState = _gameManager.Games[gameId];
             await currentState.CheckLights(shapePressed, gameOrder);
         }
+
+        public async Task Level1Complete(string gameID)
+        {
+            _gameManager.Level1Complete(gameID);
+        }
     }
 }
