@@ -15,12 +15,12 @@ namespace WebApplication1
             ID = gameID;
             if (gameNumber == 1)
             {
-                WGD = new();
+                WGD = new WaveGameData();
                 SpawnWaves();
             }
             else
             {
-                LGD = new();
+                LGD = new LightsGameData();
                 CreateLightsGame();
             }
                 

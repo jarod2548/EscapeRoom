@@ -8,7 +8,7 @@ const lights2 = document.querySelectorAll('.lightVersion2');
 const lights3 = document.querySelectorAll('.lightVersion3');
 const lights4 = document.querySelectorAll('.lightVersion4');
 
-let gameID = null;
+
 let playerID = null;
 let buttonsToUse;
 
@@ -16,17 +16,10 @@ let gameOrder = 0;
 
 const colors = ['#ff6347', '#4682b4', '#32cd32', '#ffb6c1', '#ff1493', '#8a2be2'];
 
-//.withURL(*our server domain*)
-const connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
 
 //functie gemaakt met AI
-function Connect(playerNumber)
-{
-    connection.start().then(() => {
-        connection.invoke("JoinGame", playerNumber, 2);
-    });   
-}
-connection.onclose(error => {
+
+window.connection.onclose(error => {
     player1BTN.style.display = 'inline-block';
     player2BTN.style.display = 'inline-block';
     gameArea1.style.display = 'none';
@@ -34,7 +27,10 @@ connection.onclose(error => {
     gameScreen.style.display = 'none'
 });
 
-connection.on("StartGame", function (LGD, stateID, playerID, playerNumber) {
+
+
+
+window.connection.on("StartGame2", function (LGD, stateID, playerID, playerNumber) {
     console.log("Received gamedata : ", LGD.colors);
     console.log("game ID :", stateID);
     console.log("player ID: ", playerID);
@@ -51,20 +47,21 @@ connection.on("StartGame", function (LGD, stateID, playerID, playerNumber) {
     drawLights(LGD.colors);
 });
 
-connection.on("Response", function (currentButton) {
+window.connection.on("Response", function (currentButton) {
     console.log("currentButton :", currentButton);
     gameOrder = currentButton;
 });
 
 
 function sendMove(move) {
-    connection.invoke("MakeMove", gameId, move);
+    window.connection.invoke("MakeMove", gameId, move);
 }
 
 
 
-function player1Start()
+window.player1Start = function()
 {
+    console.log("game 2: player 1 start");
     if (gameScreen.style.display === 'none')
     {
         player1BTN.style.display = 'none';
@@ -72,7 +69,9 @@ function player1Start()
         Connect(1);
     }
 }
-function player2Start() {
+window.player2Start = function() {
+
+    console.log("game 2: player 2 start");
     if (gameScreen.style.display === 'none') {
         player1BTN.style.display = 'none';
         player2BTN.style.display = 'none';
@@ -104,7 +103,8 @@ function getRandomColors(colorsInts)
     return selectedColors;
 }
 //functie gemaakt met AI
-function drawDonuts(canvasElements, colorInts) {
+function drawDonuts(canvasElements, colorInts)
+{
     let colors = getRandomColors(colorInts);
     for (let i = 0; i < canvasElements.length; i++)
     {
@@ -134,5 +134,6 @@ function drawDonuts(canvasElements, colorInts) {
             ctx.fillStyle = colors[i];
             ctx.fill();
     }   
-    }
+        
+
 }

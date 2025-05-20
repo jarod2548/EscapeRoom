@@ -13,6 +13,24 @@ namespace WebApplication1.services
         {
             _gameManager = gameManager;
         }
+        public async Task PlayerReachedTop(string gameId, int playerNumber)
+        {
+            Console.WriteLine($"Speler {playerNumber} heeft de bovenkant bereikt in game {gameId}");
+            await Clients.Group(gameId).SendAsync("PlayerWon", playerNumber);
+        }
+
+        public async Task NextLevel(string gameId, int playerNumber)
+        {
+            // Logica om level te starten of speler naar volgend level te sturen
+            Console.WriteLine($"Player {playerNumber} in game {gameId} wil naar next level");
+            GameState state = _gameManager.Games[gameId];
+
+            await Clients.Client(_gameManager.Connections[state.playerID2]).SendAsync("StartNextLevel", gameId, 2);
+            await Clients.Client(_gameManager.Connections[state.playerID1]).SendAsync("StartNextLevel", gameId, 1);
+
+            // Bijvoorbeeld:
+            //await Clients.Group(gameId).SendAsync("StartNextLevel", gameId, playerNumber);
+        }
 
         public async Task SendWaveSpawn(int xSpawn, string gameId)
         {
