@@ -31,6 +31,7 @@ const waveContainer1 = document.getElementById('gameArea1');
 const start1BTN = document.getElementById('start1BTN');
 const start2BTN = document.getElementById('start2BTN');
 const timerBox = document.getElementById('timerBox');
+const timePenalty = document.getElementById('timePenalty');
 
 const wave1 = document.getElementById('wave1')
 const compute = window.getComputedStyle(wave1);
@@ -38,9 +39,12 @@ const wave2 = document.getElementById('wave2')
 const compute2 = window.getComputedStyle(wave2);
 const fakeWave = document.getElementById('fakeWave');
 
-let gameID = null;
-let waveAnimationID = null;
 let playerNumber = 0;
+let gameID = null;
+
+let waveAnimationID = null;
+let timerID = null;
+
 
 const connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
 
@@ -89,17 +93,31 @@ connection.on("ResponseMovement", function (xPos, yPos) {
 });
 
 connection.on('Timer', function (time) {
+    Timer(time);
+});
+
+connection.on('TimerError', function (time) {
+    Timer(time);
+    ShowTimePenalty();
+});
+
+function Timer(time) {
     let hours = Math.floor(time / 3600);
     let minutes = Math.floor((time % 3600) / 60);
     let seconds = time % 60;
 
     timerBox.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
-});
+}
 
-connection.on('TimerError', function () {
-
-});
-
+function ShowTimePenalty() {
+    if (timerID) {
+        clearTimeout(timerID);
+    }
+    timePenalty.style.visibility = "visible";
+    timerID = setTimeout(function () {
+        timePenalty.style.visibility = "hidden";
+    }, 1000);
+}
 
 function SendMovement(xPos, yPos) {
     if (connection.state === signalR.HubConnectionState.Connected) {

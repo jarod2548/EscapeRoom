@@ -206,8 +206,8 @@ namespace WebApplication1.services
             string playerID1 = gameState.playerID1;
             string playerID2 = gameState.playerID2;
 
-            await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("Timer", gameState.timeSinceStart);
-            await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("Timer", gameState.timeSinceStart);
+            await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("TimerError", gameState.timeSinceStart);
+            await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("TimerError", gameState.timeSinceStart);
         }
     }
 }

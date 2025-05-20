@@ -57,6 +57,7 @@ namespace WebApplication1
             {
                 timeSinceStart += 10;
             }     
+            _gameManager.TimeError(this);
         }
         public class WaveGameData()
         {
