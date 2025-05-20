@@ -132,7 +132,7 @@ namespace WebApplication1.services
             await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("Response", currentState.LGD.currentButton);
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("Response", currentState.LGD.currentButton);
         }
-
+       
         public async Task SendResponseMovement(string gameID, float xPos, float yPos)
         {
             string playerID1 = Games[gameID].playerID1;
@@ -193,15 +193,21 @@ namespace WebApplication1.services
             return ids;
         }
 
-        public async Task SendTime(string gameID)
+        public async Task SendTime(GameState currentState)
         {
-            string playerID1 = Games[gameID].playerID1;
-            string playerID2 = Games[gameID].playerID2;
-
-            GameState currentState = Games[gameID];
+            string playerID1 = currentState.playerID1;
+            string playerID2 = currentState.playerID2;
 
             await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("Timer", currentState.timeSinceStart);
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("Timer", currentState.timeSinceStart);
+        }
+        public async Task TimeError(GameState gameState)
+        {
+            string playerID1 = gameState.playerID1;
+            string playerID2 = gameState.playerID2;
+
+            await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("TimerError", gameState.timeSinceStart);
+            await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("TimerError", gameState.timeSinceStart);
         }
     }
 }
