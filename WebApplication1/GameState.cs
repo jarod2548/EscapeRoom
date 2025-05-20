@@ -9,6 +9,7 @@ namespace WebApplication1
     {
 
         private readonly GameManager _gameManager;
+        private object timeLock = new object();
 
         public GameState(GameManager gameManager ,string gameID, int gameNumber) 
         {
@@ -23,11 +24,16 @@ namespace WebApplication1
                 
                 SpawnWaves();
             }
-            else
+            else if (gameNumber == 2) 
             {
                 LGD = new();
                 
                 CreateLightsGame();
+            }
+            else
+            {
+                CGD = new();
+                CreateConnectionGamedata();
             }
                 
         }
@@ -37,10 +43,21 @@ namespace WebApplication1
         }
         private void UpdateTimer(object sender, ElapsedEventArgs e)
         {
-            timeSinceStart++;
+            lock(timeLock)
+            {
+                timeSinceStart++;
+            }    
             _gameManager.SendTime(ID);
             Console.WriteLine(timeSinceStart.ToString());
             Debug.WriteLine(timeSinceStart.ToString());
+        }
+        public void IncreaseTimer()
+        {
+            lock (timeLock)
+            {
+                timeSinceStart += 10;
+            }
+            
         }
         public class WaveGameData()
         {
@@ -58,17 +75,23 @@ namespace WebApplication1
             public int randomInt { get; set; }
 
             public List<int[]> buttons { get; set; } = new List<int[]>
-        {
-            new int[]{0,1},
-            new int[]{2,3},
-            new int[]{1,2},
-            new int[]{0,3},
-            new int[]{3,1},
-        };
+            {
+                new int[]{0,1},
+                new int[]{2,3},
+                new int[]{1,2},
+                new int[]{0,3},
+                new int[]{3,1},
+            };
 
             public List<int> buttonToUse { get; set; } = new List<int>();
 
             public List<List<int>> colors { get; set; } = new List<List<int>>();
+        }
+        public class ConnectionGamedata()
+        {
+            public List<int> uniquePictureInts = new List<int>();
+
+
         }
 
         public string ID {  get; set; }
@@ -79,6 +102,7 @@ namespace WebApplication1
         public WaveGameData WGD { get; set; }
 
         public LightsGameData LGD { get; set; }
+        public ConnectionGamedata CGD { get; set; }
         public required string playerID1 { get; set; }
         public required string playerID2 { get; set; }
 
@@ -125,6 +149,15 @@ namespace WebApplication1
                 }
             }
         }
+        public void CreateConnectionGamedata()
+        {
+            HashSet<int> ints = new HashSet<int>();
+            while(ints.Count < 3)
+            {
+                ints.Add(rand.Next(0, 3));
+            }
+            CGD.uniquePictureInts = ints.ToList();
+        }
 
         public async Task SendMovement(float xPos, float yPos)
         {
@@ -145,6 +178,9 @@ namespace WebApplication1
                 Console.WriteLine("Wrong button");
             }
         }
-
+        public async Task StopTimer()
+        {
+            timer.Stop();
+        }
     }
 }

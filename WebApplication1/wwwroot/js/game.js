@@ -57,15 +57,12 @@ connection.onclose(error => {
 
 
 connection.on("StartGame", function (gameId, gameNumber) {
-    console.log("playerNumber is:", playerNumber);
     if (playerNumber === 1) {   
-        console.log("player1");
         waveContainer1.style.display = 'block';
         fakeWave.style.display = 'block';
         
         enableMovement();
     } else if (playerNumber === 2) {
-        console.log("player2");
         waveContainer1.style.display = 'block';
     }
     gameID = gameId;
@@ -191,8 +188,14 @@ function collision(a, b) {
         a.y + a.height > b.y - (b.height / 2)) {
             player.y = 360;
             respawnWave();
+            increaseTime(gameID);
         }      
     }
+}
+function increaseTime() {
+    if (playerNumber === 1) {
+        connection.invoke('IncreaseTimer', gameID).catch();
+    }  
 }
 
 
