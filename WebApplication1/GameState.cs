@@ -47,7 +47,7 @@ namespace WebApplication1
             {
                 timeSinceStart++;
             }    
-            _gameManager.SendTime(ID);
+            _gameManager.SendTime(this);
             Console.WriteLine(timeSinceStart.ToString());
             Debug.WriteLine(timeSinceStart.ToString());
         }
@@ -56,8 +56,7 @@ namespace WebApplication1
             lock (timeLock)
             {
                 timeSinceStart += 10;
-            }
-            
+            }     
         }
         public class WaveGameData()
         {
