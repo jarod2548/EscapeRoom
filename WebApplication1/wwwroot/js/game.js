@@ -185,6 +185,7 @@ function collision(a, b) {
         if (a.y - a.height < b.y + (b.height / 2) &&
         a.y + a.height > b.y - (b.height / 2)) {
             player.y = 360;
+            ws.send(JSON.stringify({ command: "alert" }));
             respawnWave();
         }      
     }
@@ -249,13 +250,19 @@ ws.onmessage = (event) => {
 
     if (data.button2) {
         console.log("Knop 1 is ingedrukt");
-        player.x -= 1;
-        zetLichtAanOfUit("on"); // Zet licht aan bij knop 1
+        player.x -= 2;
     }
     if (data.button1) {
         console.log("Knop 2 is ingedrukt");
-        player.x += 1;
-        zetLichtAanOfUit("off"); // Zet licht uit bij knop 2
+        player.x += 2;
+    }
+    if (data.button3) {
+        console.log("Knop 2 is ingedrukt");
+        player.y -= 2;
+    }
+    if (data.button4) {
+        console.log("Knop 2 is ingedrukt");
+        player.y += 2;
     }
 };
 

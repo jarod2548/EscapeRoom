@@ -17,7 +17,7 @@ builder.Logging.AddDebug(); // Add Debug logging
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    //options.ListenAnyIP(5000); // HTTP
+    options.ListenAnyIP(5000); // HTTP
     options.ListenAnyIP(7000, listenOptions => listenOptions.UseHttps()); // Optional HTTPS
 });
 
