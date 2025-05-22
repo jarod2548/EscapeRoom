@@ -55,7 +55,7 @@ body {
     position: absolute;
     width: 520px;
     height: 64px;
-    background-image: url('../images/newwave.png');
+    background-image: url('../images/newwave.png'); 
     background-size: contain;
     top: 0;
 }
