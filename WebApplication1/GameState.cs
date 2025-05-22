@@ -19,16 +19,13 @@ namespace WebApplication1
             timer.Elapsed += UpdateTimer;
             
             if (gameNumber == 1)
-            {
-                WGD = new();
-                
+            {                
                 WGD = new WaveGameData();
                 SpawnWaves();
             }
             else if (gameNumber == 2) 
             {
                 LGD = new LightsGameData();
-                LGD = new();
                 
                 CreateLightsGame();
             }
@@ -38,6 +35,13 @@ namespace WebApplication1
                 CreateConnectionGamedata();
             }
                 
+        }
+        public void StartGame2()
+        {
+            LGD = new LightsGameData();
+
+            CreateLightsGame();
+
         }
         public void StartTimer()
         {

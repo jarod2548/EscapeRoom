@@ -30,20 +30,15 @@ window.connection.onclose(error => {
 
 
 
-window.connection.on("StartGame2", function (LGD, stateID, playerID, playerNumber) {
-    console.log("Received gamedata : ", LGD.colors);
-    console.log("game ID :", stateID);
-    console.log("player ID: ", playerID);
+window.connection.on("StartGame2", function (LGD) {
     buttonsToUse = LGD.buttonToUse;
     gameScreen.style.display = 'block';
-    if (playerNumber === 1) {  
-        gameArea1.style.display = 'grid';
+    if (window.playerNumber === 1) {  
+        gameArea2.style.display = 'grid';
     } else
     {
-        gameArea2.style.display = 'grid';
+        gameArea3.style.display = 'grid';
     }
-    
-    gameID = stateID; 
     drawLights(LGD.colors);
 });
 
@@ -62,21 +57,10 @@ function sendMove(move) {
 window.player1Start = function()
 {
     console.log("game 2: player 1 start");
-    if (gameScreen.style.display === 'none')
-    {
-        player1BTN.style.display = 'none';
-        player2BTN.style.display = 'none';
-        Connect(1);
-    }
+    window.connection.invoke("StartGame2", window.gameID);
 }
 window.player2Start = function() {
 
-    console.log("game 2: player 2 start");
-    if (gameScreen.style.display === 'none') {
-        player1BTN.style.display = 'none';
-        player2BTN.style.display = 'none';
-        Connect(2);
-    }
 }
 
 function shapePressed(shapeNumber)
@@ -106,8 +90,7 @@ function getRandomColors(colorsInts)
 function drawDonuts(canvasElements, colorInts)
 {
     let colors = getRandomColors(colorInts);
-    for (let i = 0; i < canvasElements.length; i++)
-    {
+    for (let i = 0; i < canvasElements.length; i++) {
         const ctx = canvasElements[i].getContext('2d');
 
         const centerX = canvasElements[i].width / 2;
@@ -133,7 +116,7 @@ function drawDonuts(canvasElements, colorInts)
             ctx.closePath();
             ctx.fillStyle = colors[i];
             ctx.fill();
-    }   
-        
+        }
 
+    }
 }

@@ -88,6 +88,13 @@ namespace WebApplication1.services
                 await _hubContext.Clients.Client(Connections[player2ID]).SendAsync("StartCGame", newState.CGD.uniquePictureInts, gameNumber);
             }
         }
+        public async Task StartGame2(string gameID)
+        {
+            GameState state = Games[gameID];
+            state.StartGame2();
+            await _hubContext.Clients.Client(Connections[state.playerID1]).SendAsync("StartGame2", state.LGD);
+            await _hubContext.Clients.Client(Connections[state.playerID2]).SendAsync("StartGame2", state.LGD);
+        }
         public async Task CreateConnectionGame(GameState newState)
         {
             Games.TryAdd(newState.ID, newState);
@@ -208,6 +215,20 @@ namespace WebApplication1.services
 
             await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("TimerError", gameState.timeSinceStart);
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("TimerError", gameState.timeSinceStart);
+        }
+
+
+
+
+        public async Task Level1Complete(string gameID)
+        {
+            GameState state = Games[gameID];
+
+            string playerID1 = state.playerID1;
+            string playerID2 = state.playerID2;
+
+            await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("SendLevel1Complete");
+            await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("SendLevel1Complete");
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-let gameOver = false;
+﻿let gameOver = false;
 let lives = 3;
 const victoryMessage = document.getElementById('victoryMessage');
 const nextGameBTN = document.getElementById('nextGameBTN');
@@ -25,7 +24,7 @@ const wave2data = {
 }
 
 let lastTime = 0;
-const fps = 60;  
+const fps = 60;
 const interval = 1000 / fps;
 
 const playerElement = document.getElementById('player');
@@ -42,11 +41,12 @@ const wave2 = document.getElementById('wave2')
 const compute2 = window.getComputedStyle(wave2);
 const fakeWave = document.getElementById('fakeWave');
 
-let playerNumber = 0;
-let gameID = null;
+window.playerNumber = 0;
+window.gameID = null;
 
 let waveAnimationID = null;
 let timerID = null;
+
 
 window.connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
 
@@ -67,28 +67,20 @@ window.connection.onclose(error => {
 });
 
 
-window.connection.on("StartGame", function (gameId, gameNumber) {
-    console.log("playerNumber is:", playerNumber);
-    gameID = gameId;
-
+connection.on("StartGame", function (gameId, gameNumber) {
+    console.log("start game");
     if (playerNumber === 1) {
-        console.log("player1");
         waveContainer1.style.display = 'block';
         fakeWave.style.display = 'block';
+
         enableMovement();
     } else if (playerNumber === 2) {
         waveContainer1.style.display = 'block';
-        fakeplayer.style.left = "284px";
-        fakeplayer.style.top = "360";
     }
-
-    document.getElementById('gameOverMessage').style.display = 'none';
+    gameID = gameId;
+    animateWaves();
     winMessage.style.display = 'none';
     restartBTN.style.display = 'none';
-
-    spawnWaves();
-    animateWaves();
-    }
 
 });
 
@@ -105,46 +97,43 @@ window.connection.on("ResponseMovement", function (xPos, yPos) {
     }
 });
 
-connection.on('Timer', function (time) {
+window.connection.on('Timer', function (time) {
     Timer(time);
 });
 
-connection.on('TimerError', function (time) {
+window.connection.on('TimerError', function (time) {
     Timer(time);
     ShowTimePenalty();
+});
+
+window.connection.on("StartNextLevel", function (gameId, playerNumber
+) {
+    console.log("StartNextLevel ontvangen");
+    gameOver = true;
+    cancelAnimationFrame(waveAnimationID);
+    nextGameBTN.style.display = 'none';
+    waveContainer1.style.display = 'none';
+    fakeWave.style.display = 'none';
+    victoryMessage.style.display = 'none';
+
+    // Start game 2 (zorg dat game2.js geladen is en de functies bestaan)
+    if (playerNumber === 1) {
+        window.player1Start();
+    } else if (playerNumber === 2) {
+        window.player2Start();
+    }
+});
+
+window.connection.on("SendLevel1Complete", function () {
+    gameOver = true;
+    cancelAnimationFrame(waveAnimationID);
+    nextGameBTN.style.display = 'block';
 });
 
 function Timer(time) {
     let hours = Math.floor(time / 3600);
     let minutes = Math.floor((time % 3600) / 60);
     let seconds = time % 60;
-function startGame2() {
-    console.log("playerNumber is:", playerNumber);
-    if (playerNumber === 0) {
-        start1BTN.style.display = 'none';
-        start2BTN.style.display = 'none';
-        Connect(2);
-        playerNumber = 2;
-    }
-}
-
-window.connection.on("StartNextLevel", function (gameId, playerNumber
-) {
-    console.log("StartNextLevel ontvangen");
-
-    waveContainer1.style.display = 'none';
-    fakeWave.style.display = 'none';
-    victoryMessage.style.display = 'none';
-
-    // Start game 2 (zorg dat game2.js geladen is en de functies bestaan)
-    if (playerNumber === 1 && typeof player1Start === "function") {
-        window.player1Start();
-    } else if (playerNumber === 2 && typeof player2Start === "function") {
-        window.player2Start();
-    } else {
-        console.error("Kon game2 niet starten: startfunctie niet gevonden.");
-    }
-});
 
     timerBox.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
 }
@@ -160,16 +149,16 @@ function ShowTimePenalty() {
 }
 
 function SendMovement(xPos, yPos) {
-    if (window.connection.state === signalR.HubConnectionState.Connected) {
-        window.connection.invoke("SendMovement", xPos, yPos, gameID);
+    if (connection.state === signalR.HubConnectionState.Connected) {
+        connection.invoke("SendMovement", xPos, yPos, gameID);
     } else {
         console.log("No connection");
     }
 
 }
 function respawnWave() {
-    if (window.connection.state === signalR.HubConnectionState.Connected) {
-        window.connection.invoke('RespawnWave', gameID).catch();
+    if (connection.state === signalR.HubConnectionState.Connected) {
+        connection.invoke('RespawnWave', gameID).catch();
     } else {
         console.log("No connection");
     }
@@ -183,6 +172,15 @@ function startGame1() {
         start2BTN.style.display = 'none';
         Connect(1);
         playerNumber = 1;
+    }
+}
+function startGame2() {
+    console.log("playerNumber is:", playerNumber);
+    if (playerNumber === 0) {
+        start1BTN.style.display = 'none';
+        start2BTN.style.display = 'none';
+        Connect(2);
+        playerNumber = 2;
     }
 }
 
@@ -224,13 +222,6 @@ function animateWaves() {
             wave2.style.top = wave2data.y + "px";
             wave1.style.top = wave1data.y + "px";
             fakeWave.style.top = wave1data.y + "px";
-    function update() {
-        if (gameOver) return;
-        wave1data.y += 0.5;
-        wave2data.y += 0.5;
-        wave2.style.top = wave2data.y + "px";
-        wave1.style.top = wave1data.y + "px";
-        fakeWave.style.top = wave1data.y + "px";
 
             if (wave1data.y >= 400) {
                 respawnWave();
@@ -241,51 +232,45 @@ function animateWaves() {
             playerElement.style.left = player.x + "px";
             playerElement.style.top = player.y + "px";
             SendMovement(player.x, player.y);
-            
+
+            if (player.y <= 10) {
+                
+                if (playerNumber === 1) {
+                    console.log("sending message");
+                    window.connection.invoke('Level1Complete', gameID);
+                }
+
+                return;
+            }
+
             lastTime = timestamp;
-        } 
-       waveAnimationID = requestAnimationFrame(update);
-        if (wave1data.y >= 400) {
-            respawnWave();
         }
-
-        collision(player, wave1data);
-        collision(player, wave2data);
-        playerElement.style.left = player.x + "px";
-        playerElement.style.top = player.y + "px";
-        SendMovement(player.x, player.y);
-
-        if (player.y <= 0) {
-            gameOver = true;
-            cancelAnimationFrame(waveAnimationID);
-            window.connection.invoke("PlayerReachedTop", gameID, playerNumber).catch(err => console.error(err.toString()));
-
-            
-            victoryMessage.style.display = 'block';
-
-            return;
-        }
-
-
-        waveAnimationID = requestAnimationFrame(update);
+        if (!gameOver) {
+            waveAnimationID = requestAnimationFrame(update);
+            console.log(gameOver);
+        }    
     }
-
     waveAnimationID = requestAnimationFrame(update);
 }
 function collision(a, b) {
     if (a.x + (a.width / 2) > b.x &&
-        a.x  < b.x + b.width && playerNumber === 1)
-    {   
-        a.x < b.x + b.width) {
+        a.x < b.x + b.width && playerNumber === 1) {
         if (a.y - a.height < b.y + (b.height / 2) &&
             a.y + a.height > b.y - (b.height / 2)) {
             player.y = 360;
             respawnWave();
+            increaseTime(gameID);
         }
+    }
+}
+function increaseTime() {
+    if (playerNumber === 1) {
+        connection.invoke('IncreaseTimer', gameID).catch();
     }
 }
 nextGameBTN.addEventListener('click', () => {
     victoryMessage.style.display = 'none';
+    console.log("Go to Next level");
 
     if (window.connection.state === signalR.HubConnectionState.Connected) {
         window.connection.invoke('NextLevel', gameID, playerNumber)
@@ -294,7 +279,6 @@ nextGameBTN.addEventListener('click', () => {
         console.log('Geen verbinding met server');
     }
 });
-
 
 
 
