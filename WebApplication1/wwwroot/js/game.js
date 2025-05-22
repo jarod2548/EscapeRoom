@@ -24,11 +24,14 @@ const wave2data = {
 }
 
 let lastTime = 0;
+let deltaTime = 0;  
 const fps = 60;
 const interval = 1000 / fps;
 
 const playerElement = document.getElementById('player');
-const waveContainer1 = document.getElementById('gameArea1');
+window.gameArea1 = document.getElementById('gameArea1');
+window.gameArea2 = document.getElementById('gameArea2');
+window.gameArea3 = document.getElementById('gameArea3');
 
 const start1BTN = document.getElementById('start1BTN');
 const start2BTN = document.getElementById('start2BTN');
@@ -58,7 +61,9 @@ function Connect(playerNumber) {
 window.connection.onclose(error => {
     window.connection.stop();
     cancelAnimationFrame(waveAnimationID);
-    waveContainer1.style.display = 'none';
+    gameArea1.style.display = 'none';
+    gameArea2.style.display = 'none';
+    gameArea3.style.display = 'none';
     fakeWave.style.display = 'none';
     start1BTN.style.setProperty('display', 'inline-block', 'important');
     start2BTN.style.setProperty('display', 'inline-block', 'important');
@@ -66,16 +71,28 @@ window.connection.onclose(error => {
     // Attempt reconnection or show error to user
 });
 
+connection.on('Disconnected', function () {
+    window.connection.stop();
+    cancelAnimationFrame(waveAnimationID);
+    gameArea1.style.display = 'none';
+    gameArea2.style.display = 'none';
+    gameArea3.style.display = 'none';
+    fakeWave.style.display = 'none';
+    start1BTN.style.setProperty('display', 'inline-block', 'important');
+    start2BTN.style.setProperty('display', 'inline-block', 'important');
+    playerNumber = 0;
+});
+
 
 connection.on("StartGame", function (gameId, gameNumber) {
     console.log("start game");
     if (playerNumber === 1) {
-        waveContainer1.style.display = 'block';
+        gameArea1.style.display = 'block';
         fakeWave.style.display = 'block';
 
         enableMovement();
     } else if (playerNumber === 2) {
-        waveContainer1.style.display = 'block';
+        gameArea1.style.display = 'block';
     }
     gameID = gameId;
     animateWaves();
@@ -112,7 +129,7 @@ window.connection.on("StartNextLevel", function (gameId, playerNumber
     gameOver = true;
     cancelAnimationFrame(waveAnimationID);
     nextGameBTN.style.display = 'none';
-    waveContainer1.style.display = 'none';
+    gameArea1.style.display = 'none';
     fakeWave.style.display = 'none';
     victoryMessage.style.display = 'none';
 
@@ -279,7 +296,13 @@ nextGameBTN.addEventListener('click', () => {
         console.log('Geen verbinding met server');
     }
 });
-
+window.addEventListener('beforeunload', async () => {
+    try {
+        await connection.stop();  // Stops the connection
+    } catch (error) {
+        console.error("Error stopping SignalR connection:", error);
+    }
+});
 
 
 
