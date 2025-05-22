@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="C:\Users\bentp\Downloads\bootstrap.css" Link="bootstrap.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="wwwroot\unity\Build\Builds.data">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
