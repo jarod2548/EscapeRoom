@@ -1,0 +1,30 @@
+﻿@page
+@model WebApplication1.Pages.Index1Model
+@{
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="~/css/game3.css">
+</head>
+<body>
+    <div id="timerBox">
+        00:00:00
+    </div>
+
+    <h1>Escape Room - Game 1</h1>
+    <button id="start1BTN" onclick="StartCGame1()">Start als speler 1</button>
+    <button id="start2BTN" onclick="StartCGame2()">Start als speler 2</button>
+    <div id="gameScreen" display="none;">
+        <div id="picture1"></div>
+        <div id="picture2"></div>
+        <div id="picture3"></div>
+        <div id="picture4"></div>
+   </div>
+
+
+    <script src="@("https://cdn.jsdelivr.net/npm/@microsoft/signalr@8.0.7/dist/browser/signalr.min.js")"></script>
+    <script src="~/js/game3.js"></script>
+</body>
+</html>

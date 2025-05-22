@@ -1,19 +1,27 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Escape Room Demo</title>
-    <link rel="stylesheet" href="~/css/styles.css">
+    <link rel="stylesheet" href="~/css/styles.css?v=1">
+    <link rel="stylesheet" href="~/css/game2.css?v=1">
 </head>
 <body>
-    <h1>Escape Room - Game 1</h1>
+    <div id="timerBox">
+        00:00:00
+    </div>
+    <div id="timePenalty" style="visibility:hidden;">
+        +10 seconden
+    </div>
+
+    <h1>Game 1</h1>
     <button id="start1BTN" onclick="startGame1()">Start als speler 1</button>
     <button id="start2BTN" onclick="startGame2()">Start als speler 2</button>
+    <button id="nextGameBTN" style="display:none;"> Naar volgend level</button>
+    <button id="victoryMessage" style="display:none;"> level gehaald</button>
     <div id="gameScreen">
         <div id="gameArea1" style="display:none;">
             <div id="player"></div>
@@ -21,20 +29,61 @@
             <div class="wave" id="wave2"></div>
             <div id="fakeWave" style="display:none;"></div>
         </div>
-   </div>
-    <div id="liveContainer">
-            <img src="images/heart.png" class="life">
-            <img src="images/heart.png" class="life">
-            <img src="images/heart.png" class="life">
-        </div>
-        <div id="gameOverMessage" style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:48px; color:red; font-weight:bold; z-index:999;">
-            Game Over
-        </div>
-        <div id="winMessage" style="display: none;  position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:48px; color:green; font-weight:bold; z-index:999;">
 
-            <h2> You Win!</h2>
-        </div>
+         <div id="gameArea2" style="display:none;">
+                <canvas id="light1" class="grid-item lightVersion1"></canvas>
+                <img src="~/images/cirkel.png" id="shape1" class="grid-item shapeVersion1"></img>
+
+                <canvas id="light2" class="grid-item lightVersion2"></canvas>
+                <img src="~/images/driehoek.png" id="shape2" class="grid-item shapeVersion2"></img>
+
+                <canvas id="light3" class="grid-item lightVersion3"></canvas>
+                <img src="~/images/vierkant.png" id="shape3" class="grid-item shapeVersion3"></img>
+
+                <canvas id="light4" class="grid-item lightVersion1"></canvas>
+                <img src="~/images/cirkel.png" id="shape4" class="grid-item shapeVersion1"></img>
+
+                <canvas id="light5" class="grid-item lightVersion4"></canvas>
+                <img src="~/images/Letter M.png" id="shape5" class="grid-item shapeVersion4"></img>
+
+                <canvas id="light6" class="grid-item lightVersion3"></canvas>
+                <img src="~/images/vierkant.png" id="shape6" class="grid-item shapeVersion3"></img>
+
+                <canvas id="light7" class="grid-item lightVersion4"></canvas>
+                <img src="~/images/Letter M.png" id="shape7" class="grid-item shapeVersion4"></img>
+
+                <canvas id="light8" class="grid-item lightVersion2"></canvas>
+                <img src="~/images/driehoek.png" id="shape8" class="grid-item shapeVersion2"></img>
+
+                <canvas id="light9" class="grid-item lightVersion4"></canvas>
+                <img src="~/images/Letter M.png" id="shape9" class="grid-item shapeVersion4"></img>
+
+                <canvas id="light10" class="grid-item lightVersion3"></canvas>
+                <img src="~/images/vierkant.png" id="shape10" class="grid-item shapeVersion3"></img>
+
+            </div>
+            <div id="gameArea3" style="display:none;">
+                <button type="button"  onclick="shapePressed(0)">
+                    <img src ="~/images/cirkel.png" />
+                </button>
+                <button type="button" onclick="shapePressed(1)">
+                    <img src ="~/images/vierkant.png" />
+                </button>
+                <button type="button" onclick="shapePressed(2)">
+                    <img src ="~/images/driehoek.png" />
+                </button>
+                <button type="button" onclick="shapePressed(3)">
+                    <img src ="~/images/Letter M.png" />
+                </button>
+            </div>
+   </div>
+
+
     <script src="@("https://cdn.jsdelivr.net/npm/@microsoft/signalr@8.0.7/dist/browser/signalr.min.js")"></script>
+   
     <script src="~/js/game.js"></script>
+    <script src="~/js/game2.js"></script>
+    
+
 </body>
 </html>

@@ -21,10 +21,4 @@ body {
   margin-bottom: 60px;
 }
 
-.wave {
-    position: absolute;
-    width: 100%;
-    height: 32px;
-    background: #3498db;
-    border-radius: 8px;
-}
+

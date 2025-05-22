@@ -8,7 +8,7 @@ const lights2 = document.querySelectorAll('.lightVersion2');
 const lights3 = document.querySelectorAll('.lightVersion3');
 const lights4 = document.querySelectorAll('.lightVersion4');
 
-let gameID = null;
+
 let playerID = null;
 let buttonsToUse;
 
@@ -16,63 +16,51 @@ let gameOrder = 0;
 
 const colors = ['#ff6347', '#4682b4', '#32cd32', '#ffb6c1', '#ff1493', '#8a2be2'];
 
-//.withURL(*our server domain*)
-const connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
 
 //functie gemaakt met AI
-function Connect(playerNumber)
-{
-    connection.start().then(() => {
-        connection.invoke("JoinGame", playerNumber, 2);
-    });   
-}
-connection.on("UpdateGame", (gameState) => {
 
+window.connection.onclose(error => {
+    player1BTN.style.display = 'inline-block';
+    player2BTN.style.display = 'inline-block';
+    gameArea1.style.display = 'none';
+    gameArea2.style.display = 'none';
+    gameScreen.style.display = 'none'
 });
-connection.on("StartGame", function (LGD, stateID, playerID, playerNumber) {
-    console.log("Received gamedata : ", LGD.colors);
-    console.log("game ID :", stateID);
-    console.log("player ID: ", playerID);
+
+
+
+
+window.connection.on("StartGame2", function (LGD) {
     buttonsToUse = LGD.buttonToUse;
     gameScreen.style.display = 'block';
-    if (playerNumber === 1) {  
-        gameArea1.style.display = 'grid';
+    if (window.playerNumber === 1) {  
+        gameArea2.style.display = 'grid';
     } else
     {
-        gameArea2.style.display = 'grid';
+        gameArea3.style.display = 'grid';
     }
-    
-    gameID = stateID; 
     drawLights(LGD.colors);
 });
 
-connection.on("Response", function (currentButton) {
+window.connection.on("Response", function (currentButton) {
     console.log("currentButton :", currentButton);
     gameOrder = currentButton;
 });
 
 
 function sendMove(move) {
-    connection.invoke("MakeMove", gameId, move);
+    window.connection.invoke("MakeMove", gameId, move);
 }
 
 
 
-function player1Start()
+window.player1Start = function()
 {
-    if (gameScreen.style.display === 'none')
-    {
-        player1BTN.style.display = 'none';
-        player2BTN.style.display = 'none';
-        Connect(1);
-    }
+    console.log("game 2: player 1 start");
+    window.connection.invoke("StartGame2", window.gameID);
 }
-function player2Start() {
-    if (gameScreen.style.display === 'none') {
-        player1BTN.style.display = 'none';
-        player2BTN.style.display = 'none';
-        Connect(2);
-    }
+window.player2Start = function() {
+
 }
 
 function shapePressed(shapeNumber)
@@ -99,10 +87,10 @@ function getRandomColors(colorsInts)
     return selectedColors;
 }
 //functie gemaakt met AI
-function drawDonuts(canvasElements, colorInts) {
+function drawDonuts(canvasElements, colorInts)
+{
     let colors = getRandomColors(colorInts);
-    for (let i = 0; i < canvasElements.length; i++)
-    {
+    for (let i = 0; i < canvasElements.length; i++) {
         const ctx = canvasElements[i].getContext('2d');
 
         const centerX = canvasElements[i].width / 2;
@@ -128,6 +116,7 @@ function drawDonuts(canvasElements, colorInts) {
             ctx.closePath();
             ctx.fillStyle = colors[i];
             ctx.fill();
-    }   
+        }
+
     }
 }

@@ -1,7 +1,10 @@
 ﻿
 body {
-    font-family: sans-serif;
+    background-color: black;
+    font-family: 'Press Start 2P', monospace;
+    color: #00fff7;
     text-align: center;
+    align-content:center;
 }
 
 #gameScreen {
@@ -9,9 +12,24 @@ body {
     width: 600px;
     height: 400px;
     margin: 20px auto;
-    background-color: #e8d47e;
-    border: 2px solid #333;
+    background-color: #fa82e4;
+    border: 1px solid #00fff7;
+    border-radius: 8px;
+    box-shadow: 0 0 20px #00fff7;
     overflow: hidden;
+}
+
+
+#start1BTN  {
+    position: relative;
+    top: 10px;
+    left: 0px;
+}
+
+#start2BTN {
+    position: relative;
+    top: 10px;
+    left: 40px;
 }
 
 #player {
@@ -37,17 +55,16 @@ body {
     position: absolute;
     width: 520px;
     height: 64px;
-    background-image: url('../images/wave.png');
-    background-size: cover;
+    background-image: url('../images/newwave.png');
+    background-size: contain;
     top: 0;
 }
 #fakeWave {
     position: absolute;
     width: 10000px;
     height: 64px;
-    background-image: url('../images/wave.png');
-    background-size: cover;
-    background-color:blue;
+    background-image: url('../images/newwave.png');
+    background-size:contain;
     top: 0;
 }
 
@@ -55,4 +72,7 @@ body {
 .life {
     width: 20px;
     height: 20px;
+}
+#timePenalty{
+    background-color:red;
 }

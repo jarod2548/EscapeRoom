@@ -19,21 +19,88 @@ namespace WebApplication1.services
         {
             _hubContext = hubContext;
         }
+        public async Task OnDisconnected(string connectionID)
+        {
+            foreach(KeyValuePair<string,string> connection in Connections)
+            {
+                if (connection.Value.Equals(connectionID))
+                {
+                    string playerID = connection.Key;
+                    await GetGameToRemove(playerID);
+                    await RemoveConnection(playerID);
+                    return;
+                }
+            }
+        }
+        public async Task GetGameToRemove(string playerID)
+        {
+            string gameID = null;
+            foreach(KeyValuePair<string,GameState> game in Games)
+            {     
+                if (game.Value.playerID1 == playerID || game.Value.playerID2 == playerID)
+                {
+                    gameID = game.Key;
+                    string otherPlayerID = (game.Value.playerID1 == playerID)
+                        ? game.Value.playerID2
+                        : game.Value.playerID1;
 
+                    await game.Value.StopTimer();
+                    await RemoveGame(gameID);
+                    await RemoveConnection(otherPlayerID);
+                    return;
+                }
+            }
+        }
+        public Task RemoveGame(string gameID)
+        {
+            Games[gameID] = null;
+            Games.TryRemove(gameID, out _);
+            return Task.CompletedTask;
+        }
+
+        public async Task IncreaseTimer(string gameID)
+        {
+            Games[gameID].IncreaseTimer();
+        }
+        public async Task RemoveConnection(string playerID)
+        {
+            await _hubContext.Clients.Client(Connections[playerID]).SendAsync("Disconnected");
+            Connections.TryRemove(playerID, out _);
+        }
         public async Task CreateGame(string player1ID, string player2ID,int gameNumber, GameState newState)
         {
             Games.TryAdd(newState.ID, newState);
+            newState.StartTimer();
 
-            if(gameNumber == 1)
+            if (gameNumber == 1)
             {
                 await _hubContext.Clients.Client(Connections[player1ID]).SendAsync("StartGame", newState.ID, gameNumber);
                 await _hubContext.Clients.Client(Connections[player2ID]).SendAsync("StartGame", newState.ID, gameNumber);
             }
-            else
+            else if (gameNumber == 2) 
             {
                 await _hubContext.Clients.Client(Connections[player1ID]).SendAsync("StartGame", newState.LGD, newState.ID, player1ID, 1);
                 await _hubContext.Clients.Client(Connections[player2ID]).SendAsync("StartGame", newState.LGD, newState.ID, player2ID, 2);
             }
+            else
+            {
+                await _hubContext.Clients.Client(Connections[player1ID]).SendAsync("StartCGame", newState.CGD.uniquePictureInts, gameNumber);
+                await _hubContext.Clients.Client(Connections[player2ID]).SendAsync("StartCGame", newState.CGD.uniquePictureInts, gameNumber);
+            }
+        }
+        public async Task StartGame2(string gameID)
+        {
+            GameState state = Games[gameID];
+            state.StartGame2();
+            await _hubContext.Clients.Client(Connections[state.playerID1]).SendAsync("StartGame2", state.LGD);
+            await _hubContext.Clients.Client(Connections[state.playerID2]).SendAsync("StartGame2", state.LGD);
+        }
+        public async Task CreateConnectionGame(GameState newState)
+        {
+            Games.TryAdd(newState.ID, newState);
+            newState.StartTimer();
+            await _hubContext.Clients.Client(Connections[newState.playerID1]).SendAsync("StartCGame", newState);
+            await _hubContext.Clients.Client(Connections[newState.playerID2]).SendAsync("StartCGame", newState);
         }
         public async Task SpawnWaves(string gameID)
         {
@@ -47,19 +114,16 @@ namespace WebApplication1.services
 
         public async Task JoinGame(string connectionID, int playerNumber, int gameNumber)
         {
-            string player1ID = null;
-            string player2ID = null;
-            string gameID = null;
             if (playerNumber == 1)
             {
-                player1ID = Guid.NewGuid().ToString();
+                string player1ID = Guid.NewGuid().ToString();
                 Connections.TryAdd(player1ID, connectionID);
                 await CheckGameStates1(player1ID, gameNumber);
             }
             
             else if(playerNumber == 2)
             {
-                player2ID = Guid.NewGuid().ToString();
+                string player2ID = Guid.NewGuid().ToString();
                 Connections.TryAdd(player2ID, connectionID);
                 await CheckGameStates2(player2ID, gameNumber);
             }
@@ -75,7 +139,7 @@ namespace WebApplication1.services
             await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("Response", currentState.LGD.currentButton);
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("Response", currentState.LGD.currentButton);
         }
-
+       
         public async Task SendResponseMovement(string gameID, float xPos, float yPos)
         {
             string playerID1 = Games[gameID].playerID1;
@@ -134,6 +198,37 @@ namespace WebApplication1.services
                 Games[gameID].playerID2
             };
             return ids;
+        }
+
+        public async Task SendTime(GameState currentState)
+        {
+            string playerID1 = currentState.playerID1;
+            string playerID2 = currentState.playerID2;
+
+            await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("Timer", currentState.timeSinceStart);
+            await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("Timer", currentState.timeSinceStart);
+        }
+        public async Task TimeError(GameState gameState)
+        {
+            string playerID1 = gameState.playerID1;
+            string playerID2 = gameState.playerID2;
+
+            await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("TimerError", gameState.timeSinceStart);
+            await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("TimerError", gameState.timeSinceStart);
+        }
+
+
+
+
+        public async Task Level1Complete(string gameID)
+        {
+            GameState state = Games[gameID];
+
+            string playerID1 = state.playerID1;
+            string playerID2 = state.playerID2;
+
+            await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("SendLevel1Complete");
+            await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("SendLevel1Complete");
         }
     }
 }
