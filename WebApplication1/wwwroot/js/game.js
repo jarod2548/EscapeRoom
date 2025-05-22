@@ -5,16 +5,6 @@ const player = {
     width: 32,
     height: 32
 };
-let enemy =
-{
-    x: 50,
-    y: 50,
-    width: 12,
-        height: 12,
-};
-function startGame() {
-    const gameScreen = document.getElementById('gameScreen');
-    const startButton = document.getElementById('startButton');
 
 const wave1data = {
     height: 64,
@@ -59,11 +49,11 @@ connection.onclose(error => {
 
 connection.on("StartGame", function (gameId, gameNumber) {
     console.log("playerNumber is:", playerNumber);
-    if (playerNumber === 1) {   
+    if (playerNumber === 1) {
         console.log("player1");
         waveContainer1.style.display = 'block';
         fakeWave.style.display = 'block';
-        
+
         enableMovement();
     } else if (playerNumber === 2) {
         console.log("player2");
@@ -73,7 +63,7 @@ connection.on("StartGame", function (gameId, gameNumber) {
     document.getElementById('gameOverMessage').style.display = 'none';
     winMessage.style.display = 'none'; // Hide win message
     animateWaves();
-    
+
 });
 
 connection.on('SpawnWaves', function (WGD) {
@@ -96,7 +86,7 @@ function SendMovement(xPos, yPos) {
     } else {
         console.log("No connection");
     }
-    
+
 }
 function respawnWave() {
     if (connection.state === signalR.HubConnectionState.Connected) {
@@ -114,7 +104,7 @@ function startGame1() {
         start2BTN.style.display = 'none';
         Connect(1);
         playerNumber = 1;
-    }    
+    }
 }
 function startGame2() {
     console.log("playerNumber is:", playerNumber);
@@ -125,20 +115,19 @@ function startGame2() {
         playerNumber = 2;
     }
 }
-
+//////////////////////////////////////// knop toevoegen//////////////////////////////////
 function enableMovement() {
     document.onkeydown = function (event) {
         const step = 10;
         switch (event.key.toLowerCase()) {
-            case 'a': player.x -= step;
-                 break;
+            case 'a': player.x -= step; break;
             case 'd': player.x += step; break;
             case 'w': player.y -= step; break;
             case 's': player.y += step; break;
         }
         player.x = Math.max(0, Math.min(player.x, 568));
         player.y = Math.max(0, Math.min(player.y, 368));
-        
+
     };
 }
 
@@ -158,8 +147,8 @@ function spawnWaves(xPos1, xPos2, yPos) {
 
 function animateWaves() {
     function update() {
-        wave1data.y += 2;
-        wave2data.y += 2;
+        wave1data.y += 0.5;
+        wave2data.y += 0.5;
         wave2.style.top = wave2data.y + "px";
         wave1.style.top = wave1data.y + "px";
         fakeWave.style.top = wave1data.y + "px";
@@ -167,36 +156,29 @@ function animateWaves() {
         if (wave1data.y >= 400) {
             respawnWave();
         }
-        
+
         collision(player, wave1data);
         collision(player, wave2data);
         playerElement.style.left = player.x + "px";
         playerElement.style.top = player.y + "px";
         SendMovement(player.x, player.y);
-       requestAnimationFrame(update);
+        requestAnimationFrame(update);
     }
 
     requestAnimationFrame(update);
 }
+/////////////////////fout detecteren met rode lets knipperen/////////////
 function collision(a, b) {
     if (a.x + (a.width / 2) > b.x &&
-        a.x  < b.x + b.width )
-    {   
+        a.x < b.x + b.width) {
         if (a.y - a.height < b.y + (b.height / 2) &&
-        a.y + a.height > b.y - (b.height / 2)) {
+            a.y + a.height > b.y - (b.height / 2)) {
             player.y = 360;
             ws.send(JSON.stringify({ command: "alert" }));
             respawnWave();
-        }      
+        }
     }
 }
-
-
-
-
-
-
-
     // Listen for keyup events to stop movement
     document.addEventListener('keyup', function (event) {
         // Stop movement when the key is released
@@ -207,33 +189,6 @@ function collision(a, b) {
             velocity.y = 0;
         }
     });
-}
-
-async function zetLichtAanOfUit(state) {
-    try {
-        console.log(`Probeer licht ${state} te zetten`); // Debug log
-        const response = await fetch('http://169.254.193.164:5000/light', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({ state: state })
-        });
-
-        console.log('Response status:', response.status); // Debug log
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error("Fout bij Raspberry Pi:", errorText);
-        } else {
-            const result = await response.json();
-            console.log("Success:", result.status);
-        }
-    } catch (error) {
-        console.error("Kan geen verbinding maken met Raspberry Pi:", error);
-    }
-}
 
 // WebSocket verbinding maken met de Raspberry Pi
 const ws = new WebSocket("ws://169.254.193.164:6789");
@@ -241,7 +196,6 @@ const ws = new WebSocket("ws://169.254.193.164:6789");
 ws.onopen = () => {
     console.log("WebSocket verbonden met Raspberry Pi.");
     // Test het licht wanneer de verbinding tot stand komt
-    zetLichtAanOfUit("on"); // Test of het licht aangaat
 };
 
 ws.onmessage = (event) => {

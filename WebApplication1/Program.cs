@@ -47,7 +47,7 @@ if (!app.Environment.IsDevelopment())
 app.MapHub<GameHub>("/gamehub");
 app.UseCors("AllowGameClients");
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 Console.WriteLine($"hello");  // Log the file path
 app.UseStaticFiles();
 
