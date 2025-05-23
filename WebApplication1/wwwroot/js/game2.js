@@ -1,6 +1,4 @@
 ﻿const gameScreen = document.getElementById('gameScreen');
-const gameArea1 = document.getElementById('gameArea1');
-const gameArea2 = document.getElementById('gameArea2');
 const player1BTN = document.getElementById('player1Button');
 const player2BTN = document.getElementById('player2Button');
 const lights1 = document.querySelectorAll('.lightVersion1');
@@ -14,20 +12,8 @@ let buttonsToUse;
 
 let gameOrder = 0;
 
-const colors = ['#ff6347', '#4682b4', '#32cd32', '#ffb6c1', '#ff1493', '#8a2be2'];
-
-
-//functie gemaakt met AI
-
-window.connection.onclose(error => {
-    player1BTN.style.display = 'inline-block';
-    player2BTN.style.display = 'inline-block';
-    gameArea1.style.display = 'none';
-    gameArea2.style.display = 'none';
-    gameScreen.style.display = 'none'
-});
-
-
+const colors = ['#ff6347', '#4682b4', '#32cd32', '#ffb6c1'];
+const rickColors = [[0,3,2,1], [0,2,3,1], [2,3,0,1], [2,1,0,3]]
 
 
 window.connection.on("StartGame2", function (LGD) {
@@ -39,7 +25,7 @@ window.connection.on("StartGame2", function (LGD) {
     {
         gameArea3.style.display = 'grid';
     }
-    drawLights(LGD.colors);
+    drawLights(rickColors);
 });
 
 window.connection.on("Response", function (currentButton) {

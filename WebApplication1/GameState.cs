@@ -88,6 +88,13 @@ namespace WebApplication1
                 new int[]{0,3},
                 new int[]{3,1},
             };
+            public List<int[]> colo { get; set; } = new List<int[]>
+            {
+                new int[]{2,1,0,3},
+                new int[]{0,1,2,3},
+                new int[]{3,1,0,2},
+                new int[]{3,0,2,1}
+            };
 
             public List<int> buttonToUse { get; set; } = new List<int>();
 
