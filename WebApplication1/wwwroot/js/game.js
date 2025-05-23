@@ -264,7 +264,6 @@ function animateWaves() {
         }
         if (!gameOver) {
             waveAnimationID = requestAnimationFrame(update);
-            console.log(gameOver);
         }    
     }
     waveAnimationID = requestAnimationFrame(update);
@@ -275,7 +274,9 @@ function collision(a, b) {
         if (a.y - a.height < b.y + (b.height / 2) &&
             a.y + a.height > b.y - (b.height / 2)) {
             player.y = 360;
-            ws.send(JSON.stringify({ command: "alert" }));
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ command: "alert" }));
+            }
             respawnWave();
             increaseTime(gameID);
         }
@@ -341,6 +342,8 @@ ws.onerror = (error) => {
 ws.onclose = () => {
     console.warn("WebSocket is gesloten");
 };
+
+
 
 
 
