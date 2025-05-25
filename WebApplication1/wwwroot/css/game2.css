@@ -92,6 +92,25 @@
     grid-area: 5/4;
 }
 
+#shapeBTN1{
+    grid-area:1/1;
+}
+#shapeBTN2 {
+    grid-area: 1/2;
+}
+#shapeBTN3 {
+    grid-area: 1/3;
+}
+#shapeBTN4 {
+    grid-area: 1/4;
+}
+
+#exampleLight1 {
+    grid-area: 2 / 1 / 2 / 3;
+}
+#exampleLight2 {
+    grid-area: 2 / 3 / 2 / 5;
+}
 
 #donutCanvas {
     display: block;
