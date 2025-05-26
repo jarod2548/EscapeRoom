@@ -279,9 +279,12 @@ function collision(a, b) {
         if (a.y - a.height < b.y + (b.height / 2) &&
             a.y + a.height > b.y - (b.height / 2)) {
             player.y = 360;
-            if (ws.readyState === WebSocket.OPEN) {
-                ws.send(JSON.stringify({ command: "alert" }));
+            if (ws != null) {
+                if (ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({ command: "alert" }));
+                }
             }
+            
             respawnWave();
             increaseTime(gameID);
         }
