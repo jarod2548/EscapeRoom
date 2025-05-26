@@ -16,8 +16,8 @@ let buttonsToUse;
 let gameOrder = 0;
 
 const colors = ['#ff6347', '#4682b4', '#32cd32', '#ffb6c1'];
-const rickColors = [[0, 3, 2, 1], [0, 2, 3, 1], [2, 3, 0, 1], [2, 1, 3, 0]]
-const wrongColors = [[0, 3, 2, 1], [2, 3, 0, 1], [2, 3, 0, 1], [2, 1, 3, 0]]
+const rickColors = [[0, 3, 2, 1], [2, 3, 0, 1], [0, 2, 3, 1], [2, 1, 3, 0]]
+const wrongColors = [[0, 3, 2, 1], [0, 2, 3, 1], [2, 3, 0, 1], [2, 1, 3, 0]]
 
 
 window.connection.on("StartGame2", function (LGD) {
@@ -30,7 +30,7 @@ window.connection.on("StartGame2", function (LGD) {
     } else
     {
         gameArea2.style.display = 'grid';
-        drawLights(rickColors);
+        drawLights(wrongColors);
     }
     
 });
