@@ -282,40 +282,16 @@ nextGameBTN.addEventListener('click', () => {
     }
 });
 
-// WebSocket verbinding maken met de Raspberry Pi
-const ws = new WebSocket("ws://169.254.193.164:6789");
-
-ws.onopen = () => {
-    console.log("WebSocket verbonden met Raspberry Pi.");
-    // Test het licht wanneer de verbinding tot stand komt
-};
+const ws = new WebSocket("ws://onzeescaperoom.nl:9000");
 
 ws.onmessage = (event) => {
     const data = JSON.parse(event.data);
-    console.log("GPIO-knoppenstatus ontvangen:", data);
 
-    if (data.button2) {
-        console.log("Knop 1 is ingedrukt");
-        player.x -= 2;
-    }
-    if (data.button1) {
-        console.log("Knop 2 is ingedrukt");
-        player.x += 2;
-    }
-    if (data.button3) {
-        console.log("Knop 2 is ingedrukt");
-        player.y -= 2;
-    }
-    if (data.button4) {
-        console.log("Knop 2 is ingedrukt");
-        player.y += 2;
+    if (data.type === "status") {
+        console.log("Button status:", data);
     }
 };
 
-ws.onerror = (error) => {
-    console.error("WebSocket-fout:", error);
-};
-
-ws.onclose = () => {
-    console.warn("WebSocket is gesloten");
-};
+function stuurAlert() {
+    ws.send(JSON.stringify({ command: "alert" }));
+}
