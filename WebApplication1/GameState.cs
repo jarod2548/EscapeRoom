@@ -184,7 +184,7 @@ namespace WebApplication1
                 LGD.currentButton++;
                 if(LGD.currentButton > 1)
                 {
-
+                    await _gameManager.Level2Complete(ID);
                 }
                 else
                 {

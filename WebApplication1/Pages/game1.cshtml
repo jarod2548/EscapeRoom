@@ -9,6 +9,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="~/css/styles.css?v=1">
     <link rel="stylesheet" href="~/css/game2.css?v=1">
+    <link rel="stylesheet" href="~/css/game3.css">
 </head>
 <body>
     <div id="timerBox">
@@ -68,10 +69,10 @@
                     <img src ="~/images/cirkel.png" />
                 </button>
             <button id="shapeBTN2" type="button" onclick="shapePressed(1)">
-                    <img src ="~/images/driehoek.png" />
+                    <img src ="~/images/vierkant.png" />
                 </button>
             <button id="shapeBTN3" type="button" onclick="shapePressed(2)">
-                    <img src ="~/images/vierkant.png" />
+                    <img src ="~/images/driehoek.png" />
                 </button>
             <button id="shapeBTN4" type="button" onclick="shapePressed(3)">
                     <img src ="~/images/Letter M.png" />
@@ -81,6 +82,73 @@
 
                 <canvas id="exampleLight2"></canvas>
             </div>
+            <div id="gameArea4">
+                <button id ="arrowLeft">
+                    <img src="~/images/Pijl.png" />
+                </button>
+                <div id ="question1">
+                    <h1> Vraag 1</h1>
+  <p class ="questionText">Welk antwoord moet ingevuld worden in plaats van de ? om 10 als antwoord te krijgen</p>
+
+  <pre class ="questionText" id="text1"><code>
+      function addNumbers(a, b) { 
+          return a + b; 
+          }
+      let number = addNumbers(?)
+      console.log(number);
+  </code>     
+  </pre> 
+  <button>4, 3</button>
+  <button>5 5</button>
+  <button>2, 8</button>
+                </div>
+                <div id ="question2" style="display:none">
+                    <h1> Vraag 2</h1>
+  <p id ="">Hoe vaak wordt hallo geprint ?</p>
+
+  <pre id="text2"><code>
+      const lijstMetWoorden = ["huisje", "boompje", "beestje"];
+
+      function LoopDoorLijst(lijst) { 
+          for(let i = 0; i &lt lijst.Count; i++){
+              console.log("hallo");
+          }
+      }   
+      LoopDoorLijst(lijstMetWoorden);
+  </code>     
+  </pre> 
+  <button>3</button>
+  <button>2</button>
+  <button>4</button>
+                </div>
+                <div id ="question3" style="display:none">
+                    <h1> Vraag 3</h1>
+  <p id ="">Om een funcie uit te voeren alleen wanneer een bepaalde voorwaarde is voldaan wordt een if-statement gebruikt.
+      Welke waardes moet ingevuld worden om de statement compleet te maken ?
+  </p>
+
+  <pre id="text3"><code>
+      function CheckNumbers(a, b){
+          if(a &gt b){
+          console.log("juiste antwoord");
+      }
+      }
+      CheckNumbers(?);     
+  </code>     
+  </pre> 
+  <button>2, 2</button>
+  <button>7, 4</button>
+  <button>6 3</button>
+  <br />
+  <button>Controller Antwoorden</button>
+                </div>
+                    <button id ="arrowRight">
+                        <img src="~/images/Pijl.png" />
+                    </button>
+            </div>
+            <div id="gameArea5">
+
+            </div>
    </div>
 
 
@@ -88,6 +156,7 @@
    
     <script src="~/js/game.js"></script>
     <script src="~/js/game2.js"></script>
+    <script src="~/js/game3.js"></script>
     
 
 </body>

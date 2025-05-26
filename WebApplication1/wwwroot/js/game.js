@@ -35,6 +35,8 @@ const playerElement = document.getElementById('player');
 window.gameArea1 = document.getElementById('gameArea1');
 window.gameArea2 = document.getElementById('gameArea2');
 window.gameArea3 = document.getElementById('gameArea3');
+window.gameArea4 = document.getElementById('gameArea4');
+window.gameArea5 = document.getElementById('gameArea5');
 
 const start1BTN = document.getElementById('start1BTN');
 const start2BTN = document.getElementById('start2BTN');

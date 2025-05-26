@@ -132,6 +132,7 @@ function drawDonuts(canvasElements, colorInts)
 }
 function drawDonut(canvasElement, shapeInt) {
     let colorInts = wrongColors[shapeInt];
+    console.log(colorInts);
     
     let newColors = getRandomColors(colorInts);
         const ctx = canvasElement.getContext('2d');
