@@ -1,4 +1,7 @@
 ﻿
+window.levelCompleteBlock = document.getElementById("levelCompleteBlock");
+window.levelCompleteTime = document.getElementById("levelCompleteTime");
+
 const questions = [
     document.getElementById('question1'),
     document.getElementById('question2'),
@@ -36,4 +39,21 @@ function goToNextQuestion() {
         questionInt = 0;
     }
     questions[questionInt].style.display = "block";
+}
+
+function checkAwnsers() {
+    window.connection.invoke("Level3Complete", window.gameID);
+}
+
+window.connection.on("GameComplete", function (time) {
+    window.levelCompleteBlock.style.display = "flow";
+    showTimeComplete(time);
+});
+
+function showTimeComplete(time) {
+    let hours = Math.floor(time / 3600);
+    let minutes = Math.floor((time % 3600) / 60);
+    let seconds = time % 60;
+
+    window.levelCompleteTime.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
 }

@@ -202,5 +202,11 @@ namespace WebApplication1
         {
             timer.Stop();
         }
+
+        public async Task GameWon()
+        {
+            timer.Stop();
+            await _gameManager.SendGameEnd(this);
+        }
     }
 }

@@ -5,7 +5,6 @@
     grid-template-rows: 1fr;
     width: 600px;
     height: 400px;
-    margin: 20px auto;
     background-color: #0d0d0d;
     border: 1px solid #00fff7;
     border-radius: 8px;
@@ -20,7 +19,6 @@
     grid-template-rows: 1fr;
     width: 600px;
     height: 400px;
-    margin: 20px auto;
     background-color: #0d0d0d;
     border: 1px solid #00fff7;
     border-radius: 8px;
@@ -98,3 +96,10 @@ pre code {
         background-color: #00fff7;
         color: black;
     }
+
+#levelCompleteBlock{
+    background-color:lightyellow;
+    width:300px;
+    height:65px;
+    display:none;
+}

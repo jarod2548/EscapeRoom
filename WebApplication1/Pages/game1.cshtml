@@ -142,7 +142,9 @@
   <button>7, 4</button>
   <button>6 3</button>
   <br />
-  <button>Controller Antwoorden</button>
+  <button onclick="checkAwnsers()">
+      Controller Antwoorden
+  </button>
                 </div>
                     <button id ="arrowRight" onclick="goToNextQuestion()">
                         <img src="~/images/Pijl.png" />
@@ -151,8 +153,16 @@
             <div id="gameArea5">
                 <img src="~/images/game3.png" />
             </div>
+            
    </div>
-
+   <div id ="levelCompleteBlock">
+       <p id="levelCompleteText">
+           Gefeliciteerd, je hebt het level gehaald in :
+       </p>
+       <p id="levelCompleteTime">
+           
+       </p>
+   </div>
 
     <script src="@("https://cdn.jsdelivr.net/npm/@microsoft/signalr@8.0.7/dist/browser/signalr.min.js")"></script>
    

@@ -69,6 +69,9 @@ window.connection.onclose(error => {
     gameArea1.style.display = 'none';
     gameArea2.style.display = 'none';
     gameArea3.style.display = 'none';
+    window.gameArea4.style.display = 'none';
+    window.gameArea5.style.display = 'none';
+    window.levelCompleteBlock.style.display = 'none';
     fakeWave.style.display = 'none';
     start1BTN.style.setProperty('display', 'inline-block', 'important');
     start2BTN.style.setProperty('display', 'inline-block', 'important');
@@ -82,6 +85,9 @@ connection.on('Disconnected', function () {
     gameArea1.style.display = 'none';
     gameArea2.style.display = 'none';
     gameArea3.style.display = 'none';
+    window.gameArea4.style.display = 'none';
+    window.gameArea5.style.display = 'none';
+    window.levelCompleteBlock.style.display = 'none';
     fakeWave.style.display = 'none';
     start1BTN.style.setProperty('display', 'inline-block', 'important');
     start2BTN.style.setProperty('display', 'inline-block', 'important');
@@ -107,6 +113,7 @@ connection.on("StartGame", function (gameId, gameNumber) {
 });
 
 window.connection.on('SpawnWaves', function (WGD) {
+    console.log(WGD);
     spawnWaves(WGD.xPosWave1, WGD.xPosWave2, WGD.yPosWave);
 });
 
