@@ -97,6 +97,78 @@ pre code {
         color: black;
     }
 
+
+#switch_box {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: auto;
+}
+
+#switch {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#switch img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+    }
+
+.device img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+
+/* Algemene stijl voor computers/laptops */
+.device {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    top: 50%;
+    left: 50%;
+}
+
+/* Plaats de apparaten in een cirkel */
+#computer1 {
+    transform: translate(-50%, -50%) rotate(0deg) translate(150px) rotate(-0deg);
+}
+
+#computer2 {
+    transform: translate(-50%, -50%) rotate(45deg) translate(150px) rotate(-45deg);
+}
+
+#computer3 {
+    transform: translate(-50%, -50%) rotate(90deg) translate(150px) rotate(-90deg);
+}
+
+#computer4 {
+    transform: translate(-50%, -50%) rotate(135deg) translate(150px) rotate(-135deg);
+}
+
+#laptop1 {
+    transform: translate(-50%, -50%) rotate(180deg) translate(150px) rotate(-180deg);
+}
+
+#laptop2 {
+    transform: translate(-50%, -50%) rotate(225deg) translate(150px) rotate(-225deg);
+}
+
+#laptop3 {
+    transform: translate(-50%, -50%) rotate(270deg) translate(150px) rotate(-270deg);
+}
+
+#laptop4 {
+    transform: translate(-50%, -50%) rotate(315deg) translate(150px) rotate(-315deg);
+}
+
+
+
 #levelCompleteBlock{
     background-color:lightyellow;
     width:300px;
