@@ -72,41 +72,6 @@ app.UseAuthorization();
 // -- Hier voeg je WebSockets middleware toe --
 app.UseWebSockets();
 
-app.Use(async (context, next) =>
-{
-    if (context.Request.Path == "/ws" && context.WebSockets.IsWebSocketRequest)
-    {
-        using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-        Console.WriteLine("WebSocket verbonden");
-
-        var buffer = new byte[1024 * 4];
-
-        while (webSocket.State == System.Net.WebSockets.WebSocketState.Open)
-        {
-            var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-
-            if (result.MessageType == System.Net.WebSockets.WebSocketMessageType.Text)
-            {
-                var message = System.Text.Encoding.UTF8.GetString(buffer, 0, result.Count);
-                Console.WriteLine("Ontvangen: " + message);
-
-                var response = $"Server ontving: {message}";
-                var responseBytes = System.Text.Encoding.UTF8.GetBytes(response);
-                await webSocket.SendAsync(new ArraySegment<byte>(responseBytes), System.Net.WebSockets.WebSocketMessageType.Text, true, CancellationToken.None);
-            }
-
-            if (result.MessageType == System.Net.WebSockets.WebSocketMessageType.Close)
-            {
-                Console.WriteLine("WebSocket gesloten");
-                await webSocket.CloseAsync(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, "Gesloten", CancellationToken.None);
-            }
-        }
-    }
-    else
-    {
-        await next();
-    }
-});
 
 app.MapHub<GameHub>("/gamehub");
 app.MapRazorPages();

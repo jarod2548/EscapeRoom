@@ -348,22 +348,3 @@ if (protocol != 'https:') {
     };
 }
 
-
-
-
-
-
-
-const ws = new WebSocket("ws://onzeescaperoom.nl:9000");
-
-ws.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-
-    if (data.type === "status") {
-        console.log("Button status:", data);
-    }
-};
-
-function stuurAlert() {
-    ws.send(JSON.stringify({ command: "alert" }));
-}
