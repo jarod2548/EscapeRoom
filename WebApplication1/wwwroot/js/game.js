@@ -205,7 +205,7 @@ function startGame2() {
         playerNumber = 2;
     }
 }
-
+//////////////////////////////////////// knop toevoegen//////////////////////////////////
 function enableMovement() {
     document.onkeydown = function (event) {
         const step = 10;
@@ -273,15 +273,14 @@ function animateWaves() {
     }
     waveAnimationID = requestAnimationFrame(update);
 }
+/////////////////////fout detecteren met rode lets knipperen/////////////
 function collision(a, b) {
     if (a.x + (a.width / 2) > b.x &&
         a.x < b.x + b.width && playerNumber === 1) {
         if (a.y - a.height < b.y + (b.height / 2) &&
             a.y + a.height > b.y - (b.height / 2)) {
             player.y = 360;
-            if (ws.readyState === WebSocket.OPEN) {
-                ws.send(JSON.stringify({ command: "alert" }));
-            }
+            ws.send(JSON.stringify({ command: "alert" }));
             respawnWave();
             increaseTime(gameID);
         }
@@ -355,8 +354,16 @@ if (protocol != 'https:') {
 
 
 
+const ws = new WebSocket("ws://onzeescaperoom.nl:9000");
 
+ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
 
+    if (data.type === "status") {
+        console.log("Button status:", data);
+    }
+};
 
-
-
+function stuurAlert() {
+    ws.send(JSON.stringify({ command: "alert" }));
+}
