@@ -131,7 +131,8 @@ function drawDonuts(canvasElements, colorInts)
     }
 }
 function drawDonut(canvasElement, shapeInt) {
-    let colorInts = wrongColors[shapeInt];
+    console.log(rickColors);
+    let colorInts = rickColors[shapeInt];
     console.log(colorInts);
     
     let newColors = getRandomColors(colorInts);
