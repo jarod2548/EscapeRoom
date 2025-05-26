@@ -88,6 +88,13 @@ namespace WebApplication1
                 new int[]{0,3},
                 new int[]{3,1},
             };
+            public List<int[]> colo { get; set; } = new List<int[]>
+            {
+                new int[]{2,1,0,3},
+                new int[]{0,1,2,3},
+                new int[]{3,1,0,2},
+                new int[]{3,0,2,1}
+            };
 
             public List<int> buttonToUse { get; set; } = new List<int>();
 
@@ -171,12 +178,19 @@ namespace WebApplication1
         }
         public async Task CheckLights(int BTNpressed, int gameOrder) 
         {
-            Console.WriteLine("Button pressed on site");
             if (LGD.buttonToUse[gameOrder] == BTNpressed) 
             { 
                 Console.WriteLine("Correct button");
                 LGD.currentButton++;
-                await _gameManager.SendResponse(this.ID);
+                if(LGD.currentButton > 1)
+                {
+
+                }
+                else
+                {
+                    await _gameManager.SendResponse(this.ID);
+                }
+                    
                 
             }
             else 

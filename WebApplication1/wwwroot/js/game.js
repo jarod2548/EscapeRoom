@@ -3,6 +3,9 @@ let lives = 3;
 const victoryMessage = document.getElementById('victoryMessage');
 const nextGameBTN = document.getElementById('nextGameBTN');
 
+const protocol = window.location.protocol;
+const ws = null;
+
 const player = {
     x: 284,
     y: 360,
@@ -24,11 +27,14 @@ const wave2data = {
 }
 
 let lastTime = 0;
+let deltaTime = 0;  
 const fps = 60;
 const interval = 1000 / fps;
 
 const playerElement = document.getElementById('player');
-const waveContainer1 = document.getElementById('gameArea1');
+window.gameArea1 = document.getElementById('gameArea1');
+window.gameArea2 = document.getElementById('gameArea2');
+window.gameArea3 = document.getElementById('gameArea3');
 
 const start1BTN = document.getElementById('start1BTN');
 const start2BTN = document.getElementById('start2BTN');
@@ -58,7 +64,9 @@ function Connect(playerNumber) {
 window.connection.onclose(error => {
     window.connection.stop();
     cancelAnimationFrame(waveAnimationID);
-    waveContainer1.style.display = 'none';
+    gameArea1.style.display = 'none';
+    gameArea2.style.display = 'none';
+    gameArea3.style.display = 'none';
     fakeWave.style.display = 'none';
     start1BTN.style.setProperty('display', 'inline-block', 'important');
     start2BTN.style.setProperty('display', 'inline-block', 'important');
@@ -66,16 +74,28 @@ window.connection.onclose(error => {
     // Attempt reconnection or show error to user
 });
 
+connection.on('Disconnected', function () {
+    window.connection.stop();
+    cancelAnimationFrame(waveAnimationID);
+    gameArea1.style.display = 'none';
+    gameArea2.style.display = 'none';
+    gameArea3.style.display = 'none';
+    fakeWave.style.display = 'none';
+    start1BTN.style.setProperty('display', 'inline-block', 'important');
+    start2BTN.style.setProperty('display', 'inline-block', 'important');
+    playerNumber = 0;
+});
+
 
 connection.on("StartGame", function (gameId, gameNumber) {
     console.log("start game");
     if (playerNumber === 1) {
-        waveContainer1.style.display = 'block';
+        gameArea1.style.display = 'block';
         fakeWave.style.display = 'block';
 
         enableMovement();
     } else if (playerNumber === 2) {
-        waveContainer1.style.display = 'block';
+        gameArea1.style.display = 'block';
     }
     gameID = gameId;
     animateWaves();
@@ -112,7 +132,7 @@ window.connection.on("StartNextLevel", function (gameId, playerNumber
     gameOver = true;
     cancelAnimationFrame(waveAnimationID);
     nextGameBTN.style.display = 'none';
-    waveContainer1.style.display = 'none';
+    gameArea1.style.display = 'none';
     fakeWave.style.display = 'none';
     victoryMessage.style.display = 'none';
 
@@ -247,7 +267,6 @@ function animateWaves() {
         }
         if (!gameOver) {
             waveAnimationID = requestAnimationFrame(update);
-            console.log(gameOver);
         }    
     }
     waveAnimationID = requestAnimationFrame(update);
@@ -272,7 +291,6 @@ function increaseTime() {
 }
 nextGameBTN.addEventListener('click', () => {
     victoryMessage.style.display = 'none';
-    console.log("Go to Next level");
 
     if (window.connection.state === signalR.HubConnectionState.Connected) {
         window.connection.invoke('NextLevel', gameID, playerNumber)
@@ -281,6 +299,58 @@ nextGameBTN.addEventListener('click', () => {
         console.log('Geen verbinding met server');
     }
 });
+window.addEventListener('beforeunload', async () => {
+    try {
+        await connection.stop();  // Stops the connection
+    } catch (error) {
+        console.error("Error stopping SignalR connection:", error);
+    }
+});
+// WebSocket verbinding maken met de Raspberry Pi
+if (protocol != 'https:') {
+    ws = new WebSocket("ws://169.254.193.164:6789");
+
+    ws.onopen = () => {
+        console.log("WebSocket verbonden met Raspberry Pi.");
+        // Test het licht wanneer de verbinding tot stand komt
+    };
+
+    ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        console.log("GPIO-knoppenstatus ontvangen:", data);
+
+        if (data.button2) {
+            console.log("Knop 1 is ingedrukt");
+            player.x -= 2;
+        }
+        if (data.button1) {
+            console.log("Knop 2 is ingedrukt");
+            player.x += 2;
+        }
+        if (data.button3) {
+            console.log("Knop 2 is ingedrukt");
+            player.y -= 2;
+        }
+        if (data.button4) {
+            console.log("Knop 2 is ingedrukt");
+            player.y += 2;
+        }
+    };
+
+    ws.onerror = (error) => {
+        console.error("WebSocket-fout:", error);
+    };
+
+    ws.onclose = () => {
+        console.warn("WebSocket is gesloten");
+    };
+}
+
+
+
+
+
+
 
 const ws = new WebSocket("ws://onzeescaperoom.nl:9000");
 

@@ -1,0 +1,80 @@
+﻿@page
+@model WebApplication1.Pages.game4Model
+@{
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    textarea { width: 100%; height: 150px; font-family: monospace; }
+    button { margin-top: 10px; padding: 10px; }
+    #feedback { margin-top: 10px; font-weight: bold; }
+  </style>
+</head>
+<body>
+    <div id="gameArea4" style="display:none;">
+        <h1> Vraag 1</h1>
+  <p id ="">Welk antwoord moet ingevuld worden in plaats van de ? om 10 als antwoord te krijgen</p>
+
+  <pre id="text1"><code>
+      function addNumbers(a, b) { 
+          return a + b; 
+          }
+      let number = addNumbers(?)
+      console.log(number);
+  </code>     
+  </pre> 
+  <button>4, 3</button>
+  <button>5 5</button>
+  <button>2, 8</button>
+  <h1> Vraag 2</h1>
+  <p id ="">Hoe vaak wordt hallo geprint ?</p>
+
+  <pre id="text2"><code>
+      const lijstMetWoorden = ["huisje", "boompje", "beestje"];
+
+      function LoopDoorLijst(lijst) { 
+          for(let i = 0; i &lt lijst.Count; i++){
+              console.log("hallo");
+          }
+      }   
+      LoopDoorLijst(lijstMetWoorden);
+  </code>     
+  </pre> 
+  <button>3</button>
+  <button>2</button>
+  <button>4</button>
+  <h1> Vraag 3</h1>
+  <p id ="">Om een funcie uit te voeren alleen wanneer een bepaalde voorwaarde is voldaan wordt een if-statement gebruikt.
+      Welke waardes moet ingevuld worden om de statement compleet te maken ?
+  </p>
+
+  <pre id="text3"><code>
+      function CheckNumbers(a, b){
+          if(a &gt b){
+          console.log("juiste antwoord");
+      }
+      }
+      CheckNumbers(?);     
+  </code>     
+  </pre> 
+  <button>2, 2</button>
+  <button>7, 4</button>
+  <button>6 3</button>
+  <br />
+  <button>Controller Antwoorden</button>
+    </div>
+  <div id="gameArea5" style="display:none;">
+      <img src="~/images/game3.png" />
+  </div>
+
+  
+  <div id="feedback" >
+    
+  
+  </div>
+  <script src="~/js/game4.js"></script>
+</body>
+</html>

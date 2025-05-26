@@ -1,7 +1,9 @@
-using Microsoft.AspNetCore.ResponseCompression;
+﻿using Microsoft.AspNetCore.ResponseCompression;
 using WebApplication1;
 using WebApplication1.services;
-using System.Data.SQLite; //deze wordt niet gebruikt, maar is later nodig voor de Database
+using Microsoft.AspNetCore.Mvc;
+using System.Data.SQLite;
+using System.Collections.Concurrent; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +35,24 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+ConcurrentDictionary<string, string> registeredDevices = new ConcurrentDictionary<string, string>();
+    
+app.MapPost("/api/device/register", ([FromBody] DeviceRegistration registration, HttpContext context) =>
+{
+    var ip = context.Connection.RemoteIpAddress?.ToString() ?? "onbekend";
+    registeredDevices[registration.DeviceId] = ip;
+
+    Console.WriteLine($"Raspberry Pi geregistreerd: {registration.DeviceId} vanaf IP {ip}");
+
+    return Results.Ok(new
+    {
+        status = "ok",
+        message = "Device geregistreerd"
+    });
+});
+
+app.MapGet("/api/device/devices", () => Results.Ok(registeredDevices));
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -96,3 +116,5 @@ app.MapFallbackToFile("index.html"); // Blazor/Razor fallback
 Console.WriteLine($"hello");
 
 app.Run();
+
+record DeviceRegistration(string DeviceId);

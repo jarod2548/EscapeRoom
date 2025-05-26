@@ -1,6 +1,7 @@
 ﻿@page
 @model IndexModel
 @{
+   
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -32,49 +33,53 @@
 
          <div id="gameArea2" style="display:none;">
                 <canvas id="light1" class="grid-item lightVersion1"></canvas>
-                <img src="~/images/cirkel.png" id="shape1" class="grid-item shapeVersion1"></img>
+                <img src="~/images/cirkel.png" id="shape1" class="grid-item shapeVersion1"></>
 
                 <canvas id="light2" class="grid-item lightVersion2"></canvas>
-                <img src="~/images/driehoek.png" id="shape2" class="grid-item shapeVersion2"></img>
+                <img src="~/images/driehoek.png" id="shape2" class="grid-item shapeVersion2"></>
 
                 <canvas id="light3" class="grid-item lightVersion3"></canvas>
-                <img src="~/images/vierkant.png" id="shape3" class="grid-item shapeVersion3"></img>
+                <img src="~/images/vierkant.png" id="shape3" class="grid-item shapeVersion3"></>
 
                 <canvas id="light4" class="grid-item lightVersion1"></canvas>
-                <img src="~/images/cirkel.png" id="shape4" class="grid-item shapeVersion1"></img>
+                <img src="~/images/cirkel.png" id="shape4" class="grid-item shapeVersion1"></>
 
                 <canvas id="light5" class="grid-item lightVersion4"></canvas>
-                <img src="~/images/Letter M.png" id="shape5" class="grid-item shapeVersion4"></img>
+                <img src="~/images/Letter M.png" id="shape5" class="grid-item shapeVersion4"></>
 
                 <canvas id="light6" class="grid-item lightVersion3"></canvas>
-                <img src="~/images/vierkant.png" id="shape6" class="grid-item shapeVersion3"></img>
+                <img src="~/images/vierkant.png" id="shape6" class="grid-item shapeVersion3"></>
 
                 <canvas id="light7" class="grid-item lightVersion4"></canvas>
-                <img src="~/images/Letter M.png" id="shape7" class="grid-item shapeVersion4"></img>
+                <img src="~/images/Letter M.png" id="shape7" class="grid-item shapeVersion4"></>
 
                 <canvas id="light8" class="grid-item lightVersion2"></canvas>
-                <img src="~/images/driehoek.png" id="shape8" class="grid-item shapeVersion2"></img>
+                <img src="~/images/driehoek.png" id="shape8" class="grid-item shapeVersion2"></>
 
                 <canvas id="light9" class="grid-item lightVersion4"></canvas>
-                <img src="~/images/Letter M.png" id="shape9" class="grid-item shapeVersion4"></img>
+                <img src="~/images/Letter M.png" id="shape9" class="grid-item shapeVersion4"></>
 
                 <canvas id="light10" class="grid-item lightVersion3"></canvas>
-                <img src="~/images/vierkant.png" id="shape10" class="grid-item shapeVersion3"></img>
+                <img src="~/images/vierkant.png" id="shape10" class="grid-item shapeVersion3"></>
 
             </div>
             <div id="gameArea3" style="display:none;">
-                <button type="button"  onclick="shapePressed(0)">
+                <button id="shapeBTN1" type="button"  onclick="shapePressed(0)">
                     <img src ="~/images/cirkel.png" />
                 </button>
-                <button type="button" onclick="shapePressed(1)">
-                    <img src ="~/images/vierkant.png" />
-                </button>
-                <button type="button" onclick="shapePressed(2)">
+            <button id="shapeBTN2" type="button" onclick="shapePressed(1)">
                     <img src ="~/images/driehoek.png" />
                 </button>
-                <button type="button" onclick="shapePressed(3)">
+            <button id="shapeBTN3" type="button" onclick="shapePressed(2)">
+                    <img src ="~/images/vierkant.png" />
+                </button>
+            <button id="shapeBTN4" type="button" onclick="shapePressed(3)">
                     <img src ="~/images/Letter M.png" />
                 </button>
+
+                <canvas id="exampleLight1"></canvas>
+
+                <canvas id="exampleLight2"></canvas>
             </div>
    </div>
 

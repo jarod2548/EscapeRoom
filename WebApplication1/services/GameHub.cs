@@ -84,7 +84,7 @@ namespace WebApplication1.services
 
         public async Task Level1Complete(string gameID)
         {
-            _gameManager.Level1Complete(gameID);
+            await _gameManager.Level1Complete(gameID);
         }
     }
 }
