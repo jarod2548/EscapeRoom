@@ -76,7 +76,6 @@ app.UseWebSockets();
 app.MapHub<GameHub>("/gamehub");
 app.MapRazorPages();
 
-app.MapFallbackToFile("index.html"); // Blazor/Razor fallback
 
 Console.WriteLine($"hello");
 

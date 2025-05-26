@@ -27,7 +27,7 @@ const wave2data = {
 }
 
 let lastTime = 0;
-let deltaTime = 0;  
+let deltaTime = 0;
 const fps = 60;
 const interval = 1000 / fps;
 
@@ -205,7 +205,7 @@ function startGame2() {
         playerNumber = 2;
     }
 }
-//////////////////////////////////////// knop toevoegen//////////////////////////////////
+
 function enableMovement() {
     document.onkeydown = function (event) {
         const step = 10;
@@ -256,7 +256,7 @@ function animateWaves() {
             SendMovement(player.x, player.y);
 
             if (player.y <= 10) {
-                
+
                 if (playerNumber === 1) {
                     console.log("sending message");
                     window.connection.invoke('Level1Complete', gameID);
@@ -269,18 +269,19 @@ function animateWaves() {
         }
         if (!gameOver) {
             waveAnimationID = requestAnimationFrame(update);
-        }    
+        }
     }
     waveAnimationID = requestAnimationFrame(update);
 }
-/////////////////////fout detecteren met rode lets knipperen/////////////
 function collision(a, b) {
     if (a.x + (a.width / 2) > b.x &&
         a.x < b.x + b.width && playerNumber === 1) {
         if (a.y - a.height < b.y + (b.height / 2) &&
             a.y + a.height > b.y - (b.height / 2)) {
             player.y = 360;
-            ws.send(JSON.stringify({ command: "alert" }));
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ command: "alert" }));
+            }
             respawnWave();
             increaseTime(gameID);
         }
