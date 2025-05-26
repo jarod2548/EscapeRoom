@@ -230,5 +230,15 @@ namespace WebApplication1.services
             await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("SendLevel1Complete");
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("SendLevel1Complete");
         }
+        public async Task Level2Complete(string gameID)
+        {
+            GameState state = Games[gameID];
+
+            string playerID1 = state.playerID1;
+            string playerID2 = state.playerID2;
+
+            await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("SendLevel2Complete");
+            await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("SendLevel2Complete");
+        }
     }
 }

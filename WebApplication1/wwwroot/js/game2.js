@@ -36,8 +36,12 @@ window.connection.on("StartGame2", function (LGD) {
 });
 
 window.connection.on("Response", function (currentButton) {
-    console.log("currentButton :", currentButton);
     gameOrder = currentButton;
+});
+
+window.connection.on("SendLevel2Complete", function () {
+    window.gameArea2.style.display = "none";
+    window.gameArea3.style.display = "none";
 });
 
 

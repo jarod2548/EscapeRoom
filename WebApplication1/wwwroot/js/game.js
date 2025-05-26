@@ -292,7 +292,6 @@ function increaseTime() {
 }
 nextGameBTN.addEventListener('click', () => {
     victoryMessage.style.display = 'none';
-    console.log("Go to Next level");
 
     if (window.connection.state === signalR.HubConnectionState.Connected) {
         window.connection.invoke('NextLevel', gameID, playerNumber)

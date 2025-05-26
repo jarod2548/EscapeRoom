@@ -178,12 +178,19 @@ namespace WebApplication1
         }
         public async Task CheckLights(int BTNpressed, int gameOrder) 
         {
-            Console.WriteLine("Button pressed on site");
             if (LGD.buttonToUse[gameOrder] == BTNpressed) 
             { 
                 Console.WriteLine("Correct button");
                 LGD.currentButton++;
-                await _gameManager.SendResponse(this.ID);
+                if(LGD.currentButton > 1)
+                {
+
+                }
+                else
+                {
+                    await _gameManager.SendResponse(this.ID);
+                }
+                    
                 
             }
             else 
