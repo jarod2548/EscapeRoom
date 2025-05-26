@@ -1,6 +1,21 @@
 ﻿/* Estilo general para el área de preguntas */
 #gameArea4 {
-    display: grid;
+    display: none;
+    grid-template-columns: 10% 80% 10%;
+    grid-template-rows: 1fr;
+    width: 600px;
+    height: 400px;
+    margin: 20px auto;
+    background-color: #0d0d0d;
+    border: 1px solid #00fff7;
+    border-radius: 8px;
+    box-shadow: 0 0 20px #00fff7;
+    overflow: hidden;
+    font-family: 'Press Start 2P', monospace;
+    color: #00fff7;
+}
+#gameArea5 {
+    display: none;
     grid-template-columns: 10% 80% 10%;
     grid-template-rows: 1fr;
     width: 600px;
