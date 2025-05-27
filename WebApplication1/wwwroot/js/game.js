@@ -5,6 +5,7 @@ const nextGameBTN = document.getElementById('nextGameBTN');
 
 const protocol = window.location.protocol;
 const ws = null;
+window.ws2 = null;
 
 const player = {
     x: 284,
@@ -123,6 +124,22 @@ window.connection.on("ResponseMovement", function (xPos, yPos) {
     } else if (playerNumber === 2) {
         player.y = yPos;
         player.x = xPos;
+    }
+});
+
+window.connection.on("RaspMovement", function (direction) {
+    console.log("received from pi")
+    if (direction === "left") {
+        player.x += 8;
+    }
+    if (direction === "right") {
+        player.x -= 8;
+    }
+    if (direction === "down") {
+        player.y += 8;
+    }
+    if (direction === "up") {
+        player.y -= 8;
     }
 });
 
@@ -246,8 +263,8 @@ function spawnWaves(xPos1, xPos2, yPos) {
 function animateWaves() {
     function update(timestamp) {
         if (timestamp - lastTime >= interval) {
-            wave1data.y += 2;
-            wave2data.y += 2;
+            wave1data.y += 0.5;
+            wave2data.y += 0.5;
             wave2.style.top = wave2data.y + "px";
             wave1.style.top = wave1data.y + "px";
             fakeWave.style.top = wave1data.y + "px";

@@ -8,6 +8,7 @@ using System.Collections.Concurrent;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 builder.Services.AddSingleton<GameManager>();
 builder.Services.AddSignalR();
@@ -72,8 +73,10 @@ app.UseAuthorization();
 // -- Hier voeg je WebSockets middleware toe --
 app.UseWebSockets();
 
+app.MapControllers();
 
 app.MapHub<GameHub>("/gamehub");
+app.MapHub<KnoppenHub>("/knoppenhub");
 app.MapRazorPages();
 
 

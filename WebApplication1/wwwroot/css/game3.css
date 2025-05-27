@@ -1,4 +1,4 @@
-﻿/* Estilo general para el área de preguntas */
+﻿
 #gameArea4 {
     display: none;
     grid-template-columns: 10% 80% 10%;
@@ -28,7 +28,7 @@
     color: #00fff7;
 }
 
-/* Flechas izquierda y derecha */
+
 #arrowLeft, #arrowRight {
     display: flex;
     align-items: center;
@@ -43,7 +43,7 @@
         filter: invert(94%) sepia(99%) saturate(0%) hue-rotate(136deg) brightness(150%) contrast(100%);
     }
 
-/* Preguntas centrales */
+
 #question1, #question2, #question3 {
     display: flex;
     flex-direction: column;
@@ -53,7 +53,7 @@
     padding: 10px;
 }
 
-/* Texto de la pregunta */
+
 .questionText {
     background-color: black;
     color: #00fff7;
@@ -61,24 +61,24 @@
     border-radius: 6px;
     border: 1px solid #00fff7;
     margin-bottom: 10px;
-    font-size: 10px;
+    font-size: 12px;
     width: 100%;
     text-align: left;
 }
 
-/* Código */
+
 pre code {
     background-color: #111;
     display: block;
     padding: 10px;
     border-radius: 6px;
-    font-size: 8px;
+    font-size: 10px;
     color: #00fff7;
     overflow-x: auto;
     border: 1px solid #00fff7;
 }
 
-/* Botones de opciones */
+
 #question1 button, #question2 button, #question3 button {
     background-color: black;
     color: #00fff7;
@@ -116,8 +116,9 @@ pre code {
     left: 0;
     width: 600px;
     height: 400px;
-    pointer-events: none; /* Allows mouse interaction to pass through */
+    pointer-events: none; 
 }
+
 
 #levelCompleteBlock{
     background-color:lightyellow;
@@ -125,3 +126,78 @@ pre code {
     height:65px;
     display:none;
 }
+
+.codeWrapper {
+    width: 100%;
+    background-color: black;
+    border: 1px solid #00fff7;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.questionButtons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+
+@media (max-width: 600px) {
+    #gameArea4,
+    #gameArea5 {
+        width: 90%;
+        max-width: 600px;
+    }
+
+    .questionText,
+    pre code,
+    #question1 button,
+    #question2 button,
+    #question3 button {
+        font-size: clamp(10px, 3vw, 16px);
+    }
+
+    #arrowLeft img,
+    #arrowRight img {
+        width: 24px;
+    }
+}
+
+#levelCompleteBlock {
+    display: none;
+    background-color: #0d0d0d;
+    border: 2px solid #00fff7;
+    box-shadow: 0 0 20px #00fff7;
+    color: #00fff7;
+    font-family: 'Press Start 2P', monospace;
+    padding: 5px;
+    margin: 10px auto;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    border-radius: 10px;
+    animation: pulseGlow 2s infinite alternate;
+}
+
+    #levelCompleteBlock h2 {
+        font-size: clamp(16px, 3vw, 24px);
+        margin-bottom: 12px;
+    }
+
+    #levelCompleteBlock p {
+        font-size: clamp(14px, 2.5vw, 18px);
+        margin: 5px 0;
+    }
+
+@keyframes pulseGlow {
+    from {
+        box-shadow: 0 0 10px #00fff7;
+    }
+
+    to {
+        box-shadow: 0 0 30px #00fff7;
+    }
+}
+

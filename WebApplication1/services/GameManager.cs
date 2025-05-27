@@ -2,22 +2,26 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Xml.XPath;
+using WebApplication1.Controllers;
 
 namespace WebApplication1.services
 {
     public class GameManager
     {
         private readonly IHubContext<GameHub> _hubContext;
+        private readonly IHubContext<KnoppenHub> _knoppenHubContext;
 
         public ConcurrentDictionary<string, GameState> Games = new();
         public ConcurrentDictionary<string, string> Connections = new();
+        public ConcurrentDictionary<string, string> RaspConnections = new();
 
         private readonly object _connectionsLock = new object();
         private readonly object _sessionsLock = new object();
 
-        public GameManager(IHubContext<GameHub> hubContext)
+        public GameManager(IHubContext<GameHub> hubContext, IHubContext<KnoppenHub> knoppenHubContext)
         {
             _hubContext = hubContext;
+            _knoppenHubContext = knoppenHubContext;
         }
         public async Task OnDisconnected(string connectionID)
         {
@@ -61,6 +65,11 @@ namespace WebApplication1.services
         public async Task IncreaseTimer(string gameID)
         {
             Games[gameID].IncreaseTimer();
+            foreach (var raspConnection in RaspConnections)
+            {
+                Console.WriteLine(raspConnection.Value);
+                await _knoppenHubContext.Clients.Client(raspConnection.Value).SendAsync("Fout", "ping");
+            }
         }
         public async Task RemoveConnection(string playerID)
         {
@@ -205,6 +214,7 @@ namespace WebApplication1.services
             string playerID1 = currentState.playerID1;
             string playerID2 = currentState.playerID2;
 
+
             await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("Timer", currentState.timeSinceStart);
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("Timer", currentState.timeSinceStart);
         }
@@ -254,6 +264,41 @@ namespace WebApplication1.services
 
             await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("GameComplete",state.timeSinceStart);
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("GameComplete", state.timeSinceStart);
+        }
+
+        public async Task MovementFromRaspBerryPi(string button)
+        {
+            foreach (var game in Games)
+            {
+                GameState state = game.Value;
+
+                string playerID1 = state.playerID1;
+                string playerID2 = state.playerID2;
+                switch (button)
+                {
+                    case "button1":
+                        await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("RaspMovement", "right");
+                        break;
+                    case "button2":
+                        await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("RaspMovement", "left");
+                        break;
+                    case "button3":
+                        await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("RaspMovement", "down");
+                        break;
+                    case "button4":
+                        await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("RaspMovement", "up");
+                        break;
+                }
+            }
+
+            
+        }
+
+        public async Task NewRaspberryPI(string connectionID , string playerID)
+        {
+            RaspConnections.TryAdd(playerID, connectionID);     
+
+            await _hubContext.Clients.Client(connectionID).SendAsync("Connected", "ping");
         }
     }
 }
