@@ -140,7 +140,7 @@ window.connection.on("RaspMovement", function (direction) {
     if (direction === "up") {
         player.y -= 2;
     }
-}
+});
 
 window.connection.on('Timer', function (time) {
     Timer(time);
