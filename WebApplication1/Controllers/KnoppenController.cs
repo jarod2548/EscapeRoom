@@ -1,8 +1,9 @@
-﻿namespace WebApplication1.services;
+﻿namespace WebApplication1.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
 using System.Threading.Tasks;
+using WebApplication1.services;
 
 [ApiController]
 [Route("api/knoppen")]

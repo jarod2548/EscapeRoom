@@ -8,6 +8,7 @@ using System.Collections.Concurrent;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 builder.Services.AddSingleton<GameManager>();
 builder.Services.AddSignalR();
