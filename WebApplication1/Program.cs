@@ -74,6 +74,7 @@ app.UseWebSockets();
 
 
 app.MapHub<GameHub>("/gamehub");
+app.MapHub<KnoppenHub>("/knoppenhub");
 app.MapRazorPages();
 
 
