@@ -22,12 +22,24 @@ public class KnoppenController : ControllerBase
     public async Task<IActionResult> Post([FromBody] KnopStatus status)
     {
         if (status.Button1) {
-            _gameManager.MovementFromRaspBerryPi(Directions.left);
+            await _gameManager.MovementFromRaspBerryPi("button1");
             Console.WriteLine("Button 1 is pressed");
-        } 
-        if (status.Button2) Console.WriteLine("Button 2 is pressed");
-        if (status.Button3) Console.WriteLine("Button 3 is pressed");
-        if (status.Button4) Console.WriteLine("Button 4 is pressed");
+        }
+        if (status.Button2)
+        {
+            await _gameManager.MovementFromRaspBerryPi("button2");
+            Console.WriteLine("Button 2 is pressed");
+        }
+        if (status.Button3)
+        {
+            await _gameManager.MovementFromRaspBerryPi("button3");
+            Console.WriteLine("Button 3 is pressed");
+        }
+        if (status.Button4)
+        {
+            await _gameManager.MovementFromRaspBerryPi("button4");
+            Console.WriteLine("Button 4 is pressed");
+        }
         return Ok();
     }
 
