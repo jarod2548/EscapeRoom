@@ -260,12 +260,13 @@ namespace WebApplication1.services
 
         public async Task MovementFromRaspBerryPi(string button)
         {
+            Console.WriteLine("allah");
             foreach (var game in Games)
             {
                 GameState state = game.Value;
 
                 string playerID1 = state.playerID1;
-
+                Console.WriteLine("sending to ", playerID1);
                 switch (button)
                 {
                     case "button1":

@@ -128,6 +128,7 @@ window.connection.on("ResponseMovement", function (xPos, yPos) {
 });
 
 window.connection.on("RaspMovement", function (direction) {
+    console.log("received from pi")
     if (direction === "left") {
         player.x += 2;
     }
