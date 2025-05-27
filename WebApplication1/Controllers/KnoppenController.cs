@@ -19,8 +19,10 @@ public class KnoppenController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] KnopStatus status)
     {
-        Console.WriteLine(status);
-        Console.WriteLine(status.Button1);
+        Console.WriteLine("knop1", status.Button1);
+        Console.WriteLine("knop2", status.Button2);
+        Console.WriteLine("knop3", status.Button3);
+        Console.WriteLine("knop4", status.Button4);
         return Ok();
     }
 
