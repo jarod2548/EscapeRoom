@@ -274,17 +274,17 @@ namespace WebApplication1.services
                 {
                     case "button1":
                         Console.WriteLine("pressed right");
-                        await _hubContext.Clients.Client(playerID1).SendAsync("RaspMovement", "right");
+                        await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("RaspMovement", "right");
                         break;
                     case "button2":
                         Console.WriteLine("pressed left");
-                        await _hubContext.Clients.Client(playerID1).SendAsync("RaspMovement", "left");
+                        await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("RaspMovement", "left");
                         break;
                     case "button3":
-                        await _hubContext.Clients.Client(playerID1).SendAsync("RaspMovement", "down");
+                        await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("RaspMovement", "down");
                         break;
                     case "button4":
-                        await _hubContext.Clients.Client(playerID1).SendAsync("RaspMovement", "up");
+                        await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("RaspMovement", "up");
                         break;
                 }
             }
