@@ -10,16 +10,21 @@ using WebApplication1.services;
 public class KnoppenController : ControllerBase
 {
     private readonly IHubContext<KnoppenHub> _hubContext;
+    private readonly GameManager _gameManager;
 
-    public KnoppenController(IHubContext<KnoppenHub> hubContext)
+    public KnoppenController(IHubContext<KnoppenHub> hubContext, GameManager gameManager)
     {
         _hubContext = hubContext;
+        _gameManager = gameManager;
     }
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] KnopStatus status)
     {
-        if (status.Button1) Console.WriteLine("Button 1 is pressed");
+        if (status.Button1) {
+            _gameManager.MovementFromRaspBerryPi(Directions.left);
+            Console.WriteLine("Button 1 is pressed");
+        } 
         if (status.Button2) Console.WriteLine("Button 2 is pressed");
         if (status.Button3) Console.WriteLine("Button 3 is pressed");
         if (status.Button4) Console.WriteLine("Button 4 is pressed");
@@ -35,3 +40,4 @@ public class KnopStatus
     public bool Button3 { get; set; }
     public bool Button4 { get; set; }
 }
+public enum Directions { left, right, up , down}

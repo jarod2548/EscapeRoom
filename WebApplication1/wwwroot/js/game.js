@@ -5,6 +5,7 @@ const nextGameBTN = document.getElementById('nextGameBTN');
 
 const protocol = window.location.protocol;
 const ws = null;
+window.ws2 = null;
 
 const player = {
     x: 284,
