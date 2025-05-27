@@ -72,6 +72,7 @@ app.UseAuthorization();
 // -- Hier voeg je WebSockets middleware toe --
 app.UseWebSockets();
 
+app.MapControllers();
 
 app.MapHub<GameHub>("/gamehub");
 app.MapHub<KnoppenHub>("/knoppenhub");
