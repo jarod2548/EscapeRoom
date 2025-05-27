@@ -20,6 +20,7 @@ public class KnoppenController : ControllerBase
     public async Task<IActionResult> Post([FromBody] KnopStatus status)
     {
         Console.WriteLine(status);
+        Console.WriteLine(status.Button1);
         return Ok();
     }
 
