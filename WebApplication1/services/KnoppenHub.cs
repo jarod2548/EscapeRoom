@@ -15,6 +15,8 @@ namespace WebApplication1.services
             Console.WriteLine($"Button pressed: {button}");
             string connection = Context.ConnectionId;
 
+            await Clients.Client(connection).SendAsync("Response");
+
             await _gameManager.NewRaspberryPI(connection);
         }
     }
