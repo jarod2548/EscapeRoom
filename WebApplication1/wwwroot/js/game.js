@@ -130,16 +130,16 @@ window.connection.on("ResponseMovement", function (xPos, yPos) {
 window.connection.on("RaspMovement", function (direction) {
     console.log("received from pi")
     if (direction === "left") {
-        player.x += 2;
+        player.x += 8;
     }
     if (direction === "right") {
-        player.x -= 2;
+        player.x -= 8;
     }
     if (direction === "down") {
-        player.y += 2;
+        player.y += 8;
     }
     if (direction === "up") {
-        player.y -= 2;
+        player.y -= 8;
     }
 });
 
@@ -263,8 +263,8 @@ function spawnWaves(xPos1, xPos2, yPos) {
 function animateWaves() {
     function update(timestamp) {
         if (timestamp - lastTime >= interval) {
-            wave1data.y += 2;
-            wave2data.y += 2;
+            wave1data.y += 0.5;
+            wave2data.y += 0.5;
             wave2.style.top = wave2data.y + "px";
             wave1.style.top = wave1data.y + "px";
             fakeWave.style.top = wave1data.y + "px";
