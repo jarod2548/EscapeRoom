@@ -1,0 +1,243 @@
+﻿
+#switch_box {
+    position: relative;
+    width: 1200px;
+    height: 800px;
+    margin: auto;
+    display: grid;
+    outline: 1px solid #00fff7;
+    grid-template-columns: repeat(9, 130px);
+    grid-template-rows: repeat(9, 1fr);
+    align-items: center;
+}
+
+#switch {
+    position: relative; /* <--- toevoegen */
+    grid-area: 1 / 1 / span 1 / span 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    width: 1200px;
+    height: 200px;
+}
+
+/* Algemene stijl voor alle poorten */
+.portzone {
+    position: absolute;
+    background-color: rgba(255, 0, 0, 0.3); /* zichtbaar tijdens afstellen */
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* Individuele poorten */
+.port1 {
+    left: 255px;
+    top: 80px;
+    width: 70px;
+    height: 50px;
+}
+
+.port2 {
+    left: 345px;
+    top: 80px;
+    width: 90px;
+    height: 50px;
+}
+
+.port3 {
+    left: 455px;
+    top: 80px;
+    width: 70px;
+    height: 50px;
+}
+
+.port4 {
+    left: 558px;
+    top: 80px;
+    width: 70px;
+    height: 50px;
+}
+
+.port5 {
+    left: 660px;
+    top: 80px;
+    width: 70px;
+    height: 50px;
+}
+
+.port6 {
+    left: 760px;
+    top: 80px;
+    width: 70px;
+    height: 50px;
+}
+
+.port7 {
+    left: 862px;
+    top: 80px;
+    width: 70px;
+    height: 50px;
+}
+
+.port8 {
+    left: 965px;
+    top: 80px;
+    width: 70px;
+    height: 50px;
+}
+
+.device.selected {
+    outline: 2px solid lime;
+    border-radius: 4px;
+}
+
+.portzone.selected {
+    outline: 2px solid lime;
+    border-radius: 4px;
+}
+
+    #switch img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+.device {
+    display: flex;
+    flex-direction: column; /* icoon + input onder elkaar */
+    align-items: center;
+    justify-content: flex-start;
+    width: 60px; /* genoeg ruimte voor het inputveld */
+    height: auto;
+    position: relative;
+    z-index: 20;
+    cursor: pointer;
+}
+
+    .device img {
+        width: 70px;
+        height: 70px;
+        object-fit: contain;
+    }
+
+#computer1 {
+    grid-area: 3 / 2 / span 1 / span 1;
+}
+
+#laptop1 {
+    grid-area: 3 / 4 / span 1 / span 1;
+}
+
+#computer3 {
+    grid-area: 3 / 6 / span 1 / span 1;
+}
+
+#laptop3 {
+    grid-area: 3 / 8 / span 1 / span 1;
+}
+
+#laptop2 {
+    grid-area: 6 / 3 / span 1 / span 1;
+}
+
+#computer2 {
+    grid-area: 6 / 5 / span 1 / span 1;
+}
+
+#laptop4 {
+    grid-area: 6 / 7 / span 1 / span 1;
+}
+
+#computer4 {
+    grid-area: 6 / 9 / span 1 / span 1;
+}
+
+#SVGlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto; /* voorkomt dat SVG klikken blokkeert */
+    z-index: 5;
+}
+
+#container {
+    position: relative;
+}
+
+.connection-line {
+    stroke-width: 6 !important;
+    cursor: pointer;
+    transition: stroke 0.2s;
+}
+
+    .connection-line:hover {
+        stroke: red;
+    }
+
+.ip-input {
+    margin-top: 4px;
+    width: 90px;
+    font-size: 12px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    z-index: 25;
+}
+
+.port-label {
+    position: absolute;
+    width: 70px;
+    font-size: 12px;
+    text-align: center;
+    z-index: 15;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 2px;
+}
+
+/* Posities van de invoervelden boven elke poort */
+.port1-label {
+    left: 255px;
+    top: 45px;
+}
+
+.port2-label {
+    left: 355px;
+    top: 45px;
+}
+
+.port3-label {
+    left: 455px;
+    top: 45px;
+}
+
+.port4-label {
+    left: 558px;
+    top: 45px;
+}
+
+.port5-label {
+    left: 660px;
+    top: 45px;
+}
+
+.port6-label {
+    left: 760px;
+    top: 45px;
+}
+
+.port7-label {
+    left: 862px;
+    top: 45px;
+}
+
+.port8-label {
+    left: 965px;
+    top: 45px;
+}
+ 
