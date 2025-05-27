@@ -174,6 +174,7 @@ namespace WebApplication1
         {
             await _gameManager.SendResponseMovement(ID,xPos, yPos);
         }
+
         public async Task CheckLights(int BTNpressed, int gameOrder) 
         {
             if (LGD.buttonToUse[gameOrder] == BTNpressed) 

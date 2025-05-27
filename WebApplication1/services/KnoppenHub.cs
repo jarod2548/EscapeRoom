@@ -9,15 +9,22 @@ namespace WebApplication1.services
         {
             _gameManager = gameManager;
         }
+
+        public async Task StartConnection(string playerID)
+        {
+            string connection = Context.ConnectionId;
+            await _gameManager.NewRaspberryPI(connection, playerID);
+        }
         public async Task KnopIngedrukt(string button)
         {
             // Handle incoming button press data
             Console.WriteLine($"Button pressed: {button}");
             string connection = Context.ConnectionId;
 
-            await Clients.Client(connection).SendAsync("Response", "ping");
+            await _gameManager.MovementFromRaspBerryPi(button);
 
-            await _gameManager.NewRaspberryPI(connection);
+            await Clients.Client(connection).SendAsync("Response", "ping");
+   
         }
     }
 }

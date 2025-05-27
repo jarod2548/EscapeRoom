@@ -127,6 +127,21 @@ window.connection.on("ResponseMovement", function (xPos, yPos) {
     }
 });
 
+window.connection.on("RaspMovement", function (direction) {
+    if (direction === "left") {
+        player.x += 2;
+    }
+    if (direction === "right") {
+        player.x -= 2;
+    }
+    if (direction === "down") {
+        player.y += 2;
+    }
+    if (direction === "up") {
+        player.y -= 2;
+    }
+}
+
 window.connection.on('Timer', function (time) {
     Timer(time);
 });

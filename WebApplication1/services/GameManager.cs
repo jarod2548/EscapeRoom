@@ -12,6 +12,7 @@ namespace WebApplication1.services
 
         public ConcurrentDictionary<string, GameState> Games = new();
         public ConcurrentDictionary<string, string> Connections = new();
+        public ConcurrentDictionary<string, string> RaspConnections = new();
 
         private readonly object _connectionsLock = new object();
         private readonly object _sessionsLock = new object();
@@ -257,32 +258,39 @@ namespace WebApplication1.services
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("GameComplete", state.timeSinceStart);
         }
 
-        public async Task MovementFromRaspBerryPi(Directions directions)
+        public async Task MovementFromRaspBerryPi(string button)
         {
-            switch(directions)
+            foreach (var game in Games)
             {
-                case Directions.left:
+                GameState state = game.Value;
 
-                    break;
-                case Directions.right:
+                string playerID1 = state.playerID1;
 
-                    break;
-                case Directions.up:
-
-                    break;
-                case Directions.down:
-
-                    break;
+                switch (button)
+                {
+                    case "button1":
+                        await _hubContext.Clients.Client(playerID1).SendAsync("RaspMovement", "right");
+                        break;
+                    case "button2":
+                        await _hubContext.Clients.Client(playerID1).SendAsync("RaspMovement", "left");
+                        break;
+                    case "button3":
+                        await _hubContext.Clients.Client(playerID1).SendAsync("RaspMovement", "down");
+                        break;
+                    case "button4":
+                        await _hubContext.Clients.Client(playerID1).SendAsync("RaspMovement", "up");
+                        break;
+                }
             }
+
+            
         }
 
-        public async Task NewRaspberryPI(string connectionID)
+        public async Task NewRaspberryPI(string connectionID , string playerID)
         {
-            string playerID = Guid.NewGuid().ToString();
+            RaspConnections.TryAdd(connectionID, playerID);     
 
-            Connections.TryAdd(playerID, connectionID);
-
-            await _hubContext.Clients.Client(Connections[playerID]).SendAsync("Response");
+            await _hubContext.Clients.Client(connectionID).SendAsync("Connected", "ping");
         }
     }
 }
