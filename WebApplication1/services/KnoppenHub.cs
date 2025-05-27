@@ -20,8 +20,10 @@ namespace WebApplication1.services
             // Handle incoming button press data
             Console.WriteLine($"Button pressed: {button}");
             string connection = Context.ConnectionId;
+            Console.WriteLine(connection);
 
             await _gameManager.MovementFromRaspBerryPi(button);
+
    
         }
     }
