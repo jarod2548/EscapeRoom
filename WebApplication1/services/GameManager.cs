@@ -275,5 +275,14 @@ namespace WebApplication1.services
                     break;
             }
         }
+
+        public async Task NewRaspberryPI(string connectionID)
+        {
+            string playerID = Guid.NewGuid().ToString();
+
+            Connections.TryAdd(playerID, connectionID);
+
+            await _hubContext.Clients.Client(Connections[playerID]).SendAsync("Response");
+        }
     }
 }
