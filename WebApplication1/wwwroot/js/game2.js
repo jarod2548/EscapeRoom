@@ -161,3 +161,6 @@ function drawDonut(canvasElement, shapeInt) {
             ctx.fill();
         }
 }
+function turnOnLights() {
+
+}

@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Xml.XPath;
+using WebApplication1.Controllers;
 
 namespace WebApplication1.services
 {
@@ -254,6 +255,25 @@ namespace WebApplication1.services
 
             await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("GameComplete",state.timeSinceStart);
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("GameComplete", state.timeSinceStart);
+        }
+
+        public async Task MovementFromRaspBerryPi(Directions directions)
+        {
+            switch(directions)
+            {
+                case Directions.left:
+
+                    break;
+                case Directions.right:
+
+                    break;
+                case Directions.up:
+
+                    break;
+                case Directions.down:
+
+                    break;
+            }
         }
     }
 }
