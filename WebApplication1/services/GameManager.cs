@@ -271,7 +271,6 @@ namespace WebApplication1.services
 
                 string playerID1 = state.playerID1;
                 string playerID2 = state.playerID2;
-                Console.WriteLine(playerID1);
                 switch (button)
                 {
                     case "button1":

@@ -23,7 +23,7 @@ namespace WebApplication1.services
 
             await _gameManager.MovementFromRaspBerryPi(button);
 
-            await Clients.Client(connection).SendAsync("Response", "ping");
+            await Clients.Client(connection).SendAsync("Fout", "ping");
    
         }
     }
