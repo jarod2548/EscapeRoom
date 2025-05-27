@@ -100,71 +100,78 @@ pre code {
 
 #switch_box {
     position: relative;
-    width: 400px;
+    width: 600px;
     height: 400px;
     margin: auto;
+    display: grid;
+    grid-template-columns: repeat(9,1fr);
+    grid-template-rows: repeat(9,1fr);
+    align-items: center;
 }
 
 #switch {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    grid-area: 5 / 5 / span 1 / span 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
-#switch img {
-        width: 50px;
-        height: 50px;
+    #switch img {
+        max-width: 100%;
+        max-height: 100%;
         object-fit: contain;
     }
+
+.device {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
 
 .device img {
     width: 40px;
     height: 40px;
     object-fit: contain;
+    align-items: center;
 }
 
 
-/* Algemene stijl voor computers/laptops */
-.device {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    top: 50%;
-    left: 50%;
-}
 
 /* Plaats de apparaten in een cirkel */
 #computer1 {
-    transform: translate(-50%, -50%) rotate(0deg) translate(150px) rotate(-0deg);
+    grid-area: 5 / 2 / span 1/ span 1;
+    align-items: center;
 }
 
 #computer2 {
-    transform: translate(-50%, -50%) rotate(45deg) translate(150px) rotate(-45deg);
+    grid-area: 2 / 5 / span 1/ span 1;
 }
 
 #computer3 {
-    transform: translate(-50%, -50%) rotate(90deg) translate(150px) rotate(-90deg);
+    grid-area: 5 / 8 / span 1/ span 1;
 }
 
 #computer4 {
-    transform: translate(-50%, -50%) rotate(135deg) translate(150px) rotate(-135deg);
+    grid-area: 8 / 5 / span 1/ span 1;
 }
 
 #laptop1 {
-    transform: translate(-50%, -50%) rotate(180deg) translate(150px) rotate(-180deg);
+    grid-area: 3 / 3 / span 1/ span 1;
 }
 
 #laptop2 {
-    transform: translate(-50%, -50%) rotate(225deg) translate(150px) rotate(-225deg);
+    grid-area: 3 / 7 / span 1/ span 1;
 }
 
 #laptop3 {
-    transform: translate(-50%, -50%) rotate(270deg) translate(150px) rotate(-270deg);
+    grid-area: 7 / 7 / span 1/ span 1;
 }
 
 #laptop4 {
-    transform: translate(-50%, -50%) rotate(315deg) translate(150px) rotate(-315deg);
+    grid-area: 7 / 3 / span 1/ span 1;
 }
 
 
