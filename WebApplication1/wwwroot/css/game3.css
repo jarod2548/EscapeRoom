@@ -61,7 +61,7 @@
     border-radius: 6px;
     border: 1px solid #00fff7;
     margin-bottom: 10px;
-    font-size: 10px;
+    font-size: 12px;
     width: 100%;
     text-align: left;
 }
@@ -72,7 +72,7 @@ pre code {
     display: block;
     padding: 10px;
     border-radius: 6px;
-    font-size: 8px;
+    font-size: 10px;
     color: #00fff7;
     overflow-x: auto;
     border: 1px solid #00fff7;
@@ -143,7 +143,7 @@ pre code {
     gap: 10px;
 }
 
-/* Responsive ajustes */
+
 @media (max-width: 600px) {
     #gameArea4,
     #gameArea5 {
@@ -164,3 +164,40 @@ pre code {
         width: 24px;
     }
 }
+
+#levelCompleteBlock {
+    display: none;
+    background-color: #0d0d0d;
+    border: 2px solid #00fff7;
+    box-shadow: 0 0 20px #00fff7;
+    color: #00fff7;
+    font-family: 'Press Start 2P', monospace;
+    padding: 5px;
+    margin: 10px auto;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    border-radius: 10px;
+    animation: pulseGlow 2s infinite alternate;
+}
+
+    #levelCompleteBlock h2 {
+        font-size: clamp(16px, 3vw, 24px);
+        margin-bottom: 12px;
+    }
+
+    #levelCompleteBlock p {
+        font-size: clamp(14px, 2.5vw, 18px);
+        margin: 5px 0;
+    }
+
+@keyframes pulseGlow {
+    from {
+        box-shadow: 0 0 10px #00fff7;
+    }
+
+    to {
+        box-shadow: 0 0 30px #00fff7;
+    }
+}
+
