@@ -207,6 +207,7 @@ namespace WebApplication1.services
             string playerID1 = currentState.playerID1;
             string playerID2 = currentState.playerID2;
 
+
             await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("Timer", currentState.timeSinceStart);
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("Timer", currentState.timeSinceStart);
         }
@@ -261,18 +262,22 @@ namespace WebApplication1.services
         public async Task MovementFromRaspBerryPi(string button)
         {
             Console.WriteLine("allah");
+            Console.WriteLine(button);
             foreach (var game in Games)
             {
                 GameState state = game.Value;
 
                 string playerID1 = state.playerID1;
-                Console.WriteLine("sending to ", playerID1);
+                string playerID2 = state.playerID2;
+                Console.WriteLine(playerID1);
                 switch (button)
                 {
                     case "button1":
+                        Console.WriteLine("pressed right");
                         await _hubContext.Clients.Client(playerID1).SendAsync("RaspMovement", "right");
                         break;
                     case "button2":
+                        Console.WriteLine("pressed left");
                         await _hubContext.Clients.Client(playerID1).SendAsync("RaspMovement", "left");
                         break;
                     case "button3":
