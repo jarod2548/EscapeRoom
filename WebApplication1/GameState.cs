@@ -54,8 +54,6 @@ namespace WebApplication1
                 timeSinceStart++;
             }    
             _gameManager.SendTime(this);
-            Console.WriteLine(timeSinceStart.ToString());
-            Debug.WriteLine(timeSinceStart.ToString());
         }
         public void IncreaseTimer()
         {

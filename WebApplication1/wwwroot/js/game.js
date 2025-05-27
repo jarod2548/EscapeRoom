@@ -321,7 +321,7 @@ window.addEventListener('beforeunload', async () => {
 });
 // WebSocket verbinding maken met de Raspberry Pi
 if (protocol != 'https:') {
-    ws = new WebSocket("ws://169.254.193.164:6789");
+    ws = new WebSocket("ws://192.168.2.2:6789");
 
     ws.onopen = () => {
         console.log("WebSocket verbonden met Raspberry Pi.");
