@@ -110,6 +110,15 @@ pre code {
     align-items: center;
 }
 
+#svgLines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 600px;
+    height: 400px;
+    pointer-events: none; /* Allows mouse interaction to pass through */
+}
+
 #switch {
     grid-area: 1 / 3 / span 1 / span 5;
     display: flex;
