@@ -22,16 +22,7 @@ public class KnoppenController : ControllerBase
         Console.WriteLine("ontvangen");
         return Ok();
     }
-    [HttpPost]
-    public IActionResult OnPost([FromBody] KnopStatus data)
-    {
-        // Logging voor debug
-        Console.WriteLine($"Ontvangen van Raspberry Pi: {JsonSerializer.Serialize(data)}");
 
-        // Hier kun je extra logica toevoegen, zoals acties uitvoeren op basis van knoppen
-
-        return new JsonResult(new { status = "OK", ontvangen = data });
-    }
 }
 
 public class KnopStatus
