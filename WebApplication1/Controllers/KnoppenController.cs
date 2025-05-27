@@ -19,8 +19,7 @@ public class KnoppenController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] KnopStatus status)
     {
-        await _hubContext.Clients.All.SendAsync("KnopIngedrukt", status);
-        Console.WriteLine("ontvangen");
+        Console.WriteLine(status);
         return Ok();
     }
 
