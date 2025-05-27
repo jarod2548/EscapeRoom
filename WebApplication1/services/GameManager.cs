@@ -63,8 +63,12 @@ namespace WebApplication1.services
         public async Task IncreaseTimer(string gameID)
         {
             Games[gameID].IncreaseTimer();
-            foreach(var raspConnection in RaspConnections)
+            Console.WriteLine("going through connections");
+            foreach (var raspConnection in RaspConnections)
             {
+                Console.WriteLine(raspConnection.Key);
+                Console.WriteLine(raspConnection.Value);
+                Console.WriteLine("sending");
                 await _hubContext.Clients.Client(raspConnection.Value).SendAsync("Fout", "ping");
             }
         }

@@ -22,8 +22,6 @@ namespace WebApplication1.services
             string connection = Context.ConnectionId;
 
             await _gameManager.MovementFromRaspBerryPi(button);
-
-            await Clients.Client(connection).SendAsync("Fout", "ping");
    
         }
     }
