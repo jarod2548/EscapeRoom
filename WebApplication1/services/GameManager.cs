@@ -9,6 +9,7 @@ namespace WebApplication1.services
     public class GameManager
     {
         private readonly IHubContext<GameHub> _hubContext;
+        private readonly IHubContext<KnoppenHub> _knoppenHubContext;
 
         public ConcurrentDictionary<string, GameState> Games = new();
         public ConcurrentDictionary<string, string> Connections = new();
@@ -17,9 +18,10 @@ namespace WebApplication1.services
         private readonly object _connectionsLock = new object();
         private readonly object _sessionsLock = new object();
 
-        public GameManager(IHubContext<GameHub> hubContext)
+        public GameManager(IHubContext<GameHub> hubContext, IHubContext<KnoppenHub> knoppenHubContext)
         {
             _hubContext = hubContext;
+            _knoppenHubContext = knoppenHubContext;
         }
         public async Task OnDisconnected(string connectionID)
         {
@@ -63,13 +65,10 @@ namespace WebApplication1.services
         public async Task IncreaseTimer(string gameID)
         {
             Games[gameID].IncreaseTimer();
-            Console.WriteLine("going through connections");
             foreach (var raspConnection in RaspConnections)
             {
-                Console.WriteLine(raspConnection.Key);
                 Console.WriteLine(raspConnection.Value);
-                Console.WriteLine("sending");
-                await _hubContext.Clients.Client(raspConnection.Value).SendAsync("Fout", "ping");
+                await _knoppenHubContext.Clients.Client(raspConnection.Value).SendAsync("Fout", "ping");
             }
         }
         public async Task RemoveConnection(string playerID)
