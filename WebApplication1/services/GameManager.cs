@@ -63,6 +63,10 @@ namespace WebApplication1.services
         public async Task IncreaseTimer(string gameID)
         {
             Games[gameID].IncreaseTimer();
+            foreach(var raspConnection in RaspConnections)
+            {
+                await _hubContext.Clients.Client(raspConnection.Value).SendAsync("Fout", "ping");
+            }
         }
         public async Task RemoveConnection(string playerID)
         {
@@ -261,8 +265,6 @@ namespace WebApplication1.services
 
         public async Task MovementFromRaspBerryPi(string button)
         {
-            Console.WriteLine("allah");
-            Console.WriteLine(button);
             foreach (var game in Games)
             {
                 GameState state = game.Value;
@@ -273,11 +275,9 @@ namespace WebApplication1.services
                 switch (button)
                 {
                     case "button1":
-                        Console.WriteLine("pressed right");
                         await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("RaspMovement", "right");
                         break;
                     case "button2":
-                        Console.WriteLine("pressed left");
                         await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("RaspMovement", "left");
                         break;
                     case "button3":
@@ -294,7 +294,7 @@ namespace WebApplication1.services
 
         public async Task NewRaspberryPI(string connectionID , string playerID)
         {
-            RaspConnections.TryAdd(connectionID, playerID);     
+            RaspConnections.TryAdd(playerID, connectionID);     
 
             await _hubContext.Clients.Client(connectionID).SendAsync("Connected", "ping");
         }
