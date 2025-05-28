@@ -33,7 +33,7 @@ namespace WebApplication1.services
             await _gameManager.MovementFromRaspBerryPi(button);
         }
 
-        public async Task CorrectLamp()
+        public async Task CorrectLamp(string message)
         {
             Console.WriteLine("ReceivedCorrectLamp");
             await _gameManager.RaspLevel3Complete();

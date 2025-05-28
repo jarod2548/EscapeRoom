@@ -22,7 +22,8 @@ const device6 = 20;
 const device7 = 32;
 const device8 = 112;
 
-const drawnLines = new Set();
+const activeDevices = new Set();
+const activePorts = new Set();
 
 
 if (window.connection) {
@@ -72,11 +73,9 @@ function allowClicks() {
 
             if (!selectedDevice) return;
 
-            const lineKey = `${selectedDevice.id}-${port.dataset.port}`;
-
-            if (drawnLines.has(lineKey)) {
-                console.log("Line already exists between this device and port.");
-                return; // Exit the function, do not create a new line
+            if (activeDevices.has(selectedDevice.id) || activePorts.has(port.dataset.port)) {
+                console.log("This device or port is already part of an active connection.");
+                return; // Exit, no new line created
             }
 
             const deviceRect = selectedDevice.getBoundingClientRect();
@@ -92,16 +91,23 @@ function allowClicks() {
             line.setAttribute("y2", portRect.top + portRect.height / 2 - svgRect.top);
             line.setAttribute("stroke", "lime");
             line.setAttribute("stroke-width", "2");
+            line.setAttribute("data-device-id", selectedDevice.id);
+            line.setAttribute("data-port-id", port.dataset.port); 
 
             line.addEventListener('click', (e) => {
+
+                const deviceID = e.target.getAttribute('data-device-id');
+                const portID = e.target.getAttribute('data-port-id');
                 e.target.remove();
 
-                drawnLines.delete(lineKey);
+                activeDevices.delete(deviceID);
+                activePorts.delete(portID);
             });
 
             svg.appendChild(line);
 
-            drawnLines.add(lineKey);
+            activeDevices.add(selectedDevice.id);
+            activePorts.add(port.dataset.port);
 
             selectedDevice.classList.remove('selected');
             selectedDevice = null;

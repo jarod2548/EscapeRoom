@@ -38,6 +38,7 @@ namespace WebApplication1.services
         }
         public async Task OnDisconnectedRasp(string connectionID)
         {
+            Console.WriteLine("Deleting all raspberry connections");
             RaspConnections.Clear();
         }
         public async Task GetGameToRemove(string playerID)
