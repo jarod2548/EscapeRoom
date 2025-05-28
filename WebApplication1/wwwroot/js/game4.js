@@ -1,5 +1,6 @@
 ﻿ipAdresses = document.querySelectorAll(".ip-input");
 ports = document.querySelectorAll(".port-label");
+canPlay = false;
 
 
 if (window.connection) {
@@ -10,6 +11,7 @@ if (window.connection) {
         if (window.playerNumber === 1) {           
             ports.forEach(function (port) {
                 port.style.display = "none";
+                canPlay = true;
             });
         } else {
             ipAdresses.forEach(function (adress) {
@@ -25,6 +27,10 @@ if (window.connection) {
 
 document.addEventListener('DOMContentLoaded', () => {
     let selectedDevice = null;
+
+    if (canPlay) {
+        return;
+    }
 
     // Apparaat aanklikken
     document.querySelectorAll('.device').forEach(device => {
