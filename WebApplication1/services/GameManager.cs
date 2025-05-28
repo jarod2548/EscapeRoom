@@ -252,6 +252,7 @@ namespace WebApplication1.services
 
             foreach (var raspConnection in RaspConnections)
             {
+                Console.WriteLine("sending to start game3");
                 await _knoppenHubContext.Clients.Client(raspConnection.Value).SendAsync("Speldrie", "ping");
             }
         }

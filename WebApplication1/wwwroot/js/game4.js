@@ -1,26 +1,28 @@
-﻿ipAdresses = document.querySelectorAll(".ip-input");
-ports = document.querySelectorAll(".port-label");
+﻿const ipAdresses = document.querySelectorAll(".ip-input");
+const ports = document.querySelectorAll(".port-label");
 
-currentDeviceID = 0;
-currentPoortID = 0;
+let currentDeviceID = 0;
+let currentPoortID = 0;
 
-port1 = 181;
-port2 = 32;
-port3 = 112;
-port4 = 20;
-port5 = 32;
-port6 = 181;
-port7 = 20;
-port8 = 112;
+const port1 = 181;
+const port2 = 32;
+const port3 = 112;
+const port4 = 20;
+const port5 = 32;
+const port6 = 181;
+const port7 = 20;
+const port8 = 112;
 
-device1 = 20;
-device2 = 181;
-device3 = 32;
-device4 = 112;
-device5 = 181;
-device1 = 20;
-device1 = 32;
-device1 = 112;
+const device1 = 20;
+const device2 = 181;
+const device3 = 32;
+const device4 = 112;
+const device5 = 181;
+const device1 = 20;
+const device1 = 32;
+const device1 = 112;
+
+const drawnLines = new Set();
 
 
 if (window.connection) {
@@ -54,6 +56,7 @@ function allowClicks() {
             device.classList.add('selected');
 
             console.log("Apparaat geselecteerd:", device.id);
+            currentDeviceID = device.id;
         });
     });
 
@@ -61,12 +64,15 @@ function allowClicks() {
     document.querySelectorAll('.portzone').forEach(port => {
         port.addEventListener('click', () => {
             console.log("Poort aangeklikt:", port.dataset.port);
+            currentPoortID = port.dataset.port;
 
             // Highlight poort (altijd)
             document.querySelectorAll('.portzone').forEach(p => p.classList.remove('selected'));
             port.classList.add('selected');
 
             if (!selectedDevice) return;
+
+            const lineKey;
 
             const deviceRect = selectedDevice.getBoundingClientRect();
             const portRect = port.getBoundingClientRect();
