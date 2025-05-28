@@ -18,9 +18,9 @@ const device2 = 181;
 const device3 = 32;
 const device4 = 112;
 const device5 = 181;
-const device1 = 20;
-const device1 = 32;
-const device1 = 112;
+const device6 = 20;
+const device7 = 32;
+const device8 = 112;
 
 const drawnLines = new Set();
 
@@ -72,7 +72,12 @@ function allowClicks() {
 
             if (!selectedDevice) return;
 
-            const lineKey;
+            const lineKey = `${selectedDevice.id}-${port.dataset.port}`;
+
+            if (drawnLines.has(lineKey)) {
+                console.log("Line already exists between this device and port.");
+                return; // Exit the function, do not create a new line
+            }
 
             const deviceRect = selectedDevice.getBoundingClientRect();
             const portRect = port.getBoundingClientRect();
@@ -90,9 +95,13 @@ function allowClicks() {
 
             line.addEventListener('click', (e) => {
                 e.target.remove();
+
+                drawnLines.delete(lineKey);
             });
 
             svg.appendChild(line);
+
+            drawnLines.add(lineKey);
 
             selectedDevice.classList.remove('selected');
             selectedDevice = null;

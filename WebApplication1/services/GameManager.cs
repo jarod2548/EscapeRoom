@@ -36,6 +36,10 @@ namespace WebApplication1.services
                 }
             }
         }
+        public async Task OnDisconnectedRasp(string connectionID)
+        {
+            RaspConnections.Clear();
+        }
         public async Task GetGameToRemove(string playerID)
         {
             string gameID = null;

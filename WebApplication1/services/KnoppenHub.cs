@@ -10,6 +10,14 @@ namespace WebApplication1.services
             _gameManager = gameManager;
         }
 
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            string connectionID = Context.ConnectionId;
+            await _gameManager.OnDisconnectedRasp(connectionID);
+
+            await base.OnDisconnectedAsync(exception);
+        }
+
         public async Task StartConnection(string playerID)
         {
             string connection = Context.ConnectionId;
