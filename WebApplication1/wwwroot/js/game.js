@@ -16,7 +16,7 @@ const player = {
 
 const wave1data = {
     height: 64,
-    width: 520,
+    width: 1040,
     x: 0,
     y: 0
 }
@@ -38,6 +38,8 @@ window.gameArea2 = document.getElementById('gameArea2');
 window.gameArea3 = document.getElementById('gameArea3');
 window.gameArea4 = document.getElementById('gameArea4');
 window.gameArea5 = document.getElementById('gameArea5');
+window.gameArea6 = document.getElementById('gameArea6');
+window.gameArea7 = document.getElementById('gameArea7');
 
 const start1BTN = document.getElementById('start1BTN');
 const start2BTN = document.getElementById('start2BTN');
@@ -106,6 +108,9 @@ connection.on("StartGame", function (gameId, gameNumber) {
     } else if (playerNumber === 2) {
         gameArea1.style.display = 'block';
     }
+    player.y = 720;
+    player.x = Math.max(0, Math.min(player.x, 1168));
+    player.y = Math.max(0, Math.min(player.y, 768));
     gameID = gameId;
     animateWaves();
     winMessage.style.display = 'none';
@@ -130,17 +135,19 @@ window.connection.on("ResponseMovement", function (xPos, yPos) {
 window.connection.on("RaspMovement", function (direction) {
     console.log("received from pi")
     if (direction === "left") {
-        player.x += 8;
+        player.x += 12;
     }
     if (direction === "right") {
-        player.x -= 8;
+        player.x -= 12;
     }
     if (direction === "down") {
-        player.y += 8;
+        player.y += 12;
     }
     if (direction === "up") {
-        player.y -= 8;
+        player.y -= 12;
     }
+    player.x = Math.max(0, Math.min(player.x, 1168));
+    player.y = Math.max(0, Math.min(player.y, 768));
 });
 
 window.connection.on('Timer', function (time) {
@@ -240,8 +247,8 @@ function enableMovement() {
             case 'w': player.y -= step; break;
             case 's': player.y += step; break;
         }
-        player.x = Math.max(0, Math.min(player.x, 568));
-        player.y = Math.max(0, Math.min(player.y, 368));
+        player.x = Math.max(0, Math.min(player.x, 1168));
+        player.y = Math.max(0, Math.min(player.y, 768));
 
     };
 }
@@ -263,13 +270,13 @@ function spawnWaves(xPos1, xPos2, yPos) {
 function animateWaves() {
     function update(timestamp) {
         if (timestamp - lastTime >= interval) {
-            wave1data.y += 0.5;
-            wave2data.y += 0.5;
+            wave1data.y += 1;
+            wave2data.y += 1;
             wave2.style.top = wave2data.y + "px";
             wave1.style.top = wave1data.y + "px";
             fakeWave.style.top = wave1data.y + "px";
 
-            if (wave1data.y >= 400) {
+            if (wave1data.y >= 800) {
                 respawnWave();
             }
 
@@ -302,7 +309,7 @@ function collision(a, b) {
         a.x < b.x + b.width && playerNumber === 1) {
         if (a.y - a.height < b.y + (b.height / 2) &&
             a.y + a.height > b.y - (b.height / 2)) {
-            player.y = 360;
+            player.y = 720;
             if (ws != null) {
                 if (ws.readyState === WebSocket.OPEN) {
                     ws.send(JSON.stringify({ command: "alert" }));

@@ -1,4 +1,21 @@
-﻿document.addEventListener('DOMContentLoaded', () => {
+﻿window.connection.on("StartGame4", function () {
+    window.gameArea4.style.display = "none";
+    window.gameArea5.style.display = "none";
+    if (window.playerNumber === 1) {
+        window.gameArea6.style.display = "block";
+    } else {
+        window.gameArea7.style.display = "block";
+    }
+
+    
+});
+
+window.connection.on(){
+
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
     let selectedDevice = null;
 
     // Apparaat aanklikken

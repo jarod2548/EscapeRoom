@@ -254,7 +254,13 @@ namespace WebApplication1.services
         {
             GameState state = Games[gameID];
 
-            await state.GameWon();
+            string playerID1 = state.playerID1;
+            string playerID2 = state.playerID2;
+
+            Console.WriteLine("sending");
+
+            await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("StartGame4");
+            await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("StartGame4");
         }
 
         public async Task SendGameEnd(GameState state)

@@ -9,8 +9,8 @@ body {
 
 #gameScreen {
     position: relative;
-    width: 600px;
-    height: 400px;
+    width: 1200px;
+    height: 800px;
     margin: 20px auto;
     background-color: #fa82e4;
     border: 1px solid #00fff7;
@@ -53,7 +53,7 @@ body {
 
 .wave {
     position: absolute;
-    width: 520px;
+    width: 1040px;
     height: 64px;
     background-image: url('../images/newwave.png'); 
     background-size: contain;

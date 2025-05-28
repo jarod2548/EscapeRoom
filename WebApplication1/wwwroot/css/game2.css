@@ -3,7 +3,7 @@
 #gameArea2 {
     position: relative;
     width: 100%;
-    height: 400px; /* Game area height */
+    height: 100%;
     background-color: #e0e0e0;
     border: 1px solid #333;
     display: grid;
@@ -13,7 +13,7 @@
 #gameArea3 {
     position: relative;
     width: 100%;
-    height: 400px; /* Game area height */
+    height: 100%;
     background-color: #e0e0e0;
     border: 1px solid #333;
     display: grid;
@@ -106,10 +106,10 @@
 }
 
 #exampleLight1 {
-    grid-area: 2 / 1 / 2 / 3;
+    grid-area: 2 / 2 / 3 / 3;
 }
 #exampleLight2 {
-    grid-area: 2 / 3 / 2 / 5;
+    grid-area: 2 / 3 / 3 / 4;
 }
 
 #donutCanvas {

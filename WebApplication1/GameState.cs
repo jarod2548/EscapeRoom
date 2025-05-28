@@ -126,8 +126,8 @@ namespace WebApplication1
 
         public async Task SpawnWaves()
         {
-            WGD.xPosWave1 = rand.Next(-500, 0);
-            WGD.xPosWave2 = WGD.xPosWave1 + 580;
+            WGD.xPosWave1 = rand.Next(-500, 500);
+            WGD.xPosWave2 = WGD.xPosWave1 + 1120;
             WGD.yPosWave = 0;
 
             await _gameManager.SpawnWaves(this.ID);
