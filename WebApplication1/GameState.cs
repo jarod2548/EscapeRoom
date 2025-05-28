@@ -135,8 +135,8 @@ namespace WebApplication1
         public void CreateLightsGame() 
         {                     
             LGD.randomInt = rand.Next(LGD.buttons.Count);
-            LGD.button1 = LGD.buttons[LGD.randomInt][0];
-            LGD.button2 = LGD.buttons[LGD.randomInt][1];
+            LGD.button1 = LGD.buttons[2][0];
+            LGD.button2 = LGD.buttons[2][1];
             LGD.currentButton = 0;
             LGD.buttonToUse.Add(LGD.button1);
             LGD.buttonToUse.Add(LGD.button2);

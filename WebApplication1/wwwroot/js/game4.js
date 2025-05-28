@@ -13,14 +13,14 @@ const port6 = 181;
 const port7 = 20;
 const port8 = 112;
 
-const device1 = 20;
-const device2 = 181;
-const device3 = 32;
-const device4 = 112;
-const device5 = 181;
-const device6 = 20;
-const device7 = 32;
-const device8 = 112;
+const computer1 = 20;
+const computer2 = 181;
+const computer3 = 32;
+const computer4 = 112;
+const laptop1 = 181;
+const laptop2 = 20;
+const laptop3 = 32;
+const laptop4 = 112;
 
 const activeDevices = new Set();
 const activePorts = new Set();
@@ -40,6 +40,60 @@ if (window.connection) {
             ipAdresses.forEach(function (adress) {
                 adress.style.display = "none";
             });
+        }
+    });
+}
+
+function isValidConnection(deviceID, portID) {
+
+    portID = parseInt(portID);
+
+    let portValue;
+    switch (portID) {
+        case 1: portValue = port1; break;
+        case 2: portValue = port2; break;
+        case 3: portValue = port3; break;
+        case 4: portValue = port4; break;
+        case 5: portValue = port5; break;
+        case 6: portValue = port6; break;
+        case 7: portValue = port7; break;
+        case 8: portValue = port8; break;
+        default: return false;
+    }
+    switch (deviceID) {
+        case "laptop1":
+            return laptop1 === portValue;
+        case "laptop2":
+            return laptop2 === portValue;
+        case "laptop3":
+            return laptop3 === portValue;
+        case "laptop4":
+            return laptop4 === portValue;
+        case "computer1":
+            return computer1 === portValue;
+        case "computer2":
+            return computer2 === portValue;
+        case "computer3":
+            return computer3 === portValue;
+        case "computer4":
+            return computer4 === portValue;
+        default:
+            return false;
+    }
+};
+
+function CheckIfCorrect() {
+    let num = 0;
+    const allLines = document.querySelectorAll(".connection-line");
+    allLines.forEach((line) => {
+        const deviceID = line.getAttribute('data-device-id');
+        const portID = line.getAttribute('data-port-id');
+        let wip = isValidConnection(deviceID, portID);
+        if (wip) {
+            num++;
+        }
+        if (num === 8) {
+            window.connection.invoke("Level4Complete", window.gameID);
         }
     });
 }
@@ -111,6 +165,8 @@ function allowClicks() {
 
             selectedDevice.classList.remove('selected');
             selectedDevice = null;
+
+            CheckIfCorrect();
         });
     });
 }

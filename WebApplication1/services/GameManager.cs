@@ -272,6 +272,13 @@ namespace WebApplication1.services
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("StartGame4");
         }
 
+        public async Task Level4Complete(string gameID)
+        {
+            GameState state = Games[gameID];
+
+            await state.GameWon();
+        }
+
         public async Task RaspLevel3Complete()
         {
             foreach (var game in Games)

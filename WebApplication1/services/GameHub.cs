@@ -90,5 +90,10 @@ namespace WebApplication1.services
         {
             await _gameManager.Level3Complete(gameID);
         }
+
+        public async Task Level4Complete(string gameID)
+        {
+            await _gameManager.Level4Complete(gameID);
+        }
     }
 }
