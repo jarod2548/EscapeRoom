@@ -1,6 +1,26 @@
 ﻿ipAdresses = document.querySelectorAll(".ip-input");
 ports = document.querySelectorAll(".port-label");
-canPlay = false;
+
+currentDeviceID = 0;
+currentPoortID = 0;
+
+port1 = 181;
+port2 = 32;
+port3 = 112;
+port4 = 20;
+port5 = 32;
+port6 = 181;
+port7 = 20;
+port8 = 112;
+
+device1 = 20;
+device2 = 181;
+device3 = 32;
+device4 = 112;
+device5 = 181;
+device1 = 20;
+device1 = 32;
+device1 = 112;
 
 
 if (window.connection) {
@@ -11,7 +31,7 @@ if (window.connection) {
         if (window.playerNumber === 1) {           
             ports.forEach(function (port) {
                 port.style.display = "none";
-                canPlay = true;
+                allowClicks();
             });
         } else {
             ipAdresses.forEach(function (adress) {
@@ -21,16 +41,8 @@ if (window.connection) {
     });
 }
 
-
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
+function allowClicks() {
     let selectedDevice = null;
-
-    if (canPlay) {
-        return;
-    }
 
     // Apparaat aanklikken
     document.querySelectorAll('.device').forEach(device => {
@@ -80,4 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedDevice = null;
         });
     });
-});
+}
+
+
+
+    

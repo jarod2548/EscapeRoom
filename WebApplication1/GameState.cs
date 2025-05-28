@@ -194,7 +194,7 @@ namespace WebApplication1
             }
             else 
             {
-                Console.WriteLine("Wrong button");
+                IncreaseTimer();
             }
         }
         public async Task StopTimer()

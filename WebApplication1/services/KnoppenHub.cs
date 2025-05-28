@@ -23,8 +23,11 @@ namespace WebApplication1.services
             Console.WriteLine(connection);
 
             await _gameManager.MovementFromRaspBerryPi(button);
+        }
 
-   
+        public async Task CorrectLamp()
+        {
+            await _gameManager.RaspLevel3Complete();
         }
     }
 }

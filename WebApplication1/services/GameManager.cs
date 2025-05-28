@@ -262,10 +262,22 @@ namespace WebApplication1.services
             string playerID1 = state.playerID1;
             string playerID2 = state.playerID2;
 
-            Console.WriteLine("sending");
-
             await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("StartGame4");
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("StartGame4");
+        }
+
+        public async Task RaspLevel3Complete()
+        {
+            foreach (var game in Games)
+            {
+                GameState state = game.Value;
+
+                string playerID1 = state.playerID1;
+                string playerID2 = state.playerID2;
+
+                await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("StartGame4");
+                await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("StartGame4");
+            }
         }
 
         public async Task SendGameEnd(GameState state)
