@@ -27,6 +27,7 @@ namespace WebApplication1.services
 
         public async Task CorrectLamp()
         {
+            Console.WriteLine("ReceivedCorrectLamp");
             await _gameManager.RaspLevel3Complete();
         }
     }

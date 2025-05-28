@@ -275,6 +275,8 @@ namespace WebApplication1.services
                 string playerID1 = state.playerID1;
                 string playerID2 = state.playerID2;
 
+                Console.WriteLine("Starting game 4");
+
                 await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("StartGame4");
                 await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("StartGame4");
             }
