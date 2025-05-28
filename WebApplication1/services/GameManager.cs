@@ -249,6 +249,11 @@ namespace WebApplication1.services
 
             await _hubContext.Clients.Client(Connections[playerID1]).SendAsync("SendLevel2Complete");
             await _hubContext.Clients.Client(Connections[playerID2]).SendAsync("SendLevel2Complete");
+
+            foreach (var raspConnection in RaspConnections)
+            {
+                await _knoppenHubContext.Clients.Client(raspConnection.Value).SendAsync("Speldrie", "ping");
+            }
         }
         public async Task Level3Complete(string gameID)
         {
